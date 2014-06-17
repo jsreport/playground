@@ -127,7 +127,6 @@ data/*
 /web.config
 /result.txt
 prod.config.json
-dev.config.json
 .idea
 config/*
 main_built.js

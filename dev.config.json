@@ -1,0 +1,14 @@
+﻿{
+    "cookieSession": {
+        "secret": "dasd321as56d1sd5s61vdv32",
+        "cookie": { "domain": "local.net" }
+    },
+    "certificate": {
+        "key": "certificates/jsreport.net.key",    
+        "cert": "certificates/jsreport.net.cert"
+    },
+    "connectionString": { "name": "mongoDB", "address": "localhost", "port": 27017, "databaseName" : "playground" },
+    "extensions": ["express", "templates-playground", "html", "phantom-pdf", "fop-pdf", "data-playground", "images-playground", "scripts-playground", "examples"],
+    "port": 3000,
+    "NODE_ENV": "development"
+}
