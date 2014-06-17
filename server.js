@@ -17,5 +17,5 @@ config.extensionsManager = {
     supportsUnregistration : false
 };
 new ReportingServer(config).start(function(err){
-    if (!!err) console.error("Error starting application with:",err);
+    if (!!err) console.error("Error starting application with: ",err);
 });
