@@ -1,6 +1,6 @@
 Playground
 ==========
-[![Build Status](https://travis-ci.org/jsreport/jsreport.png?branch=master)](https://travis-ci.org/jsreport/playground)
+[![Build Status](https://travis-ci.org/jsreport/playground.png?branch=master)](https://travis-ci.org/jsreport/playground)
 
 Playground is a lightweight version of [reporting platform jsreport](http://jsreport.net) running for free on [playground.jsreport.net](http://playground.jsreport.net)
 

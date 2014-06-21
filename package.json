@@ -1,5 +1,5 @@
 {
-  "name": "playground",
+  "name": "jsreport-playground",
   "version": "0.0.1",
   "description": "Public free playground for jsreport",
   "main": "server.js",
