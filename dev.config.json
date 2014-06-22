@@ -8,7 +8,7 @@
         "cert": "certificates/jsreport.net.cert"
     },
     "connectionString": { "name": "mongoDB", "address": "localhost", "port": 27017, "databaseName" : "playground" },
-    "extensions": ["express", "templates-playground", "html", "phantom-pdf", "fop-pdf", "data-playground", "images-playground", "scripts-playground", "examples"],
+    "extensions": ["express", "templates-playground", "html", "phantom-pdf", "fop-pdf", "data-playground", "images-playground", "scripts-playground", "examples", "jsreport-contrib-jira"],
     "port": 3000,
     "NODE_ENV": "development"
 }
