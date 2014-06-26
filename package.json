@@ -36,7 +36,10 @@
     "grunt-env": "^0.4.1"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "scripts": {
+          "postinstall": "./node_modules/grunt/bin/grunt afterInstall"
+    }
   },
   "author": "Jan Blaha",
   "license": "AGPU"

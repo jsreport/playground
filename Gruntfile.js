@@ -26,6 +26,10 @@
             }
         },
         exec: {
+            installJsReport : {
+                cmd: "npm install",
+                cwd: require("path").join("node_modules", "jsreport")
+            },
             buildDev : {
                 cmd: "grunt development --root=" + __dirname,
                 cwd: require("path").join("node_modules", "jsreport")
@@ -45,7 +49,7 @@
 
     grunt.registerTask('default', ['init']);
 
-    grunt.registerTask('init', ['development', 'production', 'watch']);
+    grunt.registerTask('afterInstall', ['exec:installJsReport', 'development', 'production']);
 
     grunt.registerTask('development', ['exec:buildDev']);
     grunt.registerTask('production', [ 'copy:production', 'exec:buildProd']);
