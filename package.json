@@ -37,7 +37,7 @@
   },
   "scripts": {
     "test": "grunt test",
-    "postinstall": "node_modules/.bin/grunt afterInstall"
+    "postinstall": "grunt afterInstall"
   },
   "author": "Jan Blaha",
   "license": "AGPU"
