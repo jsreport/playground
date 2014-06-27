@@ -6,6 +6,17 @@ Playground is a lightweight version of [reporting platform jsreport](http://jsre
 
 This repository contains only playground specific extensions and playground specific bootstrap. Core jsreport repository is located [here](https://github.com/jsreport/jsreport).
 
+## Installation
+
+1. install nodejs
+2. install mongo
+3. install git
+4. clone this repository
+5. `npm install`
+6. `npm start`
+
+See jsreport [installation troubleshooting guide](https://github.com/jsreport/docs/tree/master/installation) for more information.
+
 ## License 
 
 Copyright (c) 2014 Jan Blaha &lt;jan.blaha at hotmail.com&gt;

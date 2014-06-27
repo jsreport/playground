@@ -1,4 +1,13 @@
-﻿module.exports = function(grunt) {
+﻿/*!
+ * Task automation for jsreport playground
+ *
+ * grunt build # build, combine and minify files including also jsreport npm module
+ * grunt watch-build # listen to main.js file changes and copy content to main_dev.js automatically
+ * grunt test # start tests, mongo need to be running
+ */
+
+
+module.exports = function(grunt) {
     
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -9,18 +18,14 @@
         },
 
         copy: {
-            test: { files: [{ src: ['./config/test.playground.json'], dest: './test.config.json' }, { src: ['./config/playground.web.config'], dest: './web.config' }] },
-            production: { files: [{ src: ['./config/production.playground.config.json'], dest: './prod.config.json' }, { src: ['./config/playground.web.config'], dest: './web.config' }] }
+            deployTest: { files: [{ src: ['./config/test.playground.json'], dest: './test.config.json' }, { src: ['./config/playground.web.config'], dest: './web.config' }] },
+            deployProd: { files: [{ src: ['./config/production.playground.config.json'], dest: './prod.config.json' }, { src: ['./config/playground.web.config'], dest: './web.config' }] }
         },
 
         watch: {
             dev: {
                 files: ['extension/**/main.js'],
                 tasks: ['exec:buildDev']
-            },
-            prod: {
-                files: ['extension/*/public/js/*.js'],
-                tasks: ['exec:buildProd']
             }
         },
         exec: {
@@ -28,12 +33,8 @@
                 cmd: "npm install",
                 cwd: require("path").join("node_modules", "jsreport")
             },
-            buildDev : {
-                cmd: "grunt development --root=" + __dirname,
-                cwd: require("path").join("node_modules", "jsreport")
-            },
-            buildProd : {
-                cmd: "grunt production --root=" + __dirname,
+            build : {
+                cmd: "grunt build --root=" + __dirname,
                 cwd: require("path").join("node_modules", "jsreport")
             }
         }
@@ -46,14 +47,13 @@
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', ['prepublish']);
-    grunt.registerTask('prepublish', ['exec:installJsReport', 'exec:buildDev', 'exec:buildProd']);
+    grunt.registerTask('prepublish', ['exec:installJsReport', 'exec:build']);
 
-    grunt.registerTask('build', ['exec:buildDev', 'copy:production', 'exec:buildProd']);
-    grunt.registerTask('watch-build-dev', ['watch:dev']);
-    grunt.registerTask('watch-build-prod', ['watch:prod']);
+    grunt.registerTask('build', ['exec:build']);
+    grunt.registerTask('watch-build', ['watch:dev']);
 
-    grunt.registerTask('deploy-test', ['exec:buildDev', 'exec:buildProd', 'copy:deployTest']);
-    grunt.registerTask('deploy-prod', ['exec:buildDev', 'exec:buildProd', 'copy:deployProd']);
+    grunt.registerTask('deploy-test', ['exec:build', 'copy:deployTest']);
+    grunt.registerTask('deploy-prod', ['exec:build', 'copy:deployProd']);
 
     grunt.registerTask('test', ['mochaTest:test']);
 };
