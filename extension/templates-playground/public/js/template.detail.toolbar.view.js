@@ -3,12 +3,10 @@
  */ 
 
 define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/listenerCollection",
-        "./template.embed.dialog", "core/basicModel"],
-    function($, app, Utils, LayoutBase, _, ListenerCollection, EmbedDialog, BasicModel) {
+        "./template.embed.dialog", "core/basicModel", "introJs"],
+    function($, app, Utils, LayoutBase, _, ListenerCollection, EmbedDialog, BasicModel, introJs) {
         return LayoutBase.extend({
             template: "template-detail-toolbar",
-            introTemplate: "template-detail-intro",
-            introId: "template-detail-intro",
 
             initialize: function() {
                 var self = this;
@@ -26,14 +24,24 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
                     self.listenTo(self.contentView, "preview", function() {
                         self.preview();
                     });
-
-                    if (app.settings.firstRun && !app.settings.templateFirstRender) {
-                        app.settings.templateFirstRender = true;
-                        this.preview();
-                    }
                 });
 
                 this.listenTo(this, "render", function() {
+
+                    if (!localStorage.getItem("beenHere")) {
+                        alert('here');
+                        localStorage.setItem("beenHere", "true");
+
+                        var dialog = $.dialog({
+                            header: "Introduction",
+                            content: $.render["template-detail-intro"](self.model.toJSON(), self),
+                            hideButtons: true
+                        }).on('hidden.bs.modal', function() {
+                            dialog.off('hidden.bs.modal');
+                            introJs().start();
+                        });
+                    }
+
                     var context = {
                         template: self.model,
                         extensionsRegion: self.extensionsRegion,
