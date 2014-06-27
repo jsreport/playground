@@ -29,7 +29,6 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
                 this.listenTo(this, "render", function() {
 
                     if (!localStorage.getItem("beenHere")) {
-                        alert('here');
                         localStorage.setItem("beenHere", "true");
 
                         var dialog = $.dialog({
