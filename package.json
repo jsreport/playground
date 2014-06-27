@@ -16,6 +16,7 @@
     "feedparser": "^0.17.0",
     "grunt-exec": "^0.4.5",
     "jsreport": "jsreport/jsreport",
+    "jsreport-contrib-jira": "jsreport/jsreport-contrib-jira",
     "method-override": "^2.0.1",
     "nconf": "^0.6.9",
     "node.extend": "^1.0.10",
@@ -40,7 +41,8 @@
   },
   "scripts": {
     "test": "grunt test",
-    "postinstall": "grunt afterInstall"
+    "start" : "node server.js",
+    "prepublish": "grunt prepublish"
   },
   "author": "Jan Blaha",
   "license": "AGPU"

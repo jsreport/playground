@@ -3,14 +3,8 @@
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         mochaTest: {
-            testExact: {
-                src: ['extension/images-playground/test/*.js']
-            },
             test: {
                 src: ['extension/*/test/*.js', 'test/*.js']
-            },
-            testAll: {
-                src: ['extension/*/test/*.js', 'test/*.js', 'extension/*/integrationTest/*.js']           
             }
         },
 
@@ -20,9 +14,13 @@
         },
 
         watch: {
-            extensions: {
+            dev: {
                 files: ['extension/**/main.js'],
                 tasks: ['exec:buildDev']
+            },
+            prod: {
+                files: ['extension/*/public/js/*.js'],
+                tasks: ['exec:buildProd']
             }
         },
         exec: {
@@ -47,14 +45,15 @@
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['init']);
+    grunt.registerTask('default', ['prepublish']);
+    grunt.registerTask('prepublish', ['exec:installJsReport', 'exec:buildDev', 'exec:buildProd']);
 
-    grunt.registerTask('afterInstall', ['exec:installJsReport', 'development', 'production']);
+    grunt.registerTask('build', ['exec:buildDev', 'copy:production', 'exec:buildProd']);
+    grunt.registerTask('watch-build-dev', ['watch:dev']);
+    grunt.registerTask('watch-build-prod', ['watch:prod']);
 
-    grunt.registerTask('development', ['exec:buildDev']);
-    grunt.registerTask('production', [ 'copy:production', 'exec:buildProd']);
+    grunt.registerTask('deploy-test', ['exec:buildDev', 'exec:buildProd', 'copy:deployTest']);
+    grunt.registerTask('deploy-prod', ['exec:buildDev', 'exec:buildProd', 'copy:deployProd']);
 
-    grunt.registerTask('test-all', ['mochaTest:testAll']);
     grunt.registerTask('test', ['mochaTest:test']);
-    grunt.registerTask('test-exact', ['mochaTest:testExact']);
 };
