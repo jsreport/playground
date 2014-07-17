@@ -48,9 +48,7 @@ util.inherits(Templating, events.EventEmitter);
 Templating.prototype.handleBeforeRender = function (request, response) {
 
     if (request.template._id == null && request.template.shortid == null) {
-        if (!request.template.content)
-            throw new Error("Template must contains _id, shortid or content attribute.");
-
+        request.template.content = request.template.content || "";
         return;
     }
 
