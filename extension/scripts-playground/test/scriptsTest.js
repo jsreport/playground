@@ -12,6 +12,7 @@ describeReporting(path.join(__dirname, "../../../"), ["html", "templates-playgro
             var response = {};
             var request = {
                 context: reporter.context,
+                reporter: reporter,
                 template: { script: { content: "request.data = 'xxx'; done()" }}
             };
             reporter.scripts.handleBeforeRender(request, response).then(function () {
@@ -24,6 +25,7 @@ describeReporting(path.join(__dirname, "../../../"), ["html", "templates-playgro
             var response = {};
             var request = {
                 context: reporter.context,
+                reporter: reporter,
                 template: { script: { content: "request.template.content = 'xxx'; done()" }}
             };
 
@@ -41,6 +43,7 @@ describeReporting(path.join(__dirname, "../../../"), ["html", "templates-playgro
             var response = {};
             var request = {
                 context: reporter.context,
+                reporter: reporter,
                 template: { script: { content: scriptContent }}
             };
 
@@ -56,6 +59,7 @@ describeReporting(path.join(__dirname, "../../../"), ["html", "templates-playgro
             var response = {};
             var request = {
                 context: reporter.context,
+                reporter: reporter,
                 template: { script: { content: scriptContent }}
             };
 

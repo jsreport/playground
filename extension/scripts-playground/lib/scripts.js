@@ -7,7 +7,7 @@
 var shortid = require("shortid"),
     fork = require('child_process').fork,
     _ = require("underscore"),
-    join = require("path").join,
+    path = require("path"),
     Q = require("q");
 
 module.exports = function (reporter, definition) {
@@ -59,29 +59,9 @@ Scripts.prototype.handleBeforeRender = function (request, response) {
     return FindScript().then(function(script) {
 
         script = script.content || script;
-        var child = fork(join(__dirname, "scriptEvalChild.js"));
-        var isDone = false;
 
-        return Q.nfcall(function(cb) {
-
-            child.on('message', function(m) {
-                isDone = true;
-                if (m.error) {
-                    self.reporter.logger.error("Child process process resulted in error " + JSON.stringify(m.error));
-                    self.reporter.logger.error(m);
-                    return cb({ message: m.error, stack: m.errorStack });
-                }
-
-                self.reporter.logger.info("Child process successfully finished.");
-
-                request.data = m.request.data;
-                request.template.content = m.request.template.content;
-                request.template.helpers = m.request.template.helpers;
-
-                return cb();
-            });
-
-            child.send({
+        return request.reporter.taskManager.execute({
+            body: {
                 script: script,
                 allowedModules: self.allowedModules,
                 request: {
@@ -92,18 +72,15 @@ Scripts.prototype.handleBeforeRender = function (request, response) {
                     }
                 },
                 response: response
-            });
+            },
+            execModulePath: path.join(__dirname, "scriptEvalChild.js"),
+            timeout: 60000
+        }).then(function(body) {
+            request.data = body.request.data;
+            request.template.content = body.request.template.content;
+            request.template.helpers = body.request.template.helpers;
 
-            self.reporter.logger.info("Child process started.");
-
-            setTimeout(function() {
-                if (isDone)
-                    return;
-
-                child.kill();
-                self.reporter.logger.error("Child process resulted in timeout.");
-                return cb({ message: "Timeout error during script execution" });
-            }, 60000);
+            return response;
         });
     });
 };
