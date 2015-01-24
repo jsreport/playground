@@ -47,7 +47,7 @@ util.inherits(Templating, events.EventEmitter);
 
 Templating.prototype.handleBeforeRender = function (request, response) {
 
-    if (request.template._id == null && request.template.shortid == null) {
+    if (request.template.content) {
         request.template.content = request.template.content || "";
         return;
     }

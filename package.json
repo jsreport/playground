@@ -4,7 +4,7 @@
   "description": "Public free playground for jsreport",
   "main": "server.js",
   "config": {
-        "unsafe-perm":true
+    "unsafe-perm": true
   },
   "dependencies": {
     "async-replace": "^1.0.0",
@@ -22,6 +22,7 @@
     "node.extend": "^1.0.10",
     "q": "^1.0.1",
     "request": "^2.36.0",
+    "sendgrid": "^1.5.0",
     "shortid": "^2.0.0",
     "underscore": "^1.6.0",
     "winston": "^0.7.3"
@@ -41,7 +42,7 @@
   },
   "scripts": {
     "test": "grunt test",
-    "start" : "node server.js",
+    "start": "node server.js",
     "prepublish": "grunt prepublish"
   },
   "author": "Jan Blaha",

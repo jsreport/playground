@@ -4,7 +4,7 @@
  * Inline Data plugin able to add some sample data to rendering process
  */
 
-var Q = require("q");
+var q = require("q");
 
 module.exports = function (reporter, definition) {
 
@@ -16,16 +16,25 @@ module.exports = function (reporter, definition) {
 
     reporter.beforeRenderListeners.add(definition.name, function(request, response) {
 
-        if (request.template.dataItem && request.template.dataItem.dataJson) {
+        if (!request.template.data && !request.template.dataItem) {
+            reporter.logger.debug("Data item not defined for this template.");
+            return q();
+        }
+
+        if (!request.template.data && request.template.dataItem) {
+            request.template.data = { dataJson: request.template.dataItem.dataJson};
+        }
+
+        if (request.template.data.dataJson) {
             try {
-                request.data = JSON.parse(request.template.dataItem.dataJson);
+                request.data = JSON.parse(request.template.data.dataJson);
             } catch(e) {
                 reporter.logger.warn("Invalid json in data item: " + e.message);
                 e.weak = true;
-                return Q.reject(e);
+                return q.reject(e);
             }
         }
 
-        return Q();
+        return q();
     });
 };

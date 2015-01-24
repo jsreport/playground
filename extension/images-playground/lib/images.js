@@ -42,6 +42,7 @@ Images.prototype.upload = function (context, name, contentType, content, shortid
 
     function findOrCreate(context) {
         if (shortidVal == null) {
+            console.log("creating image with a name " + name);
             var image = new self.ImageType({
                 name: name,
                 contentType: contentType,
@@ -137,7 +138,7 @@ Images.prototype._configureExpress = function (app) {
         var file = findFirstFile();
 
         fs.readFile(file.path, function (err, content) {
-            var name = file.name.replace(/\.[^/.]+$/, "");
+            var name = file.originalname.replace(/\.[^/.]+$/, "");
             name = name.replace(/[^a-zA-Z0-9-_]/g, '');
             self.upload(req.reporterContext, name, file.type, content, req.params.shortid).then(function (image) {
                 res.setHeader('Content-Type', "text/plain");

@@ -131,7 +131,7 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
 
                 var uiState = this.getUIState();
 
-                var request = { template: uiState };
+                var request = { template: uiState, options: { preview: true} };
                 var self = this;
                 this.beforeRenderListeners.fire(request, function(er) {
                     if (er) {
@@ -148,10 +148,11 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
                             body = body.initData;
 
                         for (var key in body) {
-                            if (_.isObject(body[key])) {
+                            if ($.isPlainObject(body[key])) {
                                 addBody(path + key + "[", body[key]);
                             } else {
-                                self.addInput(mapForm, path + key + "]", body[key]);
+                                if (body[key] !== undefined && !(body[key] instanceof Array))
+                                    self.addInput(mapForm, path + key + "]", body[key]);
                             }
                         }
                     }

@@ -1,4 +1,4 @@
-﻿define(["jquery", "app", "marionette", "backbone"],
+define(["jquery", "app", "marionette", "backbone"],
     function($, app, Marionette, Backbone) {
 
         var module = app.module("examples", function() {

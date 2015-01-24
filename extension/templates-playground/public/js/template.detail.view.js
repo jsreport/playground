@@ -2,7 +2,7 @@
  * Copyright(c) 2014 Jan Blaha 
  */ 
 
-define(["jquery", "app", "core/utils", "core/view.base", "core/aceBinder", "ace/ext/language_tools"],
+define(["jquery", "app", "core/utils", "core/view.base", "core/aceBinder"],
     function($, app, Utils, LayoutBase, aceBinder) {
         
         return LayoutBase.extend({
