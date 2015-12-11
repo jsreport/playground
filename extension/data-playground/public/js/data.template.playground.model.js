@@ -3,7 +3,7 @@
     return ModelBase.extend({
         setTemplateModel: function (templateModel) {
             this.templateModel = templateModel;
-            
+            this.templateModel.set('dataItem', this.templateModel.get('dataItem') || {}, { silent: true});
             this.set("dataJson", templateModel.get("dataItem").dataJson);
         },
         

@@ -7,7 +7,7 @@
 var shortid = require("shortid"),
     fs = require("fs"),
     _ = require("underscore"),
-    Q = require("q"),
+    q = require("q"),
     asyncReplace = require("async-replace");
 
 module.exports = function (reporter, definition) {
@@ -19,157 +19,155 @@ Images = function (reporter, definition) {
 
     this._defineEntitySets();
 
-    reporter.templates.TemplateType.addEventListener("beforeCreate", function (args, template) {
-        template.images = template.images || [];
-    });
-
-    this.ImageType.addEventListener("beforeCreate", function (args, entity) {
-        entity.creationDate = new Date();
-        entity.modificationDate = new Date();
-    });
-
-    this.ImageType.addEventListener("beforeUpdate", function (args, entity) {
-        entity.modificationDate = new Date();
-    });
-
     this.reporter.on("express-configure", Images.prototype._configureExpress.bind(this));
-    this.reporter.beforeRenderListeners.add(definition.name, this, Images.prototype.handleBeforeRender.bind(this));
+    this.reporter.afterTemplatingEnginesExecutedListeners.add(definition.name, this, Images.prototype.handleAfterTemplatingEnginesExecuted.bind(this))
 };
 
-Images.prototype.upload = function (context, name, contentType, content, shortidVal) {
-    var self = this;
-    this.reporter.logger.info("uploading image " + name);
+Images.prototype.upload = function (name, contentType, content, shortidVal) {
+    var self = this
+    this.reporter.logger.info('uploading image ' + name)
 
-    function findOrCreate(context) {
-        if (shortidVal == null) {
-            console.log("creating image with a name " + name);
-            var image = new self.ImageType({
-                name: name,
-                contentType: contentType,
-                content: content,
-                shortid: shortid.generate()
-            });
-            context.images.add(image);
-            return Q(image);
-        } else {
-            return context.images.single(function (i) {
-                return i.shortid == this.id;
-            }, { id: shortidVal }).then(function (img) {
-                context.images.attach(img);
-                img.content = content;
-                img.contentType = contentType;
-                img.name = name;
-                return Q(img);
-            });
-        }
+    if (!shortidVal) {
+        return self.imagesCollection.insert({
+            name: name,
+            contentType: contentType,
+            content: content
+        })
+    } else {
+        return self.imagesCollection.find({'shortid': shortidVal}).then(function (res) {
+            return self.imagesCollection.update(
+              {
+                  'shortid': shortidVal
+              }, {
+                  $set: {
+                      content: content,
+                      name: name,
+                      contentType: contentType
+                  }
+              }).then(function () {
+                  return res[0]
+              })
+        })
+    }
+}
+
+Images.prototype.handleAfterTemplatingEnginesExecuted = function (request, response) {
+    var self = this
+    var replacedImages = []
+
+    function convert (str, p1, offset, s, done) {
+        self.imagesCollection.find({name: p1}).then(function (result) {
+            if (result.length < 1) {
+                return done(null)
+            }
+
+            replacedImages.push(p1)
+
+            var imageData = 'data:' + result[0].contentType + ';base64,' + result[0].content.toString('base64')
+            done(null, imageData)
+        }).catch(done)
     }
 
-    return findOrCreate(context).then(function (img) {
-        return context.images.saveChanges().then(function () {
-            return Q(img);
-        });
-    });
-};
+    var test = /{#image ([^{}]{0,50})}/g
 
-Images.prototype.handleBeforeRender = function (request, response) {
-
-    function convert(str, p1, offset, s, done) {
-
-        request.context.images.filter(function (t) {
-            return t.name == this.name;
-        }, { name: p1 }).toArray().then(function (res) {
-            if (res.length < 1)
-                return done(null);
-
-            var imageData = "data:" + res[0].contentType + ";base64," + res[0].content.toString('base64');
-            done(null, imageData);
-        });
-    }
-
-    var test = /{#image ([^{}]+)+}/g;
-
-    return Q.nfcall(asyncReplace, request.template.content, test, convert).then(function (result) {
-        request.template.content = result;
-    });
-};
+    return q.nfcall(asyncReplace, response.content.toString(), test, convert).then(function (result) {
+        self.reporter.logger.debug('Replaced images ' + JSON.stringify(replacedImages))
+        response.content = new Buffer(result)
+    })
+}
 
 Images.prototype._configureExpress = function (app) {
     var self = this;
 
-    app.use("/api/image", function (req, res, next) {
-        self.reporter.dataProvider.startContext().then(function (context) {
-            req.reporterContext = context;
-            next();
-        });
-    });
+    app.get('/api/image/:shortid', function (req, res, next) {
+        self.imagesCollection.find({shortid: req.params.shortid}).then(function (result) {
+            if (result.length !== 1) {
+                throw new Error('Image not found')
+            }
 
-    app.get("/api/image/:shortid", function (req, res) {
-        req.reporterContext.images.single(function (t) {
-            return t.shortid == this.id;
-        }, { id: req.params.shortid }).then(function (result) {
-            res.setHeader('Content-Type', result.contentType);
-            res.send(result.content);
-        }, function () {
-            res.send(404);
-        });
-    });
+            res.setHeader('Content-Length', result[0].content.length);
+            res.setHeader('Content-Type', result[0].contentType);
+            res.end(result[0].content, 'binary');
+        }).catch(function (e) {
+            res.status(404).end()
+        })
+    })
 
-    app.get("/api/image/name/:name", function (req, res) {
-        req.reporterContext.images.single(function (t) {
-            return t.name == this.name;
-        }, { name: req.params.name }).then(function (result) {
-            res.setHeader('Content-Type', result.contentType);
-            res.send(result.content);
-        }, function () {
-            res.send(404);
-        });
+    app.get('/api/image/name/:name', function (req, res) {
+        self.imagesCollection.find({name: req.params.name}).then(function (result) {
+            if (result.length !== 1) {
+                throw new Error('Image not found')
+            }
 
-    });
+            res.setHeader('Content-Type', result[0].contentType);
+            res.end(result[0].content, 'binary');
+        }).catch(function (e) {
+            res.status(404).end()
+        })
+    })
 
-    app.post("/api/image/:shortid?", function (req, res) {
-        function findFirstFile() {
+    app.post('/api/image/:shortid?', function (req, res, next) {
+        function findFirstFile () {
             for (var f in req.files) {
                 if (req.files.hasOwnProperty(f)) {
-                    return req.files[f];
+                    return req.files[f]
                 }
             }
         }
 
-        var file = findFirstFile();
+        var file = findFirstFile()
 
         fs.readFile(file.path, function (err, content) {
-            var name = file.originalname.replace(/\.[^/.]+$/, "");
-            name = name.replace(/[^a-zA-Z0-9-_]/g, '');
-            self.upload(req.reporterContext, name, file.type, content, req.params.shortid).then(function (image) {
-                res.setHeader('Content-Type', "text/plain");
-                var result = JSON.stringify({ _id: image._id, shortid: image.shortid, name: name, "success": true });
-                self.reporter.logger.info("Uploading done. " + result);
-                res.send(result);
-            }).catch(function(e) {
-                res.send(500, e);
-            });
-        });
+            if (err) {
+                return next(err)
+            }
+            var name = file.originalname.replace(/\.[^/.]+$/, '')
+            name = name.replace(/[^a-zA-Z0-9-_]/g, '')
+            self.upload(name, file.mimetype, content, req.params.shortid).then(function (image) {
+                res.setHeader('Content-Type', 'text/plain')
+                var result = JSON.stringify({_id: image._id, shortid: image.shortid, name: name, 'success': true})
+                self.reporter.logger.info('Uploading done. ' + result)
+                res.send(result)
+            }).catch(next)
+        })
     });
 };
 
 Images.prototype._defineEntitySets = function () {
-    this.ImageType = this.reporter.dataProvider.createEntityType("ImageType", {
-        "_id": { type: "id", key: true, computed: true, nullable: false },
-        "shortid": { type: "string" },
-        "name": { type: "string" },
-        "creationDate": { type: "date" },
-        "modificationDate": { type: "date" },
-        "content": { type: "blob" },
-        "contentType": { type: "string" }
+    this.ImageType = this.reporter.documentStore.registerEntityType("ImageType", {
+        "_id": {type: "Edm.String", key: true},
+        "shortid": {type: "Edm.String"},
+        "name": {type: "Edm.String"},
+        "creationDate": {type: "Edm.DateTimeoffsetr"},
+        "modificationDate": {type: "Edm.DateTimeOffset"},
+        "content": {type: "Edm.Binary"},
+        "contentType": {type: "Edm.String"}
     });
 
-    this.ImageRefType = this.reporter.dataProvider.createEntityType("ImageRefType", {
-        "shortid": { type: "string" },
-        "name": { type: "string" },
-        "imageId": { type: "id" }
+    this.ImageRefType = this.reporter.documentStore.registerComplexType("ImageRefType", {
+        "shortid": {type: "Edm.String"},
+        "name": {type: "Edm.String"},
+        "imageId": {type: "Edm.String"}
     });
 
-    this.reporter.templates.TemplateType.addMember("images", { type: "Array", elementType: this.ImageRefType });
+    this.reporter.documentStore.registerEntitySet('images', {entityType: 'jsreport.ImageType'});
 
-    this.reporter.dataProvider.registerEntitySet("images", this.ImageType);
+    this.reporter.documentStore.model.entityTypes['TemplateType'].images = {type: 'Collection(jsreport.ImageRefType)'};
+
+    var self = this
+    this.reporter.initializeListener.add('images', function () {
+        var col = self.imagesCollection = self.reporter.documentStore.collection('images')
+        col.beforeUpdateListeners.add('images', function (query, update) {
+            update.$set.modificationDate = new Date()
+        })
+        col.beforeInsertListeners.add('images', function (doc) {
+            doc.shortid = doc.shortid || shortid.generate()
+            doc.creationDate = new Date()
+            doc.modificationDate = new Date()
+        });
+
+        self.reporter.documentStore.collection('templates').beforeInsertListeners.add('images', function(template) {
+            template.images = template.images || [];
+        });
+    })
 };

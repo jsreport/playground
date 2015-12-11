@@ -21,6 +21,10 @@ define(["jquery", "app", "core/utils", "core/view.base", "core/aceBinder"],
                     self.render();
                     self.viewRendered = true;
                 });
+
+                this.listenTo(this.model, "change:engine", function() {
+                    self.setContentAceMode();
+                });
                 
                 this.listenTo(this, "close", function() {
                     $(".side-nav-right").show();
@@ -35,7 +39,7 @@ define(["jquery", "app", "core/utils", "core/view.base", "core/aceBinder"],
                 var self = this;
                 $(".side-nav-right").hide();
 
-                var langTools = ace.require("ace/ext/language_tools");
+                //var langTools = ace.require("ace/ext/language_tools");
 
                 //var dataCompleter = {
                 //    getCompletions: function(editor, session, pos, prefix, callback) {
@@ -54,11 +58,11 @@ define(["jquery", "app", "core/utils", "core/view.base", "core/aceBinder"],
                 
                 this.contentEditor = ace.edit("htmlArea");
                 this.contentEditor.setTheme("ace/theme/chrome");
-                this.contentEditor.getSession().setMode("ace/mode/handlebars");
                 this.contentEditor.setOptions({
                      enableBasicAutocompletion: true,
                      enableSnippets: true
                 });
+                this.setContentAceMode();
 
                 aceBinder(this.model, "content", this.contentEditor);
              
@@ -94,6 +98,11 @@ define(["jquery", "app", "core/utils", "core/view.base", "core/aceBinder"],
 
                 this.$el.find(".split-pane").splitPane();
             },
+
+            setContentAceMode: function() {
+                this.contentEditor.getSession().setMode("ace/mode/handlebars");
+            },
+
             triggerPreview: function() {
                 this.trigger("preview");
             },

@@ -26,18 +26,19 @@ var Templating = function (reporter, definition) {
     this._defineEntities();
     this._defineEntitySets();
 
-    this.TemplateType.addEventListener("beforeCreate", Templating.prototype._beforeCreateHandler.bind(this));
-    this.TemplateType.addEventListener("beforeUpdate", Templating.prototype._beforeUpdateHandler.bind(this));
-    this.TemplateType.addEventListener("beforeDelete", Templating.prototype._beforeDeleteHandler.bind(this));
+    this.reporter.initializeListener.add('templates', function () {
+        var col = self.reporter.documentStore.collection('templates');
+        col.beforeUpdateListeners.add('templates', Templating.prototype._beforeUpdateHandler.bind(self));
+        col.beforeInsertListeners.add('templates', Templating.prototype._beforeCreateHandler.bind(self));
+        col.beforeRemoveListeners.add('templates', Templating.prototype._beforeDeleteHandler.bind(self));
+    });
 
     this.reporter.beforeRenderListeners.add(definition.name, Templating.prototype.handleBeforeRender.bind(this));
 
     this.reporter.initializeListener.add(definition.name, this, function () {
-        return self.reporter.dataProvider.startContext().then(function (context) {
-            context.templateVersions.toArray().then(function (res) {
-                res.forEach(function (r) {
-                    self._versionCache[r.shortid] = r;
-                });
+        return self.reporter.documentStore.collection('templateVersions').find({}).then(function(res) {
+            res.forEach(function(r) {
+                self._versionCache[r.shortid] = r;
             });
         });
     });
@@ -49,89 +50,69 @@ Templating.prototype.handleBeforeRender = function (request, response) {
 
     if (request.template.content || (request.template.phantom && request.template.phantom.url)) {
         request.template.content = request.template.content || "";
+        request.template.engine = request.template.engine || 'handlebars';
         return;
     }
 
-    return request.context.templates.single(
-        function (t) {
-            return t.shortid == this.shortid && t.version == this.version;
-        },
-        { shortid: request.template.shortid, version: request.template.version }).then(function (template) {
-            extend(true, template, request.template);
-            request.template = template;
-        }, function () {
-            throw new Error("Unable to find specified template: " + (request.template._id != null ? request.template._id : request.template.shortid));
-        });
-};
-
-Templating.prototype.create = function (context, tmpl) {
-    if (tmpl == null) {
-        tmpl = context;
-        context = this.reporter.context;
-    }
-
-    var template = new this.TemplateType(tmpl);
-    template.isLatest = true;
-    context.templates.add(template);
-
-    return context.templates.saveChanges().then(function () {
-        return Q(template);
+    return this.reporter.documentStore.collection('templates').find({shortid: request.template.shortid, version: request.template.version }).then(function(res) {
+        extend(true, res[0], request.template);
+        request.template = template;
     });
 };
 
-Templating.prototype._beforeUpdateHandler = function (args, entity) {
-    return false;
+Templating.prototype._beforeUpdateHandler = function () {
+    throw new Error('No updates allowed in playground');
 };
 
-Templating.prototype._beforeCreateHandler = function (args, entity) {
+Templating.prototype._beforeCreateHandler = function (entity) {
     if (entity.shortid == null)
         entity.shortid = shortid.generate();
 
-    this._increaseVersion(entity);
-
     entity.modificationDate = new Date();
+
+    return this._increaseVersion(entity);
 };
 
 Templating.prototype._beforeDeleteHandler = function (args, entity) {
-    return false;
+    throw new Error('No deletes allowed in playground');
 };
 
 Templating.prototype._defineEntities = function () {
 
-    this.TemplateVersionType = this.reporter.dataProvider.createEntityType("TemplateVersionType", {
-        _id: { type: "id", key: true, computed: true, nullable: false },
-        shortid: { type: "string" },
-        lastVersion: { type: "int" }
+    this.TemplateVersionType = this.reporter.documentStore.registerEntityType("TemplateVersionType", {
+        _id: { type: "Edm.String", key: true },
+        shortid: { type: "Edm.String" },
+        lastVersion: { type: "Edm.Number" }
     });
 
-    this.TemplateType = this.reporter.dataProvider.createEntityType("TemplateType", {
-        _id: { type: "id", key: true, computed: true, nullable: false },
-        shortid: { type: "string" },
-        name: { type: "string" },
-        content: { type: "string" },
-        recipe: { type: "string" },
-        helpers: { type: "string" },
-        engine: { type: "string" },
-        modificationDate: { type: "date" },
-        version: { type: "int" }
+    this.TemplateType = this.reporter.documentStore.registerEntityType("TemplateType", {
+        _id: { type: "Edm.String", key: true },
+        shortid: { type: "Edm.String" },
+        name: { type: "Edm.String" },
+        content: { type: "Edm.String" },
+        recipe: { type: "Edm.String" },
+        helpers: { type: "Edm.String" },
+        engine: { type: "Edm.String" },
+        modificationDate: { type: "Edm.StringDateTimeOffset" },
+        version: { type: "Edm.Number" }
     });
 };
 
 Templating.prototype._increaseVersion = function (entity) {
     var templateVersion = this._versionCache[entity.shortid];
 
-    if (templateVersion != null) {
-        entity.context.templateVersions.attach(templateVersion);
-    } else {
-        templateVersion = new this.TemplateVersionType({ shortid: entity.shortid, lastVersion: 0 });
-        entity.context.templateVersions.add(templateVersion);
-        this._versionCache[entity.shortid] = templateVersion;
+    if (templateVersion) {
+        entity.version = ++templateVersion.lastVersion;
+        return this.reporter.documentStore.collection('templateVersions').update({shortid: templateVersion.shortid}, { $set: {lastVersion: entity.version}});
     }
 
-    entity.version = ++this._versionCache[entity.shortid].lastVersion;
+    entity.version = 1;
+    templateVersion = { shortid: entity.shortid, lastVersion: 1};
+    this._versionCache[entity.shortid] = templateVersion;
+    return this.reporter.documentStore.collection('templateVersions').insert(templateVersion);
 };
 
 Templating.prototype._defineEntitySets = function () {
-    this.reporter.dataProvider.registerEntitySet("templates", this.TemplateType);
-    this.reporter.dataProvider.registerEntitySet("templateVersions", this.TemplateVersionType);
+    this.reporter.documentStore.registerEntitySet('templates', { entityType: 'jsreport.TemplateType' });
+    this.reporter.documentStore.registerEntitySet('templateVersions', { entityType: 'jsreport.TemplateVersionType' });
 };

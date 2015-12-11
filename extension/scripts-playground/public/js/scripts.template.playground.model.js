@@ -3,6 +3,7 @@
 
         setTemplateModel: function (templateModel) {
             this.templateModel = templateModel;
+            templateModel.set("script", templateModel.get("script") || {}, {silent: true});
             this.set("content", templateModel.get("script").content);
         },
 

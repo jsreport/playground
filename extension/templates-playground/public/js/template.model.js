@@ -2,22 +2,36 @@
  * Copyright(c) 2014 Jan Blaha 
  */ 
 
-define(["app", "core/jaydataModel"], function(app, ModelBase) {
-    return ModelBase.extend({
-        contextSet: function() { return app.dataContext.templates; },
+define(["app", "jquery", "core/basicModel"], function(app, $, ModelBase) {
 
-        fetchQuery: function() {
-            return app.dataContext.templates.single(function(t) { return t.shortid == this.id && t.version == this.version; },
-                { id: this.get("shortid"), version: this.get("version") == null ? 1 : this.get("version") });
+    var defaultEngine = app.engines.filter(function(e) {
+        return e === 'handlebars'
+    }).length ? 'handlebars' : 'none'
+
+    var defaultRecipe = app.recipes.filter(function(r) {
+        return r === 'phantom-pdf'
+    }).length ? 'phantom-pdf' : 'html'
+
+    return ModelBase.extend({
+        url: function() {
+            return "odata/templates?$filter=shortid eq '" + this.get('shortid') + "' and version eq " + (this.get('version') || 1);
+        },
+        odata: "templates",
+
+        toString: function() {
+            return "Template " + (this.get("name") || "");
         },
 
-        _initialize: function() {
-            this.Entity = $entity.Template;
+        parse: function(data) {
+            delete data["@odata.context"];
+            delete data["@odata.editLink"];
+            delete data["@odata.id"];
+            return data;
         },
 
         defaults: {
-            engine: "handlebars",
-            recipe: "phantom-pdf"
+            engine: defaultEngine,
+            recipe: defaultRecipe
         }
     });
 });

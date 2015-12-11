@@ -10,9 +10,6 @@
         
         setTemplateModel: function (model) {
             this.templateModel = model;
-
-            if (model.get("script") == null)
-                model.attributes["script"] = new $entity.Script();
         },
         
         events: {
@@ -32,7 +29,6 @@
             });
             self.listenTo(dialog, "dialog-close", function () {
                 self.render();
-                self.templateModel.save();
                 app.layout.dialog.hide(dialog);
             });
             app.layout.dialog.show(dialog);

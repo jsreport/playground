@@ -28,11 +28,11 @@
         
         save: function (opt) {
             this.templateModel.set("images", this.toJSON().map(function(m) {
-                return new $entity.ImageRef({
+                return {
                     name: m.name,
                     shortid: m.shortid,
                     imageId: m.imageId
-                });
+                };
             }));
         },
 

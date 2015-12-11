@@ -2,11 +2,13 @@
  * Copyright(c) 2014 Jan Blaha 
  */ 
 
-define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/listenerCollection",
-        "./template.embed.dialog", "core/basicModel", "introJs"],
-    function($, app, Utils, LayoutBase, _, ListenerCollection, EmbedDialog, BasicModel, introJs) {
+define(["jquery", "app", "marionette", "core/utils", "core/view.base", "underscore", "core/listenerCollection",
+        "core/basicModel", "./template.preview"],
+    function($, app, Marionette, Utils, LayoutBase, _, ListenerCollection, BasicModel, preview) {
         return LayoutBase.extend({
             template: "template-detail-toolbar",
+            introTemplate: "template-detail-intro",
+            introId: "template-detail-intro",
 
             initialize: function() {
                 var self = this;
@@ -18,7 +20,8 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
                     if (self.viewRendered)
                         return;
 
-                    self.render();
+                    //TODO it seems to work even whitout this call
+                    //self.render();
                     self.viewRendered = true;
 
                     self.listenTo(self.contentView, "preview", function() {
@@ -27,20 +30,6 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
                 });
 
                 this.listenTo(this, "render", function() {
-
-                    if (!localStorage.getItem("beenHere")) {
-                        localStorage.setItem("beenHere", "true");
-
-                        var dialog = $.dialog({
-                            header: "Introduction",
-                            content: $.render["template-detail-intro"](self.model.toJSON(), self),
-                            hideButtons: true
-                        }).on('hidden.bs.modal', function() {
-                            dialog.off('hidden.bs.modal');
-                            introJs().start();
-                        });
-                    }
-
                     var context = {
                         template: self.model,
                         extensionsRegion: self.extensionsRegion,
@@ -49,14 +38,15 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
                     app.trigger("template-extensions-render", context);
 
                     var contextToolbar = {
-                        template: self.model,
+                        name: "template-detail",
+                        model: self.model,
                         region: self.extensionsToolbarRegion,
                         view: self
                     };
-                    app.trigger("template-extensions-toolbar-render", contextToolbar);
+                    app.trigger("toolbar-render", contextToolbar);
                 });
 
-                _.bindAll(this, "preview", "previewNewPanel", "getBody", "onClose");
+                _.bindAll(this, "preview", "previewNewPanel", "onClose");
             },
 
             getRecipes: function() {
@@ -83,7 +73,7 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
                 "click #previewCommand": "preview",
                 "click #previewNewTabCommand": "previewNewPanel",
                 "click #apiHelpCommnand": "apiHelp",
-                "click #embedCommand": "embed"
+                "click #linkCommand": "link"
             },
 
             save: function(e) {
@@ -92,22 +82,13 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
                 if (!this.validate())
                     return;
 
-                this.model.originalEntity = new $entity.Template();
-                this.model.set("_id", null);
+                this.model.set("_id", undefined);
 
                 this.model.save({}, {
                     success: function() {
                         app.trigger("template-saved", self.model);
                     }
                 });
-            },
-
-            addInput: function(form, name, value) {
-                var input = document.createElement("input");
-                input.type = "hidden";
-                input.name = name;
-                input.value = value;
-                form.appendChild(input);
             },
 
             previewNewPanel: function() {
@@ -120,87 +101,13 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
             },
 
             _preview: function(target) {
-                this.contentView.$el.find(".preview-loader").show();
-                //http://connect.microsoft.com/IE/feedback/details/809377/ie-11-load-event-doesnt-fired-for-pdf-in-iframe
-                //this.contentView.$el.find("[name=previewFrame]").hide();
-
-                var mapForm = document.createElement("form");
-                mapForm.target = target;
-                mapForm.method = "POST";
-                mapForm.action = app.serverUrl + "api/report";
-
-                var uiState = this.getUIState();
-
-                var request = { template: uiState, options: { preview: true} };
-                var self = this;
-                this.beforeRenderListeners.fire(request, function(er) {
-                    if (er) {
-                        self.contentView.$el.find(".preview-loader").hide();
-                        app.trigger("error", { responseText: er });
-                        return;
-                    }
-
-                    function addBody(path, body) {
-                        if (body == null)
-                            return;
-
-                        if (body.initData != null)
-                            body = body.initData;
-
-                        for (var key in body) {
-                            if ($.isPlainObject(body[key])) {
-                                addBody(path + key + "[", body[key]);
-                            } else {
-                                if (body[key] !== undefined && !(body[key] instanceof Array))
-                                    self.addInput(mapForm, path + key + "]", body[key]);
-                            }
-                        }
-                    }
-
-                    addBody("template[", uiState);
-                    if (request.options != null)
-                        addBody("options[", request.options);
-
-                    if (request.data != null)
-                        self.addInput(mapForm, "data", request.data);
-
-                    document.body.appendChild(mapForm);
-                    mapForm.submit();
-                });
-            },
-
-            getUIState: function() {
-
-                function justNotNull(o) {
-                    var clone = {};
-                    for (var key in o) {
-                        if (o[key] != null)
-                            clone[key] = o[key];
-                    }
-
-                    return clone;
-                }
-
-                var state = {};
-                var json = this.model.toJSON();
-                for (var key in json) {
-                    if (json[key] != null) {
-                        if (json[key].initData != null)
-                            state[key] = justNotNull(json[key].toJSON());
-                        else
-                            state[key] = json[key];
-                    }
-                }
-
-                state.content = state.content || " ";
-                state.helpers = state.helpers || "";
-                return state;
+                preview(this.model, this.beforeRenderListeners, target);
             },
 
             onValidate: function() {
                 var res = [];
 
-                if (this.model.get("name") == null || this.model.get("name") == "")
+                if (this.model.get("name") == null || this.model.get("name") === "")
                     res.push({
                         message: "Name cannot be empty"
                     });
@@ -213,33 +120,36 @@ define(["jquery", "app", "core/utils", "core/view.base", "underscore", "core/lis
                 return res;
             },
 
-            getBody: function() {
-                var properties = [];
-                properties.push({ key: "content", value: "..." });
-                properties.push({ key: "helpers", value: "..." });
-                properties.push({ key: "recipe", value: "..." });
-
-                this.model.trigger("api-overrides", function(key, value) {
-                    value = value || "...";
-                    properties.push({ key: key, value: _.isObject(value) ? JSON.stringify(value, null, 2) : "..." });
-
-                });
-                return properties;
-            },
-
             apiHelp: function() {
                 $.dialog({
                     header: "jsreport API",
                     content: $.render["template-detail-api"](this.model.toJSON(), this),
                     hideSubmit: true
                 });
+
+                var req = { template: { content: "...", helpers: "...", engine: "...", recipe: "..."}, options: {}};
+
+                this.model.trigger("api-overrides", req);
+
+                var apiBox = ace.edit("apiBox");
+                apiBox.setTheme("ace/theme/chrome");
+                apiBox.getSession().setMode("ace/mode/json");
+                apiBox.setOptions({
+                    readOnly: true,
+                    highlightActiveLine: false,
+                    highlightGutterLine: false
+                });
+
+                apiBox.setValue(JSON.stringify(req , null, 2));
+                apiBox.gotoLine(-1);
             },
 
-            embed: function() {
-                var model = new BasicModel(this.model.toJSON());
-                model.set({ fileInput: true, dataArea: true });
-                var dialog = new EmbedDialog({ model: model });
-                app.layout.dialog.show(dialog);
+            link: function() {
+                $.dialog({
+                    header: "Link to template",
+                    content: $.render["template-detail-link"](this.model.toJSON(), this),
+                    hideSubmit: true
+                });
             },
 
             hotkey: function(e) {

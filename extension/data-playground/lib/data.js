@@ -8,11 +8,11 @@ var q = require("q");
 
 module.exports = function (reporter, definition) {
 
-    var DataItemType = reporter.dataProvider.createEntityType("DataItemType", {
-        dataJson: { type: "string" }
+    var DataItemType = reporter.documentStore.registerComplexType("DataItemType", {
+        dataJson: { type: "Edm.String" }
     });
 
-    reporter.templates.TemplateType.addMember("dataItem", { type:  DataItemType });
+    reporter.documentStore.model.entityTypes['TemplateType'].dataItem = {type: 'jsreport.DataItemType'}
 
     reporter.beforeRenderListeners.add(definition.name, function(request, response) {
 

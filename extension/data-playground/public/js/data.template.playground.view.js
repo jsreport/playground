@@ -17,9 +17,6 @@
         
         setTemplateModel: function (model) {
             this.templateModel = model;
-
-            if (model.get("dataItem") == null)
-                model.attributes["dataItem"] = new $entity.DataItem();
         },
         
 
@@ -30,7 +27,6 @@
             var dialog = new DialogView({ model: model });
             self.listenTo(dialog, "dialog-close", function() {
                 self.render();
-                self.templateModel.save();
                 app.layout.dialog.hide(dialog);
             });
             
