@@ -1,5 +1,9 @@
-var path = require('path');
+var path = require('path')
+var jsreport = require('jsreport')({ tempDirectory: path.join(__dirname, 'temp')})
 
-require("jsreport").bootstrapper({
-    rootDirectory : require("path").join(__dirname)
-}).start();
+
+jsreport.init().then(function () {
+  console.log('running')
+}).catch(function (e) {
+  console.error(e)
+}) 

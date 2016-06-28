@@ -126,13 +126,8 @@ UpgradeLog*.XML
 data/*
 /web.config
 /result.txt
-prod.config.json
-dev.config.json
 .idea
-config/*
-main_built.js
-main_dev.js
-app_built.js
-app_dev.js
-root_dev.html
 root_built.html
+
+studio/main.js
+studio/main.js.map

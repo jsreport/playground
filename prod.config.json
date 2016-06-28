@@ -1,0 +1,32 @@
+{
+    "connectionString": {
+        "name": "mongodb",
+        "address": "127.0.0.1",
+        "databaseName" : "playground2"
+    },
+    "scheduling": {
+        "enabled": false
+    },
+    "phantom": {
+        "numberOfWorkers" : 1,
+        "timeout": 20000,
+        "strategy": "phantom-server"
+    },
+    "electron": {
+        "numberOfWorkers": 1,
+        "strategy": "dedicated-process",
+        "timeout": 40000
+    },
+    "httpPort": 2500,
+    "tasks": {
+        "numberOfWorkers" : 1,
+        "timeout": 10000,
+        "strategy": "http-server",
+        "nativeModules": [
+            {
+                "globalVariableName": "_",
+                "module": "underscrore"
+            }
+        ]
+    }
+}
