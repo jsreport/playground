@@ -41,7 +41,7 @@ Studio.workspaces = {
 const isEmbed = getQueryParameter('embed') != null
 addToolbarComponents(isEmbed)
 
-Studio.addEditorComponent('Help', Startup) 
+Studio.addEditorComponent('Help', Startup)
 Studio.shouldOpenStartupPage = false
 Studio.initializeListeners.push(initialize)
 Studio.locationResolver = () => `/studio/workspace/${Studio.workspaces.current.shortid}/${Studio.workspaces.current.version}`
@@ -54,7 +54,10 @@ Studio.readyListeners.push(async () => {
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })
   }
 
-  await Promise.all(Studio.getAllEntities().map((v) => Studio.openTab({ _id: v._id })))
+  const entities = Studio.getAllEntities()
+  if (entities.length < 5) {
+    await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
+  }
 
   if (Studio.workspaces.current.default) {
     const entity = Studio.getEntityByShortid(Studio.workspaces.current.default, false)
