@@ -32,6 +32,9 @@
             }
         ]
     },
+    "licensing": {
+        "enabled": false
+    },
     "templates": {
       "studio-link-button-visibility": false
     },
