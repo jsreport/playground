@@ -19,39 +19,45 @@ export default class Startup extends Component {
       <tbody>
         <tr>
           <td className='selection'>
-            <a href='/studio/workspace/x13wJqeRc/1' target='_blank'>1. Tutorial - Hello World</a></td>
+            <a href='/studio/workspace/HJVhE0QP/5' target='_blank'>Hello world</a></td>
         </tr>
         <tr>
-          <td className='selection'><a href='/studio/workspace/xykdJcxR5/1' target='_blank'>2. Tutorial - Recipes</a>
+          <td className='selection'><a href='/studio/workspace/lkHFBn0xB/722' target='_blank'>Example Pdf Report</a>
           </td>
         </tr>
         <tr>
           <td className='selection'><a
-            href='/studio/workspace/lyl_15eC9/1' target='_blank'>3. Tutorial - Data extension</a>
+            href='/studio/workspace/HkqlE-Ww/17' target='_blank'>Live dashboard</a>
           </td>
+        </tr>
+        <tr>
+          <td className='selection'><a href='/studio/workspace/l1DbOPsN5/1196' target='_blank'>Pdf Invoice</a></td>
+        </tr>
+        <tr>
+          <td className='selection'><a href='/studio/workspace/r1G-1ULP/3' target='_blank'>Server script loading report data</a></td>
         </tr>
         <tr>
           <td className='selection'><a
-            href='/studio/workspace/lyWJuycgAc/1' target='_blank'>4. Tutorial - Scripts extension</a>
+            href='/studio/workspace/r1vaurbw/3' target='_blank'>Add row to Excel</a>
           </td>
         </tr>
         <tr>
-          <td className='selection'><a href='/studio/workspace/lkHFBn0xB/1' target='_blank'>Complex Pdf</a></td>
+          <td className='selection'><a href='/studio/workspace/HyQH-eKv/6' target='_blank'>Excel pivot table</a></td>
         </tr>
         <tr>
-          <td className='selection'><a href='/studio/workspace/YBjmBsPFa/1' target='_blank'>Excel</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/gkxJuycgR5/1' target='_blank'>FOP</a></td>
+          <td className='selection'><a href='/studio/workspace/gkxJuycgR5/1' target='_blank'>Apache FOP</a></td>
         </tr>
         <tr>
           <td className='selection'><a href='/studio/workspace/Y3BG0fnPa/1' target='_blank'>Html to xlsx</a></td>
         </tr>
         <tr>
-          <td className='selection'><a href='/studio/workspace/l1DbOPsN5/1' target='_blank'>Pdf Invoice</a></td>
+          <td className='selection'><a href='/studio/workspace/Y3QQDfP9a/34' target='_blank'>csv</a></td>
         </tr>
         <tr>
-          <td className='selection'><a href='/studio/workspace/Y3QQDfP9a/1' target='_blank'>csv</a></td>
+          <td className='selection'><a href='/studio/workspace/bkBXJqNOae/14' target='_blank'>wkhtmltopdf page numbers</a></td>
+        </tr>
+        <tr>
+          <td className='selection'><a href='/studio/workspace/ZJZMyHgm2e/2' target='_blank'>electron pdf</a></td>
         </tr>
       </tbody>
     </table>
@@ -88,7 +94,7 @@ export default class Startup extends Component {
       </button>
       <h2>last created workspaces</h2>
       {this.renderLastCreated()}
-      <h2>playground tutorials</h2>
+      <h2>playground samples</h2>
       {this.renderExamples()}
     </div>
   }
