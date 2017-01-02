@@ -69,8 +69,11 @@ Studio.readyListeners.push(async () => {
 
 Studio.referencesLoader = async (entitySet) => {
   const nameAttribute = Studio.entitySets[entitySet].nameAttribute
+  const referenceAttributes = Studio.entitySets[entitySet].referenceAttributes
 
-  let response = await Studio.api.get(`/odata/${entitySet}?$filter=workspaceVersion eq ${Studio.workspaces.current.version} and workspaceShortid eq '${Studio.workspaces.current.shortid}'&$select=${nameAttribute},shortid&$orderby=${nameAttribute}`)
+  console.log(`/odata/${entitySet}?$filter=workspaceVersion eq ${Studio.workspaces.current.version} and workspaceShortid eq '${Studio.workspaces.current.shortid}'&$select=${referenceAttributes}&$orderby=${nameAttribute}`)
+
+  let response = await Studio.api.get(`/odata/${entitySet}?$filter=workspaceVersion eq ${Studio.workspaces.current.version} and workspaceShortid eq '${Studio.workspaces.current.shortid}'&$select=${referenceAttributes}&$orderby=${nameAttribute}`)
 
   return response.value
 }

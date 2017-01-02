@@ -22,6 +22,7 @@
     "build": "jsreport-studio-build"
   },
   "dependencies": {
+    "electron": "1.4.13",
     "feedparser": "1.1.4",
     "jsreport": "*",
     "jsreport-ejs": "*",
@@ -32,6 +33,7 @@
     "jsreport-studio-dev": "*",
     "jsreport-wkhtmltopdf": "*",
     "mongodb": "2.1.18",
+    "phantomjs-exact-2-1-1": "0.1.0",
     "request": "2.72.0",
     "sendgrid": "3.0.5",
     "underscore": "1.8.3"
