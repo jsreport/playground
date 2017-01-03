@@ -32,8 +32,8 @@ const buttonsForEmbed = () => {
 }
 
 export default (isEmbed) => {
-  Studio.toolbarVisibilityResolver = (text) => {
-    return text === 'Run' || text === 'Download' || text === 'Run to new tab'
+  Studio.toolbarVisibilityResolver = (text) => {    
+    return text === 'Run' || text === 'Download' || text === 'Run to new tab' || text === 'Reformat'
   }
 
   Studio.addToolbarComponent((props) => <div

@@ -47,6 +47,11 @@ Studio.initializeListeners.push(initialize)
 Studio.locationResolver = () => `/studio/workspace/${Studio.workspaces.current.shortid}/${Studio.workspaces.current.version}`
 Studio.removeHandler = (id) => Studio.removeEntity(id)
 
+Studio.previewListeners.push((req, entities) => {
+  req.template.workspaceShortid = Studio.workspaces.current.shortid
+  req.template.workspaceVersion = Studio.workspaces.current.version
+})
+
 Studio.readyListeners.push(async () => {
   if (isEmbed) {
     Studio.collapseLeftPane()
@@ -70,8 +75,6 @@ Studio.readyListeners.push(async () => {
 Studio.referencesLoader = async (entitySet) => {
   const nameAttribute = Studio.entitySets[entitySet].nameAttribute
   const referenceAttributes = Studio.entitySets[entitySet].referenceAttributes
-
-  console.log(`/odata/${entitySet}?$filter=workspaceVersion eq ${Studio.workspaces.current.version} and workspaceShortid eq '${Studio.workspaces.current.shortid}'&$select=${referenceAttributes}&$orderby=${nameAttribute}`)
 
   let response = await Studio.api.get(`/odata/${entitySet}?$filter=workspaceVersion eq ${Studio.workspaces.current.version} and workspaceShortid eq '${Studio.workspaces.current.shortid}'&$select=${referenceAttributes}&$orderby=${nameAttribute}`)
 
