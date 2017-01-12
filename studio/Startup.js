@@ -27,7 +27,7 @@ export default class Startup extends Component {
         </tr>
         <tr>
           <td className='selection'><a
-            href='/studio/workspace/HkqlE-Ww/181' target='_blank'>Live dashboard</a>
+            href='/studio/workspace/HkqlE-Ww/205' target='_blank'>Live dashboard</a>
           </td>
         </tr>
         <tr>
