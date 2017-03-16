@@ -19,10 +19,10 @@ export default class Startup extends Component {
       <tbody>
         <tr>
           <td className='selection'>
-            <a href='/studio/workspace/HJVhE0QP/5' target='_blank'>Hello world</a></td>
+            <a href='/studio/workspace/HJVhE0QP/804' target='_blank'>Hello world</a></td>
         </tr>
         <tr>
-          <td className='selection'><a href='/studio/workspace/lkHFBn0xB/722' target='_blank'>Example Pdf Report</a>
+          <td className='selection'><a href='/studio/workspace/lkHFBn0xB/1818' target='_blank'>Example Pdf Report</a>
           </td>
         </tr>
         <tr>
@@ -31,7 +31,7 @@ export default class Startup extends Component {
           </td>
         </tr>
         <tr>
-          <td className='selection'><a href='/studio/workspace/l1DbOPsN5/1196' target='_blank'>Pdf Invoice</a></td>
+          <td className='selection'><a href='/studio/workspace/l1DbOPsN5/2218' target='_blank'>Pdf Invoice</a></td>
         </tr>
         <tr>
           <td className='selection'><a href='/studio/workspace/r1G-1ULP/3' target='_blank'>Server script loading report data</a></td>
@@ -42,7 +42,7 @@ export default class Startup extends Component {
           </td>
         </tr>
         <tr>
-          <td className='selection'><a href='/studio/workspace/HyQH-eKv/6' target='_blank'>Excel pivot table</a></td>
+          <td className='selection'><a href='/studio/workspace/HyQH-eKv/115' target='_blank'>Excel pivot table</a></td>
         </tr>
         <tr>
           <td className='selection'><a href='/studio/workspace/gkxJuycgR5/1' target='_blank'>Apache FOP</a></td>

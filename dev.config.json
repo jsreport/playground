@@ -1,8 +1,9 @@
 {
     "connectionString": {
         "name": "mongodb",
-        "address": "127.0.0.1",
-        "databaseName" : "playground2"
+        "address": "localhost",
+        "databaseName" : "playground2",
+        "port": 27017
     },
     "scheduling": {
         "enabled": false
@@ -11,6 +12,9 @@
         "numberOfWorkers" : 1,
         "timeout": 20000,
         "strategy": "phantom-server"
+    },
+    "tags": {
+        "enabled": false
     },
     "electron": {
         "numberOfWorkers": 1,
