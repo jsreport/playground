@@ -22,11 +22,11 @@
     "build": "jsreport-studio-build"
   },
   "dependencies": {
-    "electron": "1.4.13",
+    "electron": "1.4.15",
     "feedparser": "1.1.4",
     "jsreport": "*",
     "jsreport-ejs": "*",
-    "jsreport-electron-pdf": "*", 
+    "jsreport-electron-pdf": "*",
     "jsreport-jade": "*",
     "jsreport-mongodb-store": "*",
     "jsreport-studio-dev": "*",
