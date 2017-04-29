@@ -1,6 +1,7 @@
 import React from 'react'
 import ChangeNameModal from './ChangeNameModal.js'
 import ShareModal from './ShareModal.js'
+import Studio from 'jsreport-studio'
 
 const buttonsForFull = () => {
   Studio.addToolbarComponent((props) => <div
@@ -32,7 +33,7 @@ const buttonsForEmbed = () => {
 }
 
 export default (isEmbed) => {
-  Studio.toolbarVisibilityResolver = (text) => {    
+  Studio.toolbarVisibilityResolver = (text) => {
     return text === 'Run' || text === 'Download' || text === 'Run to new tab' || text === 'Reformat'
   }
 

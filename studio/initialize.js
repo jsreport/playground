@@ -1,8 +1,8 @@
 import Studio from 'jsreport-studio'
 import shortid from 'shortid'
 
-const workspaceRegex = /\/studio\/workspace\/([^\/]+)\/([^\/]+)/
-const playgroundRegex = /[\/]?playground\/([^\/]+)[\/]?([^\/]+)?/
+const workspaceRegex = /\/studio\/workspace\/([^/]+)\/([^/]+)/
+const playgroundRegex = /[/]?playground\/([^/]+)[/]?([^/]+)?/
 
 export default async () => {
   const match = workspaceRegex.exec(window.location.pathname)

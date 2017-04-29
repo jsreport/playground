@@ -23,7 +23,7 @@ const logError = (m) => {
 window.onerror = function (msg, url, line, col, error) {
   var extra = !col ? '' : '\ncolumn: ' + col
   extra += !error ? '' : '\nerror: ' + error
-  msg + '\nurl: ' + url + '\nline: ' + line + extra
+  msg += '\nurl: ' + url + '\nline: ' + line + extra
   logError(msg)
 }
 
