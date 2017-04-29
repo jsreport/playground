@@ -26,6 +26,7 @@
     "electron": "1.6.6",
     "feedparser": "2.2.0",
     "jsreport": "1.7.0",
+    "jsreport-assets": "0.6.6",
     "jsreport-ejs": "1.0.4",
     "jsreport-electron-pdf": "2.6.1",
     "jsreport-jade": "2.0.1",
