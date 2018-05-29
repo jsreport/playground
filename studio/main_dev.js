@@ -1,9 +1,95 @@
-import Studio from 'jsreport-studio'
+/* import Studio from 'jsreport-studio'
 import save from './save.js'
 import initialize from './initialize.js'
 import setDefault from './setDefault.js'
 import addToolbarComponents from './addToolbarComponents.js'
 import Startup from './Startup.js'
+*/
+import Studio from 'jsreport-studio'
+import Startup from './Startup'
+import SaveModal from './SaveModal.js'
+import LogoutButton from './LogoutButton.js'
+import LoginModal from './LoginModal.js'
+import { getQueryParameter, removeFacebookQuery } from './utils'
+
+Studio.workspaces = {
+  save: async () => {
+    Studio.workspaces.current = await Studio.api.post('/api/playground/workspace', {
+      data: {
+        name: 'untitled',
+        ...Studio.workspaces.current
+      }
+    })
+
+    await Studio.store.dispatch(Studio.editor.actions.updateHistory())
+    await Studio.store.dispatch(Studio.editor.actions.saveAll())
+    Studio.workspaces.current = await Studio.api.get('api/playground/workspace')
+  },
+
+  open: () => {
+
+  }
+}
+
+function invokeSave () {
+  if (Studio.workspaces.user) {
+    Studio.workspaces.save()
+  } else {
+    Studio.openModal(SaveModal, { })
+  }
+}
+
+Studio.locationResolver = () => {
+  if (!Studio.workspaces.current) {
+    return '/'
+  }
+
+  return Studio.workspaces.current.user != null
+    ? `/w/${Studio.workspaces.current.user.username}/${Studio.workspaces.current.shortid}`
+    : `/w/anon/${Studio.workspaces.current.shortid}`
+}
+
+Studio.toolbarVisibilityResolver = (text) => {
+  return text === 'Run' || text === 'Download' || text === 'Run to new tab' || text === 'Reformat' || text === 'settings'
+}
+
+Studio.addToolbarComponent((props) => <div
+  className='toolbar-button' onClick={invokeSave}>
+  <i className='fa fa-floppy-o' />Save All</div>)
+
+removeFacebookQuery()
+const isEmbed = getQueryParameter('embed') != null
+
+Studio.initializeListeners.push(async () => {
+  Studio.workspaces.user = await Studio.api.get('api/playground/user')
+  Studio.workspaces.current = await Studio.api.get('api/playground/workspace')
+
+  if (Studio.workspaces.user) {
+    Studio.addToolbarComponent(() => <div className='toolbar-button'><span><i
+      className='fa fa-user' /> {Studio.workspaces.user.fullName}</span></div>, 'settingsBottom')
+    Studio.addToolbarComponent(LogoutButton, 'settingsBottom')
+  } else {
+    Studio.addToolbarComponent(() => <div className='toolbar-button' onClick={() => Studio.openModal(LoginModal)}><span><i
+      className='fa fa-sign-in' /> Login</span></div>, 'settingsBottom')
+  }
+})
+
+Studio.shouldOpenStartupPage = false
+Studio.addEditorComponent('Help', Startup)
+
+Studio.readyListeners.push(async () => {
+  Studio.addToolbarComponent((props) => <div style={{float: 'left'}}
+    className='toolbar-button' onClick={invokeSave}>
+    <i className='fa fa-edit' />{Studio.workspaces.current && Studio.workspaces.current.name ? Studio.workspaces.current.name : 'Untitled ...'}</div>)
+
+  if (isEmbed) {
+    Studio.collapseLeftPane()
+  } else {
+    Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })
+  }
+})
+
+/*
 
 const getQueryParameter = (name) => {
   var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search)
@@ -80,3 +166,5 @@ Studio.referencesLoader = async (entitySet) => {
 
   return response.value
 }
+
+*/

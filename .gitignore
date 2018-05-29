@@ -1,7 +1,6 @@
 lib-cov
 *.seed
 *.log
-*.csv
 *.dat
 *.out
 *.pid
@@ -14,6 +13,7 @@ logs
 results
 
 npm-debug.log
+.DS_Store
 
 node_modules
 
@@ -126,10 +126,17 @@ UpgradeLog*.XML
 data/*
 /web.config
 /result.txt
+prod.config.json
+dev.config.json
 .idea
-root_built.html
+html-templates.js
 
-studio/main.js
-studio/main.js.map
+request.json
 
-temp
+.vscode
+build
+build-runtime
+jsreport.exe
+jsreport.js
+license.json
+jsreport.license.json

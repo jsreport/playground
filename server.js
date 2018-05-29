@@ -1,10 +1,14 @@
-process.env.NODE_ENV = 'production'
+const jsreport = require('jsreport')()
 
-var path = require('path')
-var jsreport = require('jsreport')({tempDirectory: path.join(__dirname, 'temp')})
-
-jsreport.init().then(function () {
-  console.log('running')
-}).catch(function (e) {
-  console.error(e)
-})
+if (process.env.JSREPORT_CLI) {
+  // export jsreport instance to make it possible to use jsreport-cli
+  module.exports = jsreport
+} else {
+  jsreport.init().then(() => {
+    // running
+  }).catch((e) => {
+    // error during startup
+    console.error(e.stack)
+    process.exit(1)
+  })
+}

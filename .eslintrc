@@ -1,16 +1,8 @@
 {
-  "extends": ["standard", "standard-jsx"],
-  "parser": "babel-eslint",
-  "plugins": [
-    "babel"
-  ],
-  "rules": {
-    "babel/arrow-parens": 2,
-    "arrow-parens": 0
-  },
+  "extends": "standard",
   "env": {
-    "node": true,
-    "mocha": true,
-    "browser": true
+      "node": true,
+      "mocha": true,
+      "browser": true
   }
 }
