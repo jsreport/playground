@@ -1,11 +1,12 @@
 import {Component} from 'react'
 import Studio from 'jsreport-studio'
 import login from './login.js'
+import style from './style.scss'
 
 export default class Startup extends Component {
   constructor () {
     super()
-    this.state = {userWorkspaces: []}
+    this.state = {userWorkspaces: [], popularWorkspaces: [], pinnedWorkspaces: []}
   }
 
   async expandUsers (workspaces) {
@@ -15,27 +16,62 @@ export default class Startup extends Component {
         w.user = response.value[0]
       }
     }
+    return workspaces
   }
 
   async componentDidMount () {
+    let userWorkspaces = []
     if (Studio.workspaces.user) {
-      const response = await Studio.api.get(`/odata/workspaces?$filter=user eq ${Studio.workspaces.user.id}`)
-      await this.expandUsers(response.value)
-      this.setState({ userWorkspaces: response.value })
+      const userResponse = await Studio.api.get(`/odata/workspaces?$filter=user eq ${Studio.workspaces.user.id}`)
+      userWorkspaces = await this.expandUsers(userResponse.value)
     }
+
+    const popularResponse = await Studio.api.get(`/odata/workspaces?$orderBy=name&top=20`)
+    const popularWorkspaces = await this.expandUsers(popularResponse.value)
+
+    const pinnedResponse = await Studio.api.get(`/odata/workspaces?$filter=isPinned eq true&$orderBy=name&top=20`)
+    const pinnedWorkspaces = await this.expandUsers(pinnedResponse.value)
+
+    this.setState({ userWorkspaces, popularWorkspaces, pinnedWorkspaces })
+  }
+
+  renderTable (workspaces) {
+    return <div>
+      {workspaces.length === 0 ? 'Nothing here yet...'
+        : <table className={'table ' + style.workspacesTable}>
+          <thead>
+            <tr>
+              <th>name</th>
+              <th>user</th>
+              <th>modified</th>
+              <th />
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {workspaces.map((w) => <tr key={w._id} onClick={() => Studio.workspaces.open(w)}>
+              <td className='selection'>{w.name}</td>
+              <td style={{color: '#007ACC'}} onClick={() => alert('here')}>{w.user ? w.user.fullName : ''}</td>
+              <td>{w.modificationDate.toLocaleDateString()}</td>
+              <td>{w.views || 0}<i className='fa fa-eye' /></td>
+              <td>{w.likes || 0}<i className='fa fa-heart' /></td>
+            </tr>)}
+          </tbody>
+        </table>}
+    </div>
   }
 
   renderPinnedExamples () {
     return <div>
-      <h2>pinned examples</h2>
-      <div>examples...</div>
+      <h3>pinned examples</h3>
+      {this.renderTable(this.state.pinnedWorkspaces)}
     </div>
   }
 
   renderPopularWorkspaces () {
     return <div>
-      <h2>popular workspaces</h2>
-      <div>workspaces...</div>
+      <h3>popular workspaces</h3>
+      {this.renderTable(this.state.popularWorkspaces)}
     </div>
   }
 
@@ -45,36 +81,21 @@ export default class Startup extends Component {
 
   renderForUser () {
     return <div>
-      <h2>{Studio.workspaces.user.fullName} workspaces</h2>
-      <div>
-        <table className='table'>
-          <thead>
-            <tr>
-              <th>name</th>
-              <th>last modified</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.userWorkspaces.map((w) => <tr key={w._id} onClick={() => Studio.workspaces.open(w)}>
-              <td className='selection'>{w.name}</td>
-              <td>{w.modificationDate.toLocaleString()}</td>
-            </tr>)}
-          </tbody>
-        </table>
-      </div>
+      <h3>my workspaces</h3>
+      {this.renderTable(this.state.userWorkspaces)}
     </div>
   }
 
   renderForAnonym () {
     return <div>
-      <h2>your workspaces</h2>
+      <h3>my workspaces</h3>
       {login()}
     </div>
   }
 
   renderActions () {
     return <div>
-      <h2>actions</h2>
+      <h3>actions</h3>
       <div>
         <button className='button confirmation' onClick={() => Studio.workspaces.create()}>new workspace</button>
         <button className='button confirmation'>search</button>
@@ -84,10 +105,11 @@ export default class Startup extends Component {
 
   render () {
     return <div className='custom-editor' style={{overflow: 'auto', display: 'flex', flexFlow: 'row wrap'}}>
-      <div style={{minWidth: '50%', padding: '1rem'}}>{this.renderPinnedExamples()}</div>
-      <div style={{minWidth: '50%', padding: '1rem'}}>{this.renderUserWorkspaces()}</div>
-      <div style={{minWidth: '50%', padding: '1rem'}}>{this.renderPopularWorkspaces()}</div>
-      <div style={{minWidth: '50%', padding: '1rem'}}>{this.renderActions()}</div>
+      <div style={{minWidth: '100%', paddingLeft: '0.5rem'}}> {Studio.workspaces.user ? <h2>welcome {Studio.workspaces.user.fullName}</h2> : ''}</div>
+      <div style={{minWidth: '50%', paddingLeft: '0.5rem'}}>{this.renderPinnedExamples()}</div>
+      <div style={{minWidth: '50%', paddingLeft: '0.5rem'}}>{this.renderUserWorkspaces()}</div>
+      <div style={{minWidth: '50%', paddingLeft: '0.5rem'}}>{this.renderPopularWorkspaces()}</div>
+      <div style={{minWidth: '50%', paddingLeft: '0.5rem'}}>{this.renderActions()}</div>
     </div>
   }
 }

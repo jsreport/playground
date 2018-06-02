@@ -1,0 +1,9 @@
+.workspacesTable > tbody > tr > td:nth-child(3),
+.workspacesTable > tbody > tr > td:nth-child(4) {
+    text-align: right
+}
+
+.workspacesTable > tbody > tr > td > i {
+    color: #555555;
+    margin-left: 0.3rem
+}

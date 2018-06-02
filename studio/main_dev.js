@@ -15,16 +15,43 @@ import { getQueryParameter, removeFacebookQuery } from './utils'
 
 Studio.workspaces = {
   save: async () => {
-    Studio.workspaces.current = await Studio.api.post('/api/playground/workspace', {
-      data: {
-        name: 'untitled',
-        ...Studio.workspaces.current
-      }
-    })
+    if (Studio.workspaces.lock) {
+      return
+    }
+    try {
+      Studio.workspaces.lock = true
+      Studio.workspaces.current = await Studio.api.post('/api/playground/workspace', {
+        data: {
+          name: 'untitled',
+          ...Studio.workspaces.current
+        }
+      })
 
-    await Studio.store.dispatch(Studio.editor.actions.updateHistory())
-    await Studio.store.dispatch(Studio.editor.actions.saveAll())
-    Studio.workspaces.current = await Studio.api.get('api/playground/workspace')
+      await Studio.store.dispatch(Studio.editor.actions.updateHistory())
+      await Studio.store.dispatch(Studio.editor.actions.saveAll())
+      Studio.workspaces.current = await Studio.api.get('api/playground/workspace')
+    } finally {
+      Studio.workspaces.lock = false
+    }
+  },
+
+  like: async () => {
+    if (!Studio.workspaces.current || Studio.workspaces.lock) {
+      return
+    }
+    try {
+      Studio.workspaces.lock = true
+
+      if (Studio.workspaces.current.hasLike) {
+        Studio.workspaces.current.hasLike = false
+        await Studio.api.del('/api/playground/like')
+      } else {
+        Studio.workspaces.current.hasLike = true
+        await Studio.api.post('/api/playground/like')
+      }
+    } finally {
+      Studio.workspaces.lock = false
+    }
   },
 
   open: (w) => {
@@ -86,10 +113,24 @@ Studio.initializeListeners.push(async () => {
 Studio.shouldOpenStartupPage = false
 Studio.addEditorComponent('Help', Startup)
 
+function trim (str) {
+  if (str.length > 30) {
+    return str.substring(0, 25) + ' ...'
+  }
+  return str
+}
+
 Studio.readyListeners.push(async () => {
+  if (Studio.workspaces.user) {
+    Studio.addToolbarComponent((props) => <div className='toolbar-button'
+      onClick={() => Studio.workspaces.like()}><i className='fa fa-heart' style={{
+        color: (Studio.workspaces.current && Studio.workspaces.current.hasLike) ? 'red' : 'white'
+      }} /></div>)
+  }
+
   Studio.addToolbarComponent((props) => <div style={{backgroundColor: '#E67E22'}}
     className='toolbar-button' onClick={() => Studio.openModal(RenameModal)}>
-    <i className='fa fa-edit' />{Studio.workspaces.current && Studio.workspaces.current.name ? Studio.workspaces.current.name : 'Untitled ...'}</div>)
+    <i className='fa fa-pencil' /><h1 style={{display: 'inline', fontSize: '1rem', color: '#FFFFFF'}}>{Studio.workspaces.current && Studio.workspaces.current.name ? trim(Studio.workspaces.current.name) : 'Untitled ...'}</h1></div>)
 
   Studio.addToolbarComponent((props) => <div className='toolbar-button' style={{backgroundColor: '#2ECC71'}}
     onClick={() => Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })}>
@@ -100,6 +141,22 @@ Studio.readyListeners.push(async () => {
   } else {
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })
   }
+
+  const entities = Studio.getAllEntities()
+  if (entities.length < 5) {
+    await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
+  }
+
+  if (entities.length > 0) {
+    Studio.openTab({ _id: entities[0]._id })
+  }
+
+  /* if (Studio.workspaces.current.default) {
+    const entity = Studio.getEntityByShortid(Studio.workspaces.current.default, false)
+    if (entity) {
+      Studio.openTab({ _id: entity._id })
+    }
+  } */
 })
 
 /*

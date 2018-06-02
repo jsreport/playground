@@ -19,6 +19,9 @@
         "fs-store": {
            "syncModifications": false
         },
+        "templates": {
+            "studio-link-button-visibility": false
+        },
         "authentication" : {
             "cookieSession": {
                 "secret": "<your strong secret>"

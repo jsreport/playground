@@ -11,10 +11,11 @@ export default class SaveModal extends Component {
       <div className='button-bar'>
         <button
           className='button confirmation'
-          onClick={() => {
+          onClick={async () => {
             Studio.workspaces.current.name = this.refs.name.value
+            await Studio.workspaces.save()
             this.props.close()
-          }}>ok</button>
+          }}>save</button>
       </div>
     </div>
   }
