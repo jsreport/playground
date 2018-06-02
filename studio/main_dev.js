@@ -10,6 +10,7 @@ import Startup from './Startup'
 import SaveModal from './SaveModal.js'
 import LogoutButton from './LogoutButton.js'
 import LoginModal from './LoginModal.js'
+import RenameModal from './RenameModal.js'
 import { getQueryParameter, removeFacebookQuery } from './utils'
 
 Studio.workspaces = {
@@ -26,8 +27,16 @@ Studio.workspaces = {
     Studio.workspaces.current = await Studio.api.get('api/playground/workspace')
   },
 
-  open: () => {
+  open: (w) => {
+    Studio.workspaces.current = w
+    Studio.reset()
+    Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })
+  },
 
+  create: async () => {
+    Studio.workspaces.current = null
+    Studio.reset()
+    Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })
   }
 }
 
@@ -78,9 +87,13 @@ Studio.shouldOpenStartupPage = false
 Studio.addEditorComponent('Help', Startup)
 
 Studio.readyListeners.push(async () => {
-  Studio.addToolbarComponent((props) => <div style={{float: 'left'}}
-    className='toolbar-button' onClick={invokeSave}>
+  Studio.addToolbarComponent((props) => <div style={{backgroundColor: '#E67E22'}}
+    className='toolbar-button' onClick={() => Studio.openModal(RenameModal)}>
     <i className='fa fa-edit' />{Studio.workspaces.current && Studio.workspaces.current.name ? Studio.workspaces.current.name : 'Untitled ...'}</div>)
+
+  Studio.addToolbarComponent((props) => <div className='toolbar-button' style={{backgroundColor: '#2ECC71'}}
+    onClick={() => Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })}>
+    <i className='fa fa-home' />Home</div>)
 
   if (isEmbed) {
     Studio.collapseLeftPane()
