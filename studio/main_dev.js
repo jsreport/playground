@@ -20,15 +20,27 @@ Studio.workspaces = {
     }
     try {
       Studio.workspaces.lock = true
+      const shouldInvokeSave = Studio.workspaces.current.canEdit
+      const entities = Studio.getAllEntities().filter((e) => e.__isLoaded).map((e) => Studio.entities.actions.prune(e))
+
       Studio.workspaces.current = await Studio.api.post('/api/playground/workspace', {
         data: {
-          name: 'untitled',
-          ...Studio.workspaces.current
+          workspace: {
+            name: 'untitled',
+            ...Studio.workspaces.current
+          },
+          entities
         }
       })
 
       await Studio.store.dispatch(Studio.editor.actions.updateHistory())
-      await Studio.store.dispatch(Studio.editor.actions.saveAll())
+      if (shouldInvokeSave) {
+        await Studio.store.dispatch(Studio.editor.actions.saveAll())
+      } else {
+        await Studio.reset()
+        Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })
+        Studio.getAllEntities().forEach((e) => Studio.openTab({_id: e._id}))
+      }
       Studio.workspaces.current = await Studio.api.get('api/playground/workspace')
     } finally {
       Studio.workspaces.lock = false
@@ -36,7 +48,7 @@ Studio.workspaces = {
   },
 
   like: async () => {
-    if (!Studio.workspaces.current || Studio.workspaces.lock) {
+    if (!Studio.workspaces.current._id || Studio.workspaces.lock) {
       return
     }
     try {
@@ -54,17 +66,23 @@ Studio.workspaces = {
     }
   },
 
-  open: (w) => {
+  open: async (w) => {
     document.title = w.name
     Studio.workspaces.current = w
-    Studio.reset()
+    await Studio.store.dispatch(Studio.editor.actions.updateHistory())
+    Studio.workspaces.current = await Studio.api.get('api/playground/workspace')
+
+    await Studio.reset()
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })
+    const entities = Studio.getAllEntities()
+    if (entities.length > 0) {
+      Studio.openTab({ _id: entities[0]._id })
+    }
   },
 
   create: async () => {
-    Studio.workspaces.current = null
-    Studio.reset()
-    Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })
+    Studio.workspaces.current = { canEdit: true }
+    await Studio.reset()
   }
 }
 
@@ -77,7 +95,7 @@ function invokeSave () {
 }
 
 Studio.locationResolver = () => {
-  if (!Studio.workspaces.current) {
+  if (!Studio.workspaces.current._id) {
     return '/'
   }
 
@@ -90,16 +108,12 @@ Studio.toolbarVisibilityResolver = (text) => {
   return text === 'Run' || text === 'Download' || text === 'Run to new tab' || text === 'Reformat' || text === 'settings'
 }
 
-Studio.addToolbarComponent((props) => <div
-  className='toolbar-button' onClick={invokeSave}>
-  <i className='fa fa-floppy-o' />Save All</div>)
-
 removeFacebookQuery()
 const isEmbed = getQueryParameter('embed') != null
 
 Studio.initializeListeners.push(async () => {
   Studio.workspaces.user = await Studio.api.get('api/playground/user')
-  Studio.workspaces.current = await Studio.api.get('api/playground/workspace')
+  Studio.workspaces.current = (await Studio.api.get('api/playground/workspace')) || { canEdit: true }
 
   if (Studio.workspaces.user) {
     Studio.addToolbarComponent(() => <div className='toolbar-button'><span><i
@@ -122,16 +136,20 @@ function trim (str) {
 }
 
 Studio.readyListeners.push(async () => {
+  Studio.addToolbarComponent((props) => <div
+    className='toolbar-button' onClick={invokeSave}>
+    <i className='fa fa-floppy-o' />{Studio.workspaces.current.canEdit ? 'Save all' : 'Fork'}</div>)
+
   if (Studio.workspaces.user) {
     Studio.addToolbarComponent((props) => <div className='toolbar-button'
       onClick={() => Studio.workspaces.like()}><i className='fa fa-heart' style={{
-        color: (Studio.workspaces.current && Studio.workspaces.current.hasLike) ? 'red' : 'white'
+        color: (Studio.workspaces.current.hasLike) ? 'red' : 'white'
       }} /></div>)
   }
 
   Studio.addToolbarComponent((props) => <div style={{backgroundColor: '#E67E22'}}
     className='toolbar-button' onClick={() => Studio.openModal(RenameModal)}>
-    <i className='fa fa-pencil' /><h1 style={{display: 'inline', fontSize: '1rem', color: '#FFFFFF'}}>{Studio.workspaces.current && Studio.workspaces.current.name ? trim(Studio.workspaces.current.name) : 'Untitled ...'}</h1></div>)
+    <i className='fa fa-pencil' /><h1 style={{display: 'inline', fontSize: '1rem', color: '#FFFFFF'}}>{Studio.workspaces.current.name ? trim(Studio.workspaces.current.name) : 'Untitled ...'}</h1></div>)
 
   Studio.addToolbarComponent((props) => <div className='toolbar-button' style={{backgroundColor: '#2ECC71'}}
     onClick={() => Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })}>

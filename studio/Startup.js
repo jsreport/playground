@@ -22,8 +22,9 @@ export default class Startup extends Component {
   async componentDidMount () {
     let userWorkspaces = []
     if (Studio.workspaces.user) {
-      const userResponse = await Studio.api.get(`/odata/workspaces?$filter=user eq ${Studio.workspaces.user.id}`)
+      const userResponse = await Studio.api.get(`/odata/workspaces?$filter=userId eq '${Studio.workspaces.user._id}'`)
       userWorkspaces = await this.expandUsers(userResponse.value)
+      console.log('userWorkspaces', userWorkspaces)
     }
 
     const popularResponse = await Studio.api.get(`/odata/workspaces?$orderBy=name&top=20`)
@@ -113,7 +114,7 @@ export default class Startup extends Component {
         {Studio.workspaces.user ? <h2>welcome {Studio.workspaces.user.fullName}</h2> : ''}
       </div>
       <div>
-        <button className='button confirmation' onClick={() => this.props.close()}><i className='fa fa-plus-square' /> new</button>
+        <button className='button confirmation' onClick={() => Studio.workspaces.create()}><i className='fa fa-plus-square' /> new</button>
       </div>
       <div className={style.tabs}>
         <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>

@@ -13,7 +13,9 @@ export default class SaveModal extends Component {
           className='button confirmation'
           onClick={async () => {
             Studio.workspaces.current.name = this.refs.name.value
-            await Studio.workspaces.save()
+            if (Studio.workspaces.current._id) {
+              await Studio.workspaces.save()
+            }
             this.props.close()
           }}>save</button>
       </div>
