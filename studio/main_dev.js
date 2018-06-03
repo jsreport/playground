@@ -55,6 +55,7 @@ Studio.workspaces = {
   },
 
   open: (w) => {
+    document.title = w.name
     Studio.workspaces.current = w
     Studio.reset()
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })

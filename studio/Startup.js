@@ -6,7 +6,7 @@ import style from './style.scss'
 export default class Startup extends Component {
   constructor () {
     super()
-    this.state = {userWorkspaces: [], popularWorkspaces: [], pinnedWorkspaces: []}
+    this.state = {userWorkspaces: [], popularWorkspaces: [], pinnedWorkspaces: [], tab: 'popular'}
   }
 
   async expandUsers (workspaces) {
@@ -63,14 +63,12 @@ export default class Startup extends Component {
 
   renderPinnedExamples () {
     return <div>
-      <h3>pinned examples</h3>
       {this.renderTable(this.state.pinnedWorkspaces)}
     </div>
   }
 
   renderPopularWorkspaces () {
     return <div>
-      <h3>popular workspaces</h3>
       {this.renderTable(this.state.popularWorkspaces)}
     </div>
   }
@@ -81,14 +79,12 @@ export default class Startup extends Component {
 
   renderForUser () {
     return <div>
-      <h3>my workspaces</h3>
       {this.renderTable(this.state.userWorkspaces)}
     </div>
   }
 
   renderForAnonym () {
     return <div>
-      <h3>my workspaces</h3>
       {login()}
     </div>
   }
@@ -103,13 +99,25 @@ export default class Startup extends Component {
     </div>
   }
 
+  renderTab () {
+    switch (this.state.tab) {
+      case 'examples': return <div>{this.renderPinnedExamples()}</div>
+      case 'my': return <div>{this.renderUserWorkspaces()}</div>
+      case 'popular': return <div>{this.renderPopularWorkspaces()}</div>
+    }
+  }
+
   render () {
-    return <div className='custom-editor' style={{overflow: 'auto', display: 'flex', flexFlow: 'row wrap'}}>
-      <div style={{minWidth: '100%', paddingLeft: '0.5rem'}}> {Studio.workspaces.user ? <h2>welcome {Studio.workspaces.user.fullName}</h2> : ''}</div>
-      <div style={{minWidth: '50%', paddingLeft: '0.5rem'}}>{this.renderPinnedExamples()}</div>
-      <div style={{minWidth: '50%', paddingLeft: '0.5rem'}}>{this.renderUserWorkspaces()}</div>
-      <div style={{minWidth: '50%', paddingLeft: '0.5rem'}}>{this.renderPopularWorkspaces()}</div>
-      <div style={{minWidth: '50%', paddingLeft: '0.5rem'}}>{this.renderActions()}</div>
+    return <div className='custom-editor' style={{overflow: 'auto'}}>
+      <div className={style.tabs}>
+        <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>
+        <div className={this.state.tab === 'my' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'my' })}>My workspaces</div>
+        <div className={this.state.tab === 'popular' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'popular' })}>Popular workspaces</div>
+
+        <div style={{marginLeft: 'auto'}}><i className='fa fa-plus-square' /></div>
+        <div><i className='fa fa-search' /></div>
+      </div>
+      {this.renderTab()}
     </div>
   }
 }

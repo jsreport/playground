@@ -1,9 +1,37 @@
-.workspacesTable > tbody > tr > td:nth-child(3),
-.workspacesTable > tbody > tr > td:nth-child(4) {
+.workspacesTable > tbody > tr > td:nth-child(4),
+.workspacesTable > tbody > tr > td:nth-child(5) {
+    text-align: right
+}
+
+.workspacesTable > tbody > th:nth-child(2) {
     text-align: right
 }
 
 .workspacesTable > tbody > tr > td > i {
     color: #555555;
     margin-left: 0.3rem
+}
+
+.tabs {
+    display: flex; 
+    width: 100%;
+    background-color: #555555;   
+    color: #CCCCCC;
+    margin-bottom: 1rem
+}
+
+.tabs > div {
+    cursor: pointer
+}
+
+.tabs > div:hover {
+    background-color: #1C97EA;
+}
+
+.tabs > .selectedTab {
+    color: #FFFFFF;
+}
+
+.tabs > div {
+    padding: 0.5rem
 }
