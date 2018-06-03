@@ -109,6 +109,12 @@ export default class Startup extends Component {
 
   render () {
     return <div className='custom-editor' style={{overflow: 'auto'}}>
+      <div>
+        {Studio.workspaces.user ? <h2>welcome {Studio.workspaces.user.fullName}</h2> : ''}
+      </div>
+      <div>
+        <button className='button confirmation' onClick={() => this.props.close()}><i className='fa fa-plus-square' /> new</button>
+      </div>
       <div className={style.tabs}>
         <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>
         <div className={this.state.tab === 'my' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'my' })}>My workspaces</div>
