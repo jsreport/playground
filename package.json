@@ -20,7 +20,7 @@
     "connect-ensure-login": "0.1.1",
     "jsreport": "2.0.0",
     "jsreport-mongodb-store": "1.0.2",
-    "nanoid": "^1.0.2",
+    "nanoid": "1.0.2",
     "passport": "0.4.0",
     "passport-facebook": "2.1.1",
     "passport-twitter": "1.0.4",
