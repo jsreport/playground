@@ -6,10 +6,10 @@ export default class SaveModal extends Component {
   async save (href) {
     await Studio.workspaces.save()
     this.props.close()
-    
+
     if (href) {
       window.location.href = href
-    }    
+    }
   }
 
   render () {
