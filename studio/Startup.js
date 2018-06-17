@@ -13,21 +13,38 @@ export default class Startup extends Component {
       popular: false,
       examples: false
     }
-    this.state = {
+    this.state = this.initialState()
+
+    this.invokeSearch = debounce(this.invokeSearch.bind(this), 500)
+  }
+
+  initialState () {
+    return {
       users: { items: [], count: 0, pageNumber: 0 },
       popular: { items: [], count: 0, pageNumber: 0 },
       examples: { items: [], count: 0, pageNumber: 0 },
       search: { items: [] },
       tab: 'popular'
     }
-
-    this.invokeSearch = debounce(this.invokeSearch.bind(this), 500)
   }
 
-  componentWillMount () {
+  fetchAll () {
     this.lazyFetch('popular')
     this.lazyFetch('examples')
     this.lazyFetch('users')
+  }
+
+  componentWillMount () {
+    this.fetchAll()
+  }
+
+  componentDidUpdate () {
+    if (Studio.workspaces.startupReloadTrigger) {
+      Studio.workspaces.startupReloadTrigger = false
+      this.setState(this.initialState(), () => {
+        this.fetchAll()
+      })
+    }
   }
 
   async lazyFetch (type) {
@@ -71,7 +88,7 @@ export default class Startup extends Component {
   renderItem (w, index) {
     return <tr key={index} onClick={() => Studio.workspaces.open(w)} title={w.description}>
       <td className='selection'>{w.name}</td>
-      <td style={{color: '#007ACC'}} onClick={() => alert('here')}>{w.user ? w.user.fullName : ''}</td>
+      <td style={{color: '#007ACC'}}>{w.user ? w.user.fullName : ''}</td>
       <td>{w.modificationDate.toLocaleDateString()}</td>
       <td>{w.views || 0}<i className='fa fa-eye' /></td>
       <td>{w.likes || 0}<i className='fa fa-heart' /></td>
