@@ -1,10 +1,3 @@
-/* import Studio from 'jsreport-studio'
-import save from './save.js'
-import initialize from './initialize.js'
-import setDefault from './setDefault.js'
-import addToolbarComponents from './addToolbarComponents.js'
-import Startup from './Startup.js'
-*/
 import Studio from 'jsreport-studio'
 import Startup from './Startup'
 import SaveModal from './SaveModal.js'
@@ -83,6 +76,8 @@ Studio.workspaces = {
   create: async () => {
     Studio.workspaces.current = { canEdit: true }
     await Studio.reset()
+    Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })
+    Studio.openNewModal('templates')
   }
 }
 
@@ -138,7 +133,7 @@ function trim (str) {
 Studio.readyListeners.push(async () => {
   Studio.addToolbarComponent((props) => <div
     className='toolbar-button' onClick={invokeSave}>
-    <i className='fa fa-floppy-o' />{Studio.workspaces.current.canEdit ? 'Save all' : 'Fork'}</div>)
+    <i className='fa fa-floppy-o' />{Studio.workspaces.current.canEdit ? 'Save' : 'Fork'}</div>)
 
   if (Studio.workspaces.user) {
     Studio.addToolbarComponent((props) => <div className='toolbar-button'
@@ -170,6 +165,9 @@ Studio.readyListeners.push(async () => {
     Studio.openTab({ _id: entities[0]._id })
   }
 
+  if (Studio.workspaces.current.default) {
+    Studio.openTab({ _id: Studio.workspaces.current.default })
+  }
   /* if (Studio.workspaces.current.default) {
     const entity = Studio.getEntityByShortid(Studio.workspaces.current.default, false)
     if (entity) {
