@@ -6,11 +6,11 @@ export default class SaveModal extends Component {
     return <div>
       <div className='form-group'>
         <label>workspace name</label>
-        <input type='text' ref='name' defaultValue={Studio.workspaces.current.name || ''} />
+        <input type='text' ref='name' defaultValue={Studio.playground.current.name || ''} />
       </div>
       <div className='form-group'>
         <label>description</label>
-        <textarea ref='description' rows='4' defaultValue={Studio.workspaces.current.description || ''} />
+        <textarea ref='description' rows='4' defaultValue={Studio.playground.current.description || ''} />
       </div>
       <div className='form-group'>
         <label>default entity</label>
@@ -24,11 +24,11 @@ export default class SaveModal extends Component {
         <button
           className='button confirmation'
           onClick={async () => {
-            Studio.workspaces.current.name = this.refs.name.value
-            Studio.workspaces.current.description = this.refs.description.value
-            Studio.workspaces.current.default = this.refs.defaultEntity.value
-            if (Studio.workspaces.current._id) {
-              await Studio.workspaces.save()
+            Studio.playground.current.name = this.refs.name.value
+            Studio.playground.current.description = this.refs.description.value
+            Studio.playground.current.default = this.refs.defaultEntity.value
+            if (Studio.playground.current._id) {
+              await Studio.playground.save()
             }
             this.props.close()
           }}>save</button>

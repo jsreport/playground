@@ -1,5 +1,5 @@
 const jsreport = require('jsreport')
-require('should')
+const should = require('should')
 
 describe('playground', () => {
   let reporter
@@ -65,9 +65,16 @@ describe('playground', () => {
       workspaceId: workspace._id
     })
 
+    await reporter.documentStore.collection('workspaces').update({ _id: workspace._id }, {
+      $set: { views: 5, likes: 5, default: template._id }
+    })
+
+    workspace = await reporter.documentStore.collection('workspaces').findOne({ _id: workspace._id })
+
     await reporter.playground.saveWorkspace({
       workspace: {
-        name: 'changed'
+        name: 'changed',
+        default: workspace.default
       },
       entities: [{
         _id: template._id,
@@ -80,12 +87,16 @@ describe('playground', () => {
     const forked = await reporter.playground.findWorkspace({ name: 'changed' })
     forked.should.be.ok()
     forked._id.should.not.be.eql(workspace._id)
+    should(forked.likes).not.be.ok()
+    should(forked.views).not.be.ok()
     forked.shortid.should.be.ok()
 
     const forkedTemplate = await reporter.documentStore.collection('templates').findOne({ workspaceId: forked._id })
     forkedTemplate.name.should.be.eql('foo')
     forkedTemplate.recipe.should.be.eql('html')
     forkedTemplate.content.should.be.eql('content')
+
+    forked.default.should.be.eql(forkedTemplate._id)
   })
 
   it('addLike and removeLike should increase/decrease likes on workspace', async () => {

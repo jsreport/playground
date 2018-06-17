@@ -1,105 +1,21 @@
 import Studio from 'jsreport-studio'
 import Startup from './Startup'
-import SaveModal from './SaveModal.js'
 import LogoutButton from './LogoutButton.js'
 import LoginModal from './LoginModal.js'
 import RenameModal from './RenameModal.js'
+import Playground from './playground.js'
 import { getQueryParameter, removeFacebookQuery } from './utils'
 
-Studio.workspaces = {
-  save: async () => {
-    if (Studio.workspaces.lock) {
-      return
-    }
-    try {
-      await Studio.store.dispatch(Studio.entities.actions.flushUpdates())
-      Studio.workspaces.lock = true
-      const shouldInvokeSave = Studio.workspaces.current.canEdit
-      const entities = Studio.getAllEntities().filter((e) => e.__isLoaded).map((e) => Studio.entities.actions.prune(e))
-
-      Studio.workspaces.current = await Studio.api.post('/api/playground/workspace', {
-        data: {
-          workspace: {
-            name: 'untitled',
-            ...Studio.workspaces.current
-          },
-          entities
-        }
-      })
-
-      await Studio.store.dispatch(Studio.editor.actions.updateHistory())
-      if (shouldInvokeSave) {
-        await Studio.store.dispatch(Studio.editor.actions.saveAll())
-      } else {
-        await Studio.reset()
-        Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
-        Studio.getAllEntities().forEach((e) => Studio.openTab({_id: e._id}))
-      }
-      Studio.workspaces.current = await Studio.api.get('api/playground/workspace')
-      Studio.workspaces.startupReloadTrigger = true
-    } finally {
-      Studio.workspaces.lock = false
-    }
-  },
-
-  like: async () => {
-    if (!Studio.workspaces.current._id || Studio.workspaces.lock) {
-      return
-    }
-    try {
-      Studio.workspaces.lock = true
-
-      if (Studio.workspaces.current.hasLike) {
-        Studio.workspaces.current.hasLike = false
-        await Studio.api.del('/api/playground/like')
-      } else {
-        Studio.workspaces.current.hasLike = true
-        await Studio.api.post('/api/playground/like')
-      }
-      Studio.workspaces.startupReloadTrigger = true
-    } finally {
-      Studio.workspaces.lock = false
-    }
-  },
-
-  open: async (w) => {
-    document.title = w.name
-    Studio.workspaces.current = w
-    await Studio.store.dispatch(Studio.editor.actions.updateHistory())
-    Studio.workspaces.current = await Studio.api.get('api/playground/workspace')
-
-    await Studio.reset()
-    Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
-    const entities = Studio.getAllEntities()
-    if (entities.length > 0) {
-      Studio.openTab({ _id: entities[0]._id })
-    }
-  },
-
-  create: async () => {
-    Studio.workspaces.current = { canEdit: true }
-    await Studio.reset()
-    Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
-    Studio.openNewModal('templates')
-  }
-}
-
-function invokeSave () {
-  if (Studio.workspaces.user) {
-    Studio.workspaces.save()
-  } else {
-    Studio.openModal(SaveModal, { })
-  }
-}
+Studio.playground = Playground()
 
 Studio.locationResolver = () => {
-  if (!Studio.workspaces.current._id) {
+  if (!Studio.playground.current._id) {
     return '/'
   }
 
-  return Studio.workspaces.current.user != null
-    ? `/w/${Studio.workspaces.current.user.username}/${Studio.workspaces.current.shortid}`
-    : `/w/anon/${Studio.workspaces.current.shortid}`
+  return Studio.playground.current.user != null
+    ? `/w/${Studio.playground.current.user.username}/${Studio.playground.current.shortid}`
+    : `/w/anon/${Studio.playground.current.shortid}`
 }
 
 Studio.toolbarVisibilityResolver = (text) => {
@@ -110,12 +26,12 @@ removeFacebookQuery()
 const isEmbed = getQueryParameter('embed') != null
 
 Studio.initializeListeners.push(async () => {
-  Studio.workspaces.user = await Studio.api.get('api/playground/user')
-  Studio.workspaces.current = (await Studio.api.get('api/playground/workspace')) || { canEdit: true }
+  Studio.playground.user = await Studio.api.get('api/playground/user')
+  Studio.playground.current = (await Studio.api.get('api/playground/workspace')) || { canEdit: true }
 
-  if (Studio.workspaces.user) {
+  if (Studio.playground.user) {
     Studio.addToolbarComponent(() => <div className='toolbar-button'><span><i
-      className='fa fa-user' /> {Studio.workspaces.user.fullName}</span></div>, 'settingsBottom')
+      className='fa fa-user' /> {Studio.playground.user.fullName}</span></div>, 'settingsBottom')
     Studio.addToolbarComponent(LogoutButton, 'settingsBottom')
   } else {
     Studio.addToolbarComponent(() => <div className='toolbar-button' onClick={() => Studio.openModal(LoginModal)}><span><i
@@ -135,16 +51,16 @@ function trim (str) {
 
 Studio.readyListeners.push(async () => {
   Studio.addToolbarComponent((props) => <div
-    className='toolbar-button' onClick={invokeSave}>
-    {Studio.workspaces.current.canEdit
+    className='toolbar-button' onClick={() => Studio.playground.save()}>
+    {Studio.playground.current.canEdit
       ? <span><i className='fa fa-floppy-o' /> Save</span>
       : <span><i className='fa fa-clone' /> Fork</span>}
   </div>)
 
-  if (Studio.workspaces.user) {
+  if (Studio.playground.user) {
     Studio.addToolbarComponent((props) => <div className='toolbar-button'
-      onClick={() => Studio.workspaces.like()}><i className='fa fa-heart' style={{
-        color: (Studio.workspaces.current.hasLike) ? 'red' : 'white'
+      onClick={() => Studio.playground.like()}><i className='fa fa-heart' style={{
+        color: (Studio.playground.current.hasLike) ? 'red' : 'white'
       }} /></div>)
   }
 
@@ -152,7 +68,7 @@ Studio.readyListeners.push(async () => {
     className='toolbar-button' onClick={() => Studio.openModal(RenameModal)}>
     <i className='fa fa-pencil' />
     <h1 style={{display: 'inline', fontSize: '1rem', color: '#FFFFFF'}}>
-      {Studio.workspaces.current.name ? trim(Studio.workspaces.current.name) : 'Untitled ...'}
+      {Studio.playground.current.name ? trim(Studio.playground.current.name) : 'Untitled ...'}
     </h1>
   </div>, 'right')
 
@@ -175,7 +91,7 @@ Studio.readyListeners.push(async () => {
     Studio.openTab({ _id: entities[0]._id })
   }
 
-  if (Studio.workspaces.current.default) {
-    Studio.openTab({ _id: Studio.workspaces.current.default })
+  if (Studio.playground.current.default) {
+    Studio.openTab({ _id: Studio.playground.current.default })
   }
 })

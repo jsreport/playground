@@ -4,7 +4,7 @@ import Studio from 'jsreport-studio'
 
 export default class SaveModal extends Component {
   async save (href) {
-    await Studio.workspaces.save()
+    await Studio.playground.save()
     this.props.close()
 
     if (href) {

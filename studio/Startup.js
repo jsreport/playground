@@ -39,8 +39,8 @@ export default class Startup extends Component {
   }
 
   componentDidUpdate () {
-    if (Studio.workspaces.startupReloadTrigger) {
-      Studio.workspaces.startupReloadTrigger = false
+    if (Studio.playground.startupReloadTrigger) {
+      Studio.playground.startupReloadTrigger = false
       this.setState(this.initialState(), () => {
         this.fetchAll()
       })
@@ -86,7 +86,7 @@ export default class Startup extends Component {
   }
 
   renderItem (w, index) {
-    return <tr key={index} onClick={() => Studio.workspaces.open(w)} title={w.description}>
+    return <tr key={index} onClick={() => Studio.playground.open(w)} title={w.description}>
       <td className='selection'>{w.name}</td>
       <td style={{color: '#007ACC'}}>{w.user ? w.user.fullName : ''}</td>
       <td>{w.modificationDate.toLocaleDateString()}</td>
@@ -125,7 +125,7 @@ export default class Startup extends Component {
   }
 
   renderUserWorkspaces () {
-    return Studio.workspaces.user ? this.renderForUser() : this.renderForAnonym()
+    return Studio.playground.user ? this.renderForUser() : this.renderForAnonym()
   }
 
   renderForUser () {
@@ -144,7 +144,7 @@ export default class Startup extends Component {
     return <div>
       <h3>actions</h3>
       <div>
-        <button className='button confirmation' onClick={() => Studio.workspaces.create()}>new workspace</button>
+        <button className='button confirmation' onClick={() => Studio.playground.create()}>new workspace</button>
         <button className='button confirmation'>search</button>
       </div>
     </div>
@@ -192,11 +192,11 @@ export default class Startup extends Component {
   render () {
     return <div className='custom-editor block'>
       <div>
-        {Studio.workspaces.user ? <h2>welcome {Studio.workspaces.user.fullName}</h2> : ''}
+        {Studio.playground.user ? <h2>welcome {Studio.playground.user.fullName}</h2> : ''}
       </div>
       <div className={style.newBox}>
         Start by creating a new workspace
-        <button className='button confirmation' onClick={() => Studio.workspaces.create()}><i className='fa fa-plus-square' /></button>
+        <button className='button confirmation' onClick={() => Studio.playground.create()}><i className='fa fa-plus-square' /></button>
       </div>
       <div className={style.tabs}>
         <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>
