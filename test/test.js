@@ -240,9 +240,9 @@ describe('playground', () => {
     })
 
     const ws = await reporter.playground.listWorkspaces('examples', 0)
-    ws.should.have.length(2)
-    ws[0].name.should.be.eql('b')
-    ws[1].name.should.be.eql('c')
+    ws.items.should.have.length(2)
+    ws.items[0].name.should.be.eql('b')
+    ws.items[1].name.should.be.eql('c')
   })
 
   it('listWorkspaces should return user workspaces ordered by modificationDate', async () => {
@@ -263,9 +263,9 @@ describe('playground', () => {
     })
 
     const ws = await reporter.playground.listWorkspaces('users', 0, 'a')
-    ws.should.have.length(2)
-    ws[0].name.should.be.eql('b')
-    ws[1].name.should.be.eql('a')
+    ws.items.should.have.length(2)
+    ws.items[0].name.should.be.eql('b')
+    ws.items[1].name.should.be.eql('a')
   })
 
   it('listWorkspaces should return popular workspaces ordered by number of likes', async () => {
@@ -279,9 +279,9 @@ describe('playground', () => {
     })
 
     const ws = await reporter.playground.listWorkspaces('popular', 0, 'a')
-    ws.should.have.length(2)
-    ws[0].name.should.be.eql('b')
-    ws[1].name.should.be.eql('a')
+    ws.items.should.have.length(2)
+    ws.items[0].name.should.be.eql('b')
+    ws.items[1].name.should.be.eql('a')
   })
 
   it('listWorkspaces should do paging', async () => {
@@ -296,12 +296,12 @@ describe('playground', () => {
 
     reporter.playground.pageSize = 1
     let ws = await reporter.playground.listWorkspaces('popular', 0, 'a')
-    ws.should.have.length(1)
-    ws[0].name.should.be.eql('a')
+    ws.items.should.have.length(1)
+    ws.items[0].name.should.be.eql('a')
 
     ws = await reporter.playground.listWorkspaces('popular', 1, 'a')
-    ws.should.have.length(1)
-    ws[0].name.should.be.eql('b')
+    ws.items.should.have.length(1)
+    ws.items[0].name.should.be.eql('b')
   })
 
   it('listWorkspaces should expand user', async () => {
@@ -315,7 +315,7 @@ describe('playground', () => {
     })
 
     let ws = await reporter.playground.listWorkspaces('users', 0, 'a')
-    ws.should.have.length(1)
-    ws[0].user.name.should.be.eql('foo')
+    ws.items.should.have.length(1)
+    ws.items[0].user.name.should.be.eql('foo')
   })
 })
