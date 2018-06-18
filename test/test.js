@@ -236,7 +236,7 @@ describe('playground', () => {
       .catch(() => done())
   })
 
-  it('listWorkspaces should return pinned workspaces ordered by name', async () => {
+  it('listExampleWorkspaces should return pinned workspaces ordered by name', async () => {
     await reporter.documentStore.collection('workspaces').insert({
       name: 'd',
       isPinned: false
@@ -250,13 +250,13 @@ describe('playground', () => {
       isPinned: true
     })
 
-    const ws = await reporter.playground.listWorkspaces('examples', 0)
+    const ws = await reporter.playground.listExampleWorkspaces(0)
     ws.items.should.have.length(2)
     ws.items[0].name.should.be.eql('b')
     ws.items[1].name.should.be.eql('c')
   })
 
-  it('listWorkspaces should return user workspaces ordered by modificationDate', async () => {
+  it('listUserWorkspaces should return user workspaces ordered by modificationDate', async () => {
     await reporter.documentStore.collection('workspaces').insert({
       name: 'a',
       userId: 'a',
@@ -273,13 +273,13 @@ describe('playground', () => {
       userId: 'b'
     })
 
-    const ws = await reporter.playground.listWorkspaces('users', 0, 'a')
+    const ws = await reporter.playground.listUserWorkspaces('a', 0)
     ws.items.should.have.length(2)
     ws.items[0].name.should.be.eql('b')
     ws.items[1].name.should.be.eql('a')
   })
 
-  it('listWorkspaces should return popular workspaces ordered by number of likes', async () => {
+  it('listPopularWorkspaes should return popular workspaces ordered by number of likes', async () => {
     await reporter.documentStore.collection('workspaces').insert({
       name: 'a',
       likes: 5
@@ -289,13 +289,13 @@ describe('playground', () => {
       likes: 10
     })
 
-    const ws = await reporter.playground.listWorkspaces('popular', 0, 'a')
+    const ws = await reporter.playground.listPopularWorkspaces(0)
     ws.items.should.have.length(2)
     ws.items[0].name.should.be.eql('b')
     ws.items[1].name.should.be.eql('a')
   })
 
-  it('listWorkspaces should do paging', async () => {
+  it('listPopularWorkspaces should do paging', async () => {
     await reporter.documentStore.collection('workspaces').insert({
       name: 'a',
       likes: 5
@@ -306,16 +306,16 @@ describe('playground', () => {
     })
 
     reporter.playground.pageSize = 1
-    let ws = await reporter.playground.listWorkspaces('popular', 0, 'a')
+    let ws = await reporter.playground.listPopularWorkspaces(0)
     ws.items.should.have.length(1)
     ws.items[0].name.should.be.eql('a')
 
-    ws = await reporter.playground.listWorkspaces('popular', 1, 'a')
+    ws = await reporter.playground.listPopularWorkspaces(1)
     ws.items.should.have.length(1)
     ws.items[0].name.should.be.eql('b')
   })
 
-  it('listWorkspaces should expand user', async () => {
+  it('listPopularWorkspaces should expand user', async () => {
     await reporter.documentStore.collection('workspaces').insert({
       name: 'a',
       userId: 'a'
@@ -325,7 +325,7 @@ describe('playground', () => {
       _id: 'a'
     })
 
-    let ws = await reporter.playground.listWorkspaces('users', 0, 'a')
+    let ws = await reporter.playground.listPopularWorkspaces(0)
     ws.items.should.have.length(1)
     ws.items[0].user.name.should.be.eql('foo')
   })

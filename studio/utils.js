@@ -10,3 +10,10 @@ export function removeFacebookQuery () {
       : window.location.hash = ''
   }
 }
+
+export function trim (str) {
+  if (str.length > 30) {
+    return str.substring(0, 25) + ' ...'
+  }
+  return str
+}

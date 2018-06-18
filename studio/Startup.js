@@ -4,134 +4,39 @@ import login from './login.js'
 import style from './style.scss'
 import ReactList from 'react-list'
 import debounce from 'lodash.debounce'
+import WorskpacesList from './WorkspacesList'
 
 export default class Startup extends Component {
   constructor () {
     super()
-    this.loading = {
-      users: false,
-      popular: false,
-      examples: false
-    }
-    this.state = this.initialState()
+    this.state = { tab: 'popular' }
 
-    this.invokeSearch = debounce(this.invokeSearch.bind(this), 500)
+    // this.invokeSearch = debounce(this.invokeSearch.bind(this), 500)
   }
 
-  initialState () {
-    return {
-      users: { items: [], count: 0, pageNumber: 0 },
-      popular: { items: [], count: 0, pageNumber: 0 },
-      examples: { items: [], count: 0, pageNumber: 0 },
-      search: { items: [] },
-      tab: 'popular'
-    }
-  }
-
-  fetchAll () {
-    this.lazyFetch('popular')
-    this.lazyFetch('examples')
-    this.lazyFetch('users')
-  }
-
-  componentWillMount () {
-    this.fetchAll()
-  }
-
-  componentDidUpdate () {
+  /* componentDidUpdate () {
     if (Studio.playground.startupReloadTrigger) {
       Studio.playground.startupReloadTrigger = false
       this.setState(this.initialState(), () => {
         this.fetchAll()
       })
     }
-  }
-
-  async lazyFetch (type) {
-    if (this.loading[type]) {
-      return
-    }
-
-    let response
-    this.loading[type] = true
-    try {
-      response = await Studio.api.get(`/api/playground/workspaces/${type}/${this.state[type].pageNumber}`)
-    } finally {
-      this.loading[type] = false
-    }
-    this.setState({
-      [type]: {
-        items: this.state[type].items.concat(response.items),
-        count: response.count,
-        pageNumber: this.state[type].pageNumber + 1
-      }
-    })
-
-    if (this.state[type].items.length <= this.state[type].pending && response.count) {
-      this.lazyFetch(type)
-    }
-  }
-
-  tryRenderItem (type, index) {
-    const w = this.state[type].items[index]
-    if (!w) {
-      this.state[type].pending = Math.max(this.state[type].pending, index)
-      this.lazyFetch(type)
-      return <tr key={index}>
-        <td><i className='fa fa-spinner fa-spin fa-fw' /></td>
-      </tr>
-    }
-
-    return this.renderItem(w, index)
-  }
-
-  renderItem (w, index) {
-    return <tr key={index} onClick={() => Studio.playground.open(w)} title={w.description}>
-      <td className='selection'>{w.name}</td>
-      <td style={{color: '#007ACC'}}>{w.user ? w.user.fullName : ''}</td>
-      <td>{w.modificationDate.toLocaleDateString()}</td>
-      <td>{w.views || 0}<i className='fa fa-eye' /></td>
-      <td>{w.likes || 0}<i className='fa fa-heart' /></td>
-    </tr>
-  }
-
-  renderTable (items, ref) {
-    return <table className={'table ' + style.workspacesTable} ref={ref}>
-      <thead>
-        <tr>
-          <th>name</th>
-          <th>user</th>
-          <th>modified</th>
-          <th />
-          <th />
-        </tr>
-      </thead>
-      <tbody>
-        {items}
-      </tbody>
-    </table>
-  }
+  } */
 
   renderPinnedExamples () {
-    return <ReactList
-      type='uniform' itemsRenderer={this.renderTable} itemRenderer={(index) => this.tryRenderItem('examples', index)}
-      length={this.state.examples.count} />
+    return <div><WorskpacesList resolveUrl={(pageNumber) => `/api/playground/workspaces/examples?pageNumber=${pageNumber}`}/></div>
   }
 
   renderPopularWorkspaces () {
-    return <ReactList
-      type='uniform' itemsRenderer={this.renderTable} itemRenderer={(index) => this.tryRenderItem('popular', index)}
-      length={this.state.popular.count} />
+    return <div><WorskpacesList resolveUrl={(pageNumber) => `/api/playground/workspaces/popular?pageNumber=${pageNumber}`}/></div>
+  }
+
+  renderForUser () {
+    return <div><WorskpacesList resolveUrl={(pageNumber) => `/api/playground/workspaces/user/${Studio.playground.user._id}?pageNumber=${pageNumber}`}/></div>
   }
 
   renderUserWorkspaces () {
     return Studio.playground.user ? this.renderForUser() : this.renderForAnonym()
-  }
-
-  renderForUser () {
-    return <ReactList
-      type='uniform' itemsRenderer={this.renderTable} itemRenderer={(index) => this.tryRenderItem('users', index)}
-      length={this.state.users.count} />
   }
 
   renderForAnonym () {
@@ -150,32 +55,21 @@ export default class Startup extends Component {
     </div>
   }
 
-  async invokeSearch () {
-    const workspaces = await Studio.api.get(`/api/playground/search?q=${encodeURIComponent(this.refs.search.value)}`)
-    this.setState({ search: { items: workspaces } })
+  resolveSearchUrl () {
+    return `/api/playground/search?q=${encodeURIComponent(this.refs.search ? this.refs.search.value : '')}`
   }
 
   renderSearch () {
     return <div>
       <div className={style.searchBox}>
         <label>search for a workspace...</label>
-        <input type='text' ref='search' onKeyUp={() => this.invokeSearch()} />
+        <input type='text' ref='search' onKeyUp={() => {
+          console.log('force update')
+          this.refs.searchList.forceUpdate()
+        }} />
       </div>
       <div>
-        <table className={'table ' + style.workspacesTable}>
-          <thead>
-            <tr>
-              <th>name</th>
-              <th>user</th>
-              <th>modified</th>
-              <th />
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.search.items.map((w, i) => this.renderItem(w, i))}
-          </tbody>
-        </table>
+        <WorskpacesList ref='searchList' resolveUrl={(pageNumber) => this.resolveSearchUrl()}/>
       </div>
     </div>
   }

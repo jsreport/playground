@@ -4,7 +4,8 @@ import LogoutButton from './LogoutButton.js'
 import LoginModal from './LoginModal.js'
 import RenameModal from './RenameModal.js'
 import Playground from './playground.js'
-import { getQueryParameter, removeFacebookQuery } from './utils'
+import UserEditor from './UserEditor.js'
+import { getQueryParameter, removeFacebookQuery, trim } from './utils'
 
 Studio.playground = Playground()
 
@@ -25,6 +26,10 @@ Studio.toolbarVisibilityResolver = (text) => {
 removeFacebookQuery()
 const isEmbed = getQueryParameter('embed') != null
 
+Studio.shouldOpenStartupPage = false
+Studio.addEditorComponent('Help', Startup)
+Studio.addEditorComponent('playgroundUser', UserEditor)
+
 Studio.initializeListeners.push(async () => {
   Studio.playground.user = await Studio.api.get('api/playground/user')
   Studio.playground.current = (await Studio.api.get('api/playground/workspace')) || { canEdit: true }
@@ -38,16 +43,6 @@ Studio.initializeListeners.push(async () => {
       className='fa fa-sign-in' /> Login</span></div>, 'settingsBottom')
   }
 })
-
-Studio.shouldOpenStartupPage = false
-Studio.addEditorComponent('Help', Startup)
-
-function trim (str) {
-  if (str.length > 30) {
-    return str.substring(0, 25) + ' ...'
-  }
-  return str
-}
 
 Studio.readyListeners.push(async () => {
   Studio.addToolbarComponent((props) => <div
