@@ -25,7 +25,7 @@ describe('playground', () => {
       workspace: {
         name: 'foo'
       }
-    }, null, 'user')
+    }, { __isInitial: true }, 'user')
 
     const workspace = await reporter.playground.findWorkspace({ name: 'foo' })
     workspace._id.should.be.ok()
@@ -39,7 +39,7 @@ describe('playground', () => {
       workspace: {
         name: 'foo'
       }
-    }, null, 'user')
+    }, { __isInitial: true }, 'user')
 
     await reporter.playground.saveWorkspace({
       workspace: {
@@ -56,7 +56,7 @@ describe('playground', () => {
       workspace: {
         name: 'foo'
       }
-    }, null, 'user')
+    }, { __isInitial: true }, 'user')
 
     const template = await reporter.documentStore.collection('templates').insert({
       name: 'foo',
@@ -104,7 +104,7 @@ describe('playground', () => {
       workspace: {
         name: 'foo'
       }
-    }, null, 'user')
+    }, { __isInitial: true }, 'user')
 
     await reporter.playground.addLike(workspace, { _id: 'a' })
     await reporter.playground.addLike(workspace, { _id: 'a' })
