@@ -2,6 +2,7 @@ import Studio from 'jsreport-studio'
 import Startup from './Startup'
 import LogoutButton from './LogoutButton.js'
 import LoginModal from './LoginModal.js'
+import SaveModal from './SaveModal.js'
 import RenameModal from './RenameModal.js'
 import Playground from './playground.js'
 import UserEditor from './UserEditor.js'
@@ -43,9 +44,17 @@ Studio.initializeListeners.push(async () => {
   }
 })
 
+function save () {
+  if (Studio.playground.user || (!Studio.playground.current.__isInitial && Studio.playground.current.canEdit)) {
+    return Studio.playground.save()
+  }
+
+  Studio.openModal(SaveModal)
+}
+
 Studio.readyListeners.push(async () => {
   Studio.addToolbarComponent((props) => <div
-    className='toolbar-button' onClick={() => Studio.playground.save()}>
+    className='toolbar-button' onClick={() => save()}>
     {Studio.playground.current.canEdit
       ? <span><i className='fa fa-floppy-o' /> Save</span>
       : <span><i className='fa fa-clone' /> Fork</span>}
