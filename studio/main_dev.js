@@ -10,7 +10,7 @@ import { getQueryParameter, removeFacebookQuery, trim } from './utils'
 Studio.playground = Playground()
 
 Studio.locationResolver = () => {
-  if (!Studio.playground.current._id) {
+  if (Studio.playground.current.__isInitial) {
     return '/'
   }
 
@@ -31,8 +31,7 @@ Studio.addEditorComponent('Help', Startup)
 Studio.addEditorComponent('playgroundUser', UserEditor)
 
 Studio.initializeListeners.push(async () => {
-  Studio.playground.user = await Studio.api.get('api/playground/user')
-  Studio.playground.current = (await Studio.api.get('api/playground/workspace')) || { canEdit: true }
+  await Studio.playground.init()
 
   if (Studio.playground.user) {
     Studio.addToolbarComponent(() => <div className='toolbar-button'><span><i

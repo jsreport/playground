@@ -1,11 +1,18 @@
 
 import Studio from 'jsreport-studio'
 export default () => ({
+
+  async init () {
+    this.user = await Studio.api.get('api/playground/user')
+    this.current = await Studio.api.get('api/playground/workspace')
+  },
+
   async save () {
     if (this.lock) {
       return
     }
     try {
+      document.title = this.current.name
       await Studio.store.dispatch(Studio.entities.actions.flushUpdates())
       this.lock = true
       const shouldInvokeSave = this.current.canEdit
@@ -71,7 +78,7 @@ export default () => ({
   },
 
   async create () {
-    this.current = { canEdit: true }
+    this.current = { canEdit: true, __isInitial: true }
     await Studio.reset()
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
     Studio.openNewModal('templates')
