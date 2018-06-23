@@ -117,11 +117,15 @@ describe('playground', () => {
   })
 
   it('findOrInsertUser should find or insert', async () => {
-    await reporter.playground.findOrInsertUser({ provider: 'a', externalId: 'b' })
+    await reporter.playground.findOrInsertUser({ provider: 'a', externalId: 'b', demo: true })
+
     const found = await reporter.playground.findOrInsertUser({ provider: 'a', externalId: 'b' })
-    found.provider.should.be.eql('a')
-    found.externalId.should.be.eql('b')
-    found._id.should.be.ok()
+
+    // if findOrInsertUser has found the original user it should contain the original demo property
+    should(found.demo).be.eql(true)
+    should(found.provider).be.eql('a')
+    should(found.externalId).be.eql('b')
+    should(found._id).be.ok()
   })
 
   it('insert to collection should add workspaceId', async () => {

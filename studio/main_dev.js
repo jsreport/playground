@@ -3,6 +3,7 @@ import Startup from './Startup'
 import LogoutButton from './LogoutButton.js'
 import LoginModal from './LoginModal.js'
 import SaveModal from './SaveModal.js'
+import ShareModal from './ShareModal.js'
 import RenameModal from './RenameModal.js'
 import Playground from './playground.js'
 import UserEditor from './UserEditor.js'
@@ -53,31 +54,54 @@ function save () {
 }
 
 Studio.readyListeners.push(async () => {
-  Studio.addToolbarComponent((props) => <div
-    className='toolbar-button' onClick={() => save()}>
-    {Studio.playground.current.canEdit
-      ? <span><i className='fa fa-floppy-o' /> Save</span>
-      : <span><i className='fa fa-clone' /> Fork</span>}
-  </div>)
+  if (!isEmbed) {
+    Studio.addToolbarComponent((props) => <div
+      className='toolbar-button' onClick={() => save()}>
+      {Studio.playground.current.canEdit
+        ? <span><i className='fa fa-floppy-o' /> Save</span>
+        : <span><i className='fa fa-clone' /> Fork</span>}
+    </div>)
 
-  if (Studio.playground.user) {
-    Studio.addToolbarComponent((props) => <div className='toolbar-button'
-      onClick={() => Studio.playground.like()}><i className='fa fa-heart' style={{
-        color: (Studio.playground.current.hasLike) ? 'red' : 'white'
-      }} /></div>)
+    if (Studio.playground.user) {
+      Studio.addToolbarComponent((props) => <div className='toolbar-button'
+        onClick={() => Studio.playground.like()}><i className='fa fa-heart' title="Like" style={{
+          color: (Studio.playground.current.hasLike) ? 'red' : 'white'
+        }} /></div>)
+    }
   }
 
   Studio.addToolbarComponent((props) => <div style={{backgroundColor: '#E67E22', float: 'right'}}
-    className='toolbar-button' onClick={() => Studio.openModal(RenameModal)}>
-    <i className='fa fa-pencil' />
+    className='toolbar-button' onClick={() => {
+      if (!isEmbed) {
+        Studio.openModal(RenameModal)
+      }
+    }}>
+    <i className={`fa fa-${!isEmbed ? 'pencil' : 'flag'}`} />
     <h1 style={{display: 'inline', fontSize: '1rem', color: '#FFFFFF'}}>
       {Studio.playground.current.name ? trim(Studio.playground.current.name) : 'Untitled ...'}
     </h1>
   </div>, 'right')
 
-  Studio.addToolbarComponent((props) => <div className='toolbar-button' style={{backgroundColor: '#2ECC71'}}
-    onClick={() => Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })}>
-    <i className='fa fa-home' />Home</div>, 'right')
+  if (!isEmbed) {
+    Studio.addToolbarComponent((props) => <div className='toolbar-button' style={{backgroundColor: '#2ECC71'}}
+      onClick={() => Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })}>
+      <i className='fa fa-home' />Home</div>, 'right')
+
+    Studio.addToolbarComponent((props) => <div
+      className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}
+      onClick={() => {
+        if (Studio.playground.current.name) {
+          Studio.openModal(ShareModal)
+        }
+      }}>
+      <i className='fa fa-share' />Share
+    </div>, 'right')
+  } else {
+    Studio.addToolbarComponent((props) => <div
+      className='toolbar-button' onClick={() => (window.open(window.location.href.split('?')[0], '_blank'))}>
+      <i className='fa fa-desktop' />Full
+    </div>, 'right')
+  }
 
   if (isEmbed) {
     Studio.collapseLeftPane()

@@ -1,5 +1,5 @@
 module.exports = {
   'name': 'playground',
-  'depends': ['templates', 'express'],
+  'dependencies': ['templates', 'express'],
   'main': 'lib/main.js'
 }

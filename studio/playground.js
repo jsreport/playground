@@ -1,5 +1,16 @@
 
 import Studio from 'jsreport-studio'
+
+function updateTitle (workspaceName) {
+  const separatorIndex = document.title.lastIndexOf('|')
+
+  if (separatorIndex === -1) {
+    document.title = `${workspaceName} | ${document.title}`
+  } else {
+    document.title = `${workspaceName} | ${document.title.slice(separatorIndex + 2)}`
+  }
+}
+
 export default () => ({
 
   async init () {
@@ -12,7 +23,7 @@ export default () => ({
       return
     }
     try {
-      document.title = this.current.name
+      updateTitle(this.current.name)
       await Studio.store.dispatch(Studio.entities.actions.flushUpdates())
       this.lock = true
       const shouldInvokeSave = this.current.canEdit
@@ -64,7 +75,7 @@ export default () => ({
   },
 
   async open (w) {
-    document.title = w.name
+    updateTitle(w.name)
     this.current = w
     await Studio.store.dispatch(Studio.editor.actions.updateHistory())
     this.current = await Studio.api.get('api/playground/workspace')
