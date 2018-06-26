@@ -138,5 +138,7 @@ export default () => ({
       this.current = await Studio.api.get('api/playground/workspace')
       Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
     }
+
+    this.startupReloadTrigger = true
   }
 })

@@ -7,6 +7,7 @@ export default class WorkspacesList extends Component {
   constructor () {
     super()
     this.loading = false
+    this.mounted = false
     this.state = this.initialState()
     this.tryHide = this.tryHide.bind(this)
   }
@@ -16,6 +17,7 @@ export default class WorkspacesList extends Component {
   }
 
   componentWillMount () {
+    this.mounted = true
     this.lazyFetch()
   }
 
@@ -24,6 +26,7 @@ export default class WorkspacesList extends Component {
   }
 
   componentWillUnmount () {
+    this.mounted = false
     window.removeEventListener('click', this.tryHide)
   }
 
@@ -52,6 +55,11 @@ export default class WorkspacesList extends Component {
     } finally {
       this.loading = false
     }
+
+    if (!this.mounted) {
+      return
+    }
+
     this.setState({
       items: this.state.items.concat(response.items),
       count: response.count,
@@ -114,18 +122,34 @@ export default class WorkspacesList extends Component {
     const { contextMenuId } = this.state
     const { editable } = this.props
 
+    let isOwner = false
+
+    if (Studio.playground.user && Studio.playground.user._id === w.userId) {
+      isOwner = true
+    }
+
     return (
       <tr
         key={w._id}
         onClick={() => contextMenuId == null && Studio.playground.open(w)}
-        onContextMenu={(e) => this.contextMenu(e, w)}
+        onContextMenu={(e) => {
+          if (!isOwner) {
+            e.preventDefault()
+            return
+          }
+
+          this.contextMenu(e, w)
+        }}
         title={w.description}
       >
         <td className='selection'>
           {w.name}
           {editable !== false && contextMenuId === w._id ? this.renderContextMenu(w) : null}
         </td>
-        <td onClick={(e) => contextMenuId == null && this.openUser(e, w.user)} style={{color: '#007ACC'}}>{w.user ? w.user.fullName : ''}</td>
+        <td onClick={(e) => contextMenuId == null && this.openUser(e, w.user)} style={{color: '#007ACC'}}>
+          {w.user ? w.user.fullName : ''}
+          {isOwner && <i className='fa fa-bolt' title='You are the owner of this workspace' />}
+        </td>
         <td>{w.modificationDate.toLocaleDateString()}</td>
         <td>{w.views || 0}<i className='fa fa-eye' /></td>
         <td>{w.likes || 0}<i className='fa fa-heart' /></td>

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import shortid from 'shortid'
 import Studio from 'jsreport-studio'
 import login from './login.js'
 import style from './style.scss'
@@ -14,14 +15,27 @@ export default class Startup extends Component {
     // this.invokeSearch = debounce(this.invokeSearch.bind(this), 500)
   }
 
-  /* componentDidUpdate () {
+  componentWillMount () {
     if (Studio.playground.startupReloadTrigger) {
       Studio.playground.startupReloadTrigger = false
-      this.setState(this.initialState(), () => {
-        this.fetchAll()
-      })
     }
-  } */
+
+    this.refresh()
+  }
+
+  componentDidUpdate () {
+    if (Studio.playground.startupReloadTrigger) {
+      Studio.playground.startupReloadTrigger = false
+
+      this.refresh()
+    }
+  }
+
+  refresh () {
+    this.setState({
+      refreshKey: shortid.generate()
+    })
+  }
 
   handleRemove (w) {
     Studio.openModal(DeleteWorkspaceModal, {
@@ -30,9 +44,12 @@ export default class Startup extends Component {
   }
 
   renderPinnedExamples () {
+    const { refreshKey } = this.state
+
     return (
       <div>
         <WorskpacesList
+          key={refreshKey}
           resolveUrl={(pageNumber) => `/api/playground/workspaces/examples?pageNumber=${pageNumber}`}
           onRemove={this.handleRemove}
         />
@@ -41,9 +58,12 @@ export default class Startup extends Component {
   }
 
   renderPopularWorkspaces () {
+    const { refreshKey } = this.state
+
     return (
       <div>
         <WorskpacesList
+          key={refreshKey}
           resolveUrl={(pageNumber) => `/api/playground/workspaces/popular?pageNumber=${pageNumber}`}
           onRemove={this.handleRemove}
         />
@@ -56,9 +76,12 @@ export default class Startup extends Component {
   }
 
   renderForUser () {
+    const { refreshKey } = this.state
+
     return (
       <div>
         <WorskpacesList
+          key={refreshKey}
           resolveUrl={(pageNumber) => `/api/playground/workspaces/user/${Studio.playground.user._id}?pageNumber=${pageNumber}`}
           onRemove={this.handleRemove}
         />
@@ -89,6 +112,8 @@ export default class Startup extends Component {
   }
 
   renderSearch () {
+    const { refreshKey } = this.state
+
     return (
       <div>
         <div className={style.searchBox}>
@@ -99,7 +124,12 @@ export default class Startup extends Component {
           }} />
         </div>
         <div>
-          <WorskpacesList ref='searchList' resolveUrl={(pageNumber) => this.resolveSearchUrl()} editable={false} />
+          <WorskpacesList
+            key={refreshKey}
+            ref='searchList'
+            resolveUrl={(pageNumber) => this.resolveSearchUrl()}
+            editable={false}
+          />
         </div>
       </div>
     )
@@ -128,6 +158,15 @@ export default class Startup extends Component {
         >
           <i className='fa fa-plus-square' />
         </button>
+      </div>
+      <div>
+        <buton
+          className='button confirmation'
+          style={{ display: 'inline-block', marginLeft: 0, marginBottom: '1rem' }}
+          onClick={() => this.refresh()}
+        >
+          <i className='fa fa-refresh' /> Refresh
+        </buton>
       </div>
       <div className={style.tabs}>
         <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>
