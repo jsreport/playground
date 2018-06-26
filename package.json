@@ -8,6 +8,10 @@
     "test": "mocha test --timeout 5000",
     "start": "jsreport-studio-start --httpPort 5488"
   },
+  "eslintIgnore": [
+    "studio/main.js",
+    "studio/main.js.map"
+  ],
   "standard": {
     "env": {
       "node": true,
@@ -18,7 +22,8 @@
   "dependencies": {
     "client-sessions": "0.8.0",
     "connect-ensure-login": "0.1.1",
-    "jsreport": "2.0.0",
+    "eslint-config-standard-react": "6.0.0",
+    "jsreport": "2.1.0",
     "jsreport-mongodb-store": "github:jsreport/jsreport-mongodb-store",
     "jsreport-pdf-utils": "github:jsreport/jsreport-pdf-utils",
     "jsreport-studio": "github:jsreport/jsreport-studio",

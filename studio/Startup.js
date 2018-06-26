@@ -1,9 +1,9 @@
-import {Component} from 'react'
+import React, {Component} from 'react'
 import Studio from 'jsreport-studio'
 import login from './login.js'
 import style from './style.scss'
-import ReactList from 'react-list'
-import debounce from 'lodash.debounce'
+// import debounce from 'lodash.debounce'
+import DeleteWorkspaceModal from './DeleteWorkspaceModal'
 import WorskpacesList from './WorkspacesList'
 
 export default class Startup extends Component {
@@ -23,26 +23,55 @@ export default class Startup extends Component {
     }
   } */
 
+  handleRemove (w) {
+    Studio.openModal(DeleteWorkspaceModal, {
+      workspace: w
+    })
+  }
+
   renderPinnedExamples () {
-    return <div><WorskpacesList resolveUrl={(pageNumber) => `/api/playground/workspaces/examples?pageNumber=${pageNumber}`}/></div>
+    return (
+      <div>
+        <WorskpacesList
+          resolveUrl={(pageNumber) => `/api/playground/workspaces/examples?pageNumber=${pageNumber}`}
+          onRemove={this.handleRemove}
+        />
+      </div>
+    )
   }
 
   renderPopularWorkspaces () {
-    return <div><WorskpacesList resolveUrl={(pageNumber) => `/api/playground/workspaces/popular?pageNumber=${pageNumber}`}/></div>
-  }
-
-  renderForUser () {
-    return <div><WorskpacesList resolveUrl={(pageNumber) => `/api/playground/workspaces/user/${Studio.playground.user._id}?pageNumber=${pageNumber}`}/></div>
+    return (
+      <div>
+        <WorskpacesList
+          resolveUrl={(pageNumber) => `/api/playground/workspaces/popular?pageNumber=${pageNumber}`}
+          onRemove={this.handleRemove}
+        />
+      </div>
+    )
   }
 
   renderUserWorkspaces () {
     return Studio.playground.user ? this.renderForUser() : this.renderForAnonym()
   }
 
+  renderForUser () {
+    return (
+      <div>
+        <WorskpacesList
+          resolveUrl={(pageNumber) => `/api/playground/workspaces/user/${Studio.playground.user._id}?pageNumber=${pageNumber}`}
+          onRemove={this.handleRemove}
+        />
+      </div>
+    )
+  }
+
   renderForAnonym () {
-    return <div>
-      {login()}
-    </div>
+    return (
+      <div>
+        {login()}
+      </div>
+    )
   }
 
   renderActions () {
@@ -60,18 +89,20 @@ export default class Startup extends Component {
   }
 
   renderSearch () {
-    return <div>
-      <div className={style.searchBox}>
-        <label>search for a workspace...</label>
-        <input type='text' ref='search' onKeyUp={() => {
-          console.log('force update')
-          this.refs.searchList.forceUpdate()
-        }} />
-      </div>
+    return (
       <div>
-        <WorskpacesList ref='searchList' resolveUrl={(pageNumber) => this.resolveSearchUrl()}/>
+        <div className={style.searchBox}>
+          <label>search for a workspace...</label>
+          <input type='text' ref='search' onKeyUp={() => {
+            console.log('force update')
+            this.refs.searchList.forceUpdate()
+          }} />
+        </div>
+        <div>
+          <WorskpacesList ref='searchList' resolveUrl={(pageNumber) => this.resolveSearchUrl()} editable={false} />
+        </div>
       </div>
-    </div>
+    )
   }
 
   renderTab () {
@@ -86,11 +117,17 @@ export default class Startup extends Component {
   render () {
     return <div className='custom-editor block'>
       <div>
-        {Studio.playground.user ? <h2>welcome {Studio.playground.user.fullName}</h2> : ''}
+        {Studio.playground.user ? <h2>welcome <b>{Studio.playground.user.fullName}</b></h2> : ''}
       </div>
       <div className={style.newBox}>
         Start by creating a new workspace
-        <button className='button confirmation' onClick={() => Studio.playground.create()}><i className='fa fa-plus-square' /></button>
+        <button
+          className='button confirmation'
+          onClick={() => Studio.playground.create()}
+          title='create template in new workspace'
+        >
+          <i className='fa fa-plus-square' />
+        </button>
       </div>
       <div className={style.tabs}>
         <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>

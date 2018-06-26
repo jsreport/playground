@@ -1,3 +1,4 @@
+import React from 'react'
 import Studio from 'jsreport-studio'
 import Startup from './Startup'
 import LogoutButton from './LogoutButton.js'
@@ -63,9 +64,9 @@ Studio.readyListeners.push(async () => {
     </div>)
 
     if (Studio.playground.user) {
-      Studio.addToolbarComponent((props) => <div className='toolbar-button'
-        onClick={() => Studio.playground.like()}><i className='fa fa-heart' title="Like" style={{
-          color: (Studio.playground.current.hasLike) ? 'red' : 'white'
+      Studio.addToolbarComponent((props) => <div className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}
+        onClick={() => Studio.playground.like()}><i className='fa fa-heart' title='Like workspace' style={{
+          color: (Studio.playground.current.hasLike) ? 'red' : undefined
         }} /></div>)
     }
   }
@@ -86,6 +87,14 @@ Studio.readyListeners.push(async () => {
     Studio.addToolbarComponent((props) => <div className='toolbar-button' style={{backgroundColor: '#2ECC71'}}
       onClick={() => Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })}>
       <i className='fa fa-home' />Home</div>, 'right')
+
+    if (Studio.playground.user) {
+      Studio.addToolbarComponent((props) => (
+        <div className='toolbar-button'>
+          <i className='fa fa-user' />{Studio.playground.user.fullName}
+        </div>
+      ), 'right')
+    }
 
     Studio.addToolbarComponent((props) => <div
       className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}

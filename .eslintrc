@@ -1,8 +1,11 @@
 {
-  "extends": "standard",
+  "extends": ["standard", "standard-react"],
   "env": {
-      "node": true,
-      "mocha": true,
-      "browser": true
+    "node": true,
+    "mocha": true,
+    "browser": true
+  },
+  "rules": {
+    "react/prop-types": 0
   }
 }

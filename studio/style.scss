@@ -1,3 +1,5 @@
+@import "~jsreport-studio/src/theme/common";
+
 .workspacesTable > tbody > tr > td:nth-child(4),
 .workspacesTable > tbody > tr > td:nth-child(5) {
     text-align: right
@@ -13,10 +15,10 @@
 }
 
 .tabs {
-    display: flex; 
+    display: flex;
     width: 100%;
-    background-color: #FEFEFE;   
-    border-bottom: 0.1rem #1C97EA solid;    
+    background-color: #FEFEFE;
+    border-bottom: 0.1rem #1C97EA solid;
     margin-bottom: 2rem
 }
 
@@ -36,13 +38,39 @@
 }
 
 .tabs > div {
-    padding: 0.5rem    
+    padding: 0.5rem
 }
 
 .searchBox {
     margin-bottom: 2rem
 }
 
-.newBox { 
+.newBox {
     margin-bottom: 2rem
+}
+
+.contextMenu {
+  background-color: $secondaryColor;
+  position: absolute;
+  padding: 0.5rem;
+  min-width: 9rem;
+  z-index: 200;
+}
+
+.contextMenuContainer {
+  position: relative;
+  z-index: 200;
+}
+
+.contextButton {
+  color: $primaryColor;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  @include no-select();
+}
+
+.contextButton:hover {
+  background-color: $primaryHoverBackgroundColor;
+  color: $primaryHoverColor
 }

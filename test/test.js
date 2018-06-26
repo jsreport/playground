@@ -116,6 +116,30 @@ describe('playground', () => {
     workspace.likes.should.be.eql(2)
   })
 
+  it('remove workspace should work', async () => {
+    const workspace = await reporter.playground.saveWorkspace({
+      workspace: {
+        name: 'foo'
+      }
+    }, { __isInitial: true }, 'user')
+
+    await reporter.playground.addLike(workspace, { _id: 'a' })
+    await reporter.playground.addLike(workspace, { _id: 'b' })
+
+    await reporter.playground.removeWorkspace(workspace._id, 'user')
+
+    const w = await reporter.playground.findWorkspace({
+      _id: workspace._id
+    })
+
+    const likes = await reporter.documentStore.collection('likes').find({
+      workspaceId: workspace._id
+    })
+
+    should(w == null).be.True()
+    should(likes.length).be.eql(0)
+  })
+
   it('findOrInsertUser should find or insert', async () => {
     await reporter.playground.findOrInsertUser({ provider: 'a', externalId: 'b', demo: true })
 

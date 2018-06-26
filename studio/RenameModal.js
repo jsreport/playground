@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 
 export default class SaveModal extends Component {
