@@ -1,6 +1,7 @@
 import React from 'react'
 import Studio from 'jsreport-studio'
 import Startup from './Startup'
+import ToolbarSaveForkButton from './ToolbarSaveForkButton'
 import LogoutButton from './LogoutButton.js'
 import LoginModal from './LoginModal.js'
 import SaveModal from './SaveModal.js'
@@ -56,12 +57,12 @@ function save () {
 
 Studio.readyListeners.push(async () => {
   if (!isEmbed) {
-    Studio.addToolbarComponent((props) => <div
-      className='toolbar-button' onClick={() => save()}>
-      {Studio.playground.current.canEdit
-        ? <span><i className='fa fa-floppy-o' /> Save</span>
-        : <span><i className='fa fa-clone' /> Fork</span>}
-    </div>)
+    Studio.addToolbarComponent((props) => (
+      <ToolbarSaveForkButton
+        canEdit={Studio.playground.current.__isInitial ? true : Studio.playground.current.canEdit}
+        save={save}
+      />
+    ))
 
     if (Studio.playground.user) {
       Studio.addToolbarComponent((props) => <div className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}
