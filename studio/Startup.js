@@ -3,16 +3,16 @@ import shortid from 'shortid'
 import Studio from 'jsreport-studio'
 import login from './login.js'
 import style from './style.scss'
-// import debounce from 'lodash.debounce'
+import debounce from 'lodash.debounce'
 import DeleteWorkspaceModal from './DeleteWorkspaceModal'
 import WorskpacesList from './WorkspacesList'
 
 export default class Startup extends Component {
   constructor () {
     super()
-    this.state = { tab: 'popular' }
+    this.state = { tab: 'popular', searchTerm: '' }
 
-    // this.invokeSearch = debounce(this.invokeSearch.bind(this), 500)
+    this.handleSearchChange = debounce(this.handleSearchChange.bind(this), 500)
   }
 
   componentWillMount () {
@@ -35,6 +35,10 @@ export default class Startup extends Component {
     this.setState({
       refreshKey: shortid.generate()
     })
+  }
+
+  handleSearchChange () {
+    this.refresh()
   }
 
   handleRemove (w) {
@@ -108,20 +112,24 @@ export default class Startup extends Component {
   }
 
   resolveSearchUrl () {
-    return `/api/playground/search?q=${encodeURIComponent(this.refs.search ? this.refs.search.value : '')}`
+    const { searchTerm } = this.state
+
+    return `/api/playground/search?q=${encodeURIComponent(searchTerm != null ? searchTerm : '')}`
   }
 
   renderSearch () {
-    const { refreshKey } = this.state
+    const { searchTerm, refreshKey } = this.state
 
     return (
       <div>
         <div className={style.searchBox}>
           <label>search for a workspace...</label>
-          <input type='text' ref='search' onKeyUp={() => {
-            console.log('force update')
-            this.refs.searchList.forceUpdate()
-          }} />
+          <input
+            type='text'
+            value={searchTerm}
+            onChange={(ev) => this.setState({ searchTerm: ev.target.value })}
+            onKeyUp={this.handleSearchChange}
+          />
         </div>
         <div>
           <WorskpacesList
