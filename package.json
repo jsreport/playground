@@ -6,7 +6,7 @@
   },
   "scripts": {
     "test": "mocha test --timeout 5000",
-    "start": "jsreport-studio-start --httpPort 5488"
+    "start": "jsreport-studio-start --entry-point ./server.js --httpPort 5488"
   },
   "eslintIgnore": [
     "studio/main.js",
@@ -25,10 +25,12 @@
     "eslint-config-standard-react": "6.0.0",
     "jsreport": "2.1.0",
     "jsreport-assets": "github:jsreport/jsreport-assets",
+    "jsreport-core": "github:jsreport/jsreport-core",
     "jsreport-mongodb-store": "github:jsreport/jsreport-mongodb-store",
     "jsreport-pdf-utils": "github:jsreport/jsreport-pdf-utils",
     "jsreport-studio": "github:jsreport/jsreport-studio",
     "jsreport-version-control": "github:jsreport/jsreport-version-control",
+    "jsreport-worker-docker-manager": "github:jsreport/jsreport-worker-docker-manager",
     "lodash.debounce": "4.0.8",
     "nanoid": "1.0.2",
     "passport": "0.4.0",
@@ -40,7 +42,7 @@
   "devDependencies": {
     "eslint": "4.19.1",
     "js-cookie": "2.2.0",
-    "jsreport-studio-dev": "1.1.2",
+    "jsreport-studio-dev": "1.2.0",
     "mocha": "5.2.0",
     "should": "13.2.1",
     "standard": "11.0.1"

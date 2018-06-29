@@ -1,4 +1,8 @@
-const jsreport = require('jsreport')()
+process.env.extensions_workerDockerManager_discriminatorPath = 'context.clientIp'
+
+const jsreport = require('jsreport')({
+  rootDirectory: __dirname
+})
 
 if (process.env.JSREPORT_CLI) {
   // export jsreport instance to make it possible to use jsreport-cli
