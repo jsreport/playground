@@ -65,11 +65,11 @@ describe('playground', () => {
       workspaceId: workspace._id
     })
 
-    await reporter.documentStore.collection('workspaces').update({ _id: workspace._id }, {
+    await reporter.documentStore.internalCollection('workspaces').update({ _id: workspace._id }, {
       $set: { views: 5, likes: 5, default: template._id }
     })
 
-    workspace = await reporter.documentStore.collection('workspaces').findOne({ _id: workspace._id })
+    workspace = await reporter.documentStore.internalCollection('workspaces').findOne({ _id: workspace._id })
 
     await reporter.playground.saveWorkspace({
       workspace: {
@@ -132,7 +132,7 @@ describe('playground', () => {
       _id: workspace._id
     })
 
-    const likes = await reporter.documentStore.collection('likes').find({
+    const likes = await reporter.documentStore.internalCollection('likes').find({
       workspaceId: workspace._id
     })
 
@@ -252,28 +252,16 @@ describe('playground', () => {
     items.should.have.length(1)
   })
 
-  it('should throw on workspace query', (done) => {
-    reporter.documentStore.collection('workspaces').find({}, {}, {})
-      .then(() => done(new Error('should have failed')))
-      .catch(() => done())
-  })
-
-  it('should throw on users query', (done) => {
-    reporter.documentStore.collection('users').find({}, {}, {})
-      .then(() => done(new Error('should have failed')))
-      .catch(() => done())
-  })
-
   it('listExampleWorkspaces should return pinned workspaces ordered by name', async () => {
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'd',
       isPinned: false
     })
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'b',
       isPinned: true
     })
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'c',
       isPinned: true
     })
@@ -285,18 +273,18 @@ describe('playground', () => {
   })
 
   it('listUserWorkspaces should return user workspaces ordered by modificationDate', async () => {
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'a',
       userId: 'a',
       modificationDate: new Date(1000)
 
     })
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'b',
       userId: 'a',
       modificationDate: new Date(2000)
     })
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'c',
       userId: 'b'
     })
@@ -308,11 +296,11 @@ describe('playground', () => {
   })
 
   it('listPopularWorkspaes should return popular workspaces ordered by number of likes', async () => {
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'a',
       likes: 5
     })
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'b',
       likes: 10
     })
@@ -324,11 +312,11 @@ describe('playground', () => {
   })
 
   it('listPopularWorkspaces should do paging', async () => {
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'a',
       likes: 5
     })
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'b',
       likes: 4
     })
@@ -344,11 +332,11 @@ describe('playground', () => {
   })
 
   it('listPopularWorkspaces should expand user', async () => {
-    await reporter.documentStore.collection('workspaces').insert({
+    await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'a',
       userId: 'a'
     })
-    await reporter.documentStore.collection('users').insert({
+    await reporter.documentStore.internalCollection('users').insert({
       name: 'foo',
       _id: 'a'
     })
