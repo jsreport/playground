@@ -1,5 +1,9 @@
 process.env.extensions_workerDockerManager_discriminatorPath = 'context.clientIp'
 
+if (process.env.NODE_ENV === 'jsreport-development') {
+  process.env.extensions_studio_extensionsInDevMode = require('./jsreport.config').name
+}
+
 const jsreport = require('jsreport')({
   rootDirectory: __dirname
 })
