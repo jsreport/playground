@@ -5,7 +5,7 @@
     "entryPoint": "server.js"
   },
   "scripts": {
-    "test": "mocha test --timeout 5000",
+    "test": "mocha test --timeout 12000",
     "start": "jsreport-studio-start --entry-point ./server.js --httpPort 5488"
   },
   "eslintIgnore": [
