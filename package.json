@@ -29,7 +29,7 @@
     "jsreport-fop-pdf": "2.0.0",
     "jsreport-mongodb-store": "1.1.0",
     "jsreport-pdf-utils": "1.0.2",
-    "jsreport-phantom-pdf": "2.1.0",
+    "jsreport-phantom-pdf": "2.1.1",
     "jsreport-pug": "3.0.0",
     "jsreport-studio": "2.1.1",
     "jsreport-wkhtmltopdf": "2.0.3",
