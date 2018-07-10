@@ -1,11 +1,6 @@
 const jsreport = require('jsreport')
 const should = require('should')
 
-process.env.extensions_workerDockerManager_discriminatorPath = 'context.clientIp'
-
-process.env.ip = '0.0.0.0'
-process.env.stack = 'test'
-
 describe('playground', () => {
   let reporter
 
@@ -15,6 +10,9 @@ describe('playground', () => {
         provider: 'memory'
       },
       extensions: {
+        'worker-docker-manager': {
+          enabled: false
+        },
         express: {
           enabled: false
         }
