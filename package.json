@@ -6,6 +6,7 @@
   },
   "scripts": {
     "test": "mocha test --timeout 8000",
+    "build": "jsreport-studio-build",
     "start": "jsreport-studio-start --entry-point ./server.js --httpPort 5488"
   },
   "eslintIgnore": [
