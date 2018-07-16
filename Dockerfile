@@ -4,7 +4,7 @@ FROM ubuntu:xenial
 
 RUN adduser --disabled-password --gecos "" jsreport && \
     apt-get update && \
-    apt-get install -y --no-install-recommends libgconf-2-4 gnupg git curl wget ca-certificates && \   
+    apt-get install -y --no-install-recommends libgconf-2-4 gnupg git curl wget ca-certificates bzip2 && \   
     # node
     curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
     apt-get update && \
