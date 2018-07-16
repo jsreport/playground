@@ -1,62 +1,122 @@
+import React from 'react'
 import Studio from 'jsreport-studio'
-import save from './save.js'
-import initialize from './initialize.js'
-import setDefault from './setDefault.js'
-import addToolbarComponents from './addToolbarComponents.js'
-import Startup from './Startup.js'
+import Startup from './Startup'
+import ToolbarSaveForkButton from './ToolbarSaveForkButton'
+import LogoutButton from './LogoutButton.js'
+import LoginModal from './LoginModal.js'
+import SaveModal from './SaveModal.js'
+import ShareModal from './ShareModal.js'
+import RenameModal from './RenameModal.js'
+import Playground from './playground.js'
+import UserEditor from './UserEditor.js'
+import { getQueryParameter, removeFacebookQuery, trim } from './utils'
 
-const getQueryParameter = (name) => {
-  var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search)
-  return match && decodeURIComponent(match[1].replace(/\+/g, ' '))
-}
+Studio.playground = Playground()
 
-const originalError = console.error.bind(console)
-let errorLimit = 10
-const logError = (m) => {
-  if (errorLimit-- < 0) {
-    return
+Studio.locationResolver = () => {
+  if (Studio.playground.current.__isInitial) {
+    return '/'
   }
 
-  Studio.api.post('/odata/errors', { data: { message: m, url: window.location.href } })
+  return Studio.playground.current.user != null
+    ? `/w/${Studio.playground.current.user.username}/${Studio.playground.current.shortid}`
+    : `/w/anon/${Studio.playground.current.shortid}`
 }
 
-window.onerror = function (msg, url, line, col, error) {
-  var extra = !col ? '' : '\ncolumn: ' + col
-  extra += !error ? '' : '\nerror: ' + error
-  msg += '\nurl: ' + url + '\nline: ' + line + extra
-  logError(msg)
+Studio.toolbarVisibilityResolver = (text) => {
+  return text === 'Run' || text === 'Download' || text === 'Run to new tab' || text === 'Reformat' || text === 'settings'
 }
 
-console.error = function (...args) {
-  const msg = args.map((a) => a.stack || a).join()
-  logError(msg)
-  originalError(...args)
-}
-
-Studio.workspaces = {
-  current: {},
-  save: save,
-  setDefault: setDefault
-}
+removeFacebookQuery()
 const isEmbed = getQueryParameter('embed') != null
-addToolbarComponents(isEmbed)
 
-Studio.addEditorComponent('Help', Startup)
 Studio.shouldOpenStartupPage = false
-Studio.initializeListeners.push(initialize)
-Studio.locationResolver = () => `/studio/workspace/${Studio.workspaces.current.shortid}/${Studio.workspaces.current.version}`
-Studio.removeHandler = (id) => Studio.removeEntity(id)
+Studio.addEditorComponent('Help', Startup)
+Studio.addEditorComponent('playgroundUser', UserEditor)
 
-Studio.previewListeners.push((req, entities) => {
-  req.template.workspaceShortid = Studio.workspaces.current.shortid
-  req.template.workspaceVersion = Studio.workspaces.current.version
+Studio.initializeListeners.push(async () => {
+  await Studio.playground.init()
+
+  if (Studio.playground.user) {
+    Studio.addToolbarComponent(() => <div className='toolbar-button'><span><i
+      className='fa fa-user' /> {Studio.playground.user.fullName}</span></div>, 'settingsBottom')
+    Studio.addToolbarComponent(LogoutButton, 'settingsBottom')
+  } else {
+    Studio.addToolbarComponent(() => <div className='toolbar-button' onClick={() => Studio.openModal(LoginModal)}><span><i
+      className='fa fa-sign-in' /> Login</span></div>, 'settingsBottom')
+  }
 })
 
+function save () {
+  if (Studio.playground.user || (!Studio.playground.current.__isInitial && Studio.playground.current.canEdit)) {
+    return Studio.playground.save()
+  }
+
+  Studio.openModal(SaveModal)
+}
+
 Studio.readyListeners.push(async () => {
+  if (!isEmbed) {
+    Studio.addToolbarComponent((props) => (
+      <ToolbarSaveForkButton
+        canEdit={Studio.playground.current.__isInitial ? true : Studio.playground.current.canEdit}
+        save={save}
+      />
+    ))
+
+    if (Studio.playground.user) {
+      Studio.addToolbarComponent((props) => <div className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}
+        onClick={() => Studio.playground.like()}><i className='fa fa-heart' title='Like workspace' style={{
+          color: (Studio.playground.current.hasLike) ? 'red' : undefined
+        }} /></div>)
+    }
+  }
+
+  Studio.addToolbarComponent((props) => <div style={{backgroundColor: '#E67E22', float: 'right'}}
+    className='toolbar-button' onClick={() => {
+      if (!isEmbed) {
+        Studio.openModal(RenameModal)
+      }
+    }}>
+    <i className={`fa fa-${!isEmbed ? 'pencil' : 'flag'}`} />
+    <h1 style={{display: 'inline', fontSize: '1rem', color: '#FFFFFF'}}>
+      {Studio.playground.current.name ? trim(Studio.playground.current.name) : 'Untitled ...'}
+    </h1>
+  </div>, 'right')
+
+  if (!isEmbed) {
+    Studio.addToolbarComponent((props) => <div className='toolbar-button' style={{backgroundColor: '#2ECC71'}}
+      onClick={() => Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })}>
+      <i className='fa fa-home' />Home</div>, 'right')
+
+    if (Studio.playground.user) {
+      Studio.addToolbarComponent((props) => (
+        <div className='toolbar-button'>
+          <i className='fa fa-user' />{Studio.playground.user.fullName}
+        </div>
+      ), 'right')
+    }
+
+    Studio.addToolbarComponent((props) => <div
+      className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}
+      onClick={() => {
+        if (Studio.playground.current.name) {
+          Studio.openModal(ShareModal)
+        }
+      }}>
+      <i className='fa fa-share' />Share
+    </div>, 'right')
+  } else {
+    Studio.addToolbarComponent((props) => <div
+      className='toolbar-button' onClick={() => (window.open(window.location.href.split('?')[0], '_blank'))}>
+      <i className='fa fa-desktop' />Full
+    </div>, 'right')
+  }
+
   if (isEmbed) {
     Studio.collapseLeftPane()
   } else {
-    Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Get Started' })
+    Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
   }
 
   const entities = Studio.getAllEntities()
@@ -64,19 +124,11 @@ Studio.readyListeners.push(async () => {
     await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
   }
 
-  if (Studio.workspaces.current.default) {
-    const entity = Studio.getEntityByShortid(Studio.workspaces.current.default, false)
-    if (entity) {
-      Studio.openTab({ _id: entity._id })
-    }
+  if (entities.length > 0) {
+    Studio.openTab({ _id: entities[0]._id })
+  }
+
+  if (Studio.playground.current.default) {
+    Studio.openTab({ _id: Studio.playground.current.default })
   }
 })
-
-Studio.referencesLoader = async (entitySet) => {
-  const nameAttribute = Studio.entitySets[entitySet].nameAttribute
-  const referenceAttributes = Studio.entitySets[entitySet].referenceAttributes
-
-  let response = await Studio.api.get(`/odata/${entitySet}?$filter=workspaceVersion eq ${Studio.workspaces.current.version} and workspaceShortid eq '${Studio.workspaces.current.shortid}'&$select=${referenceAttributes}&$orderby=${nameAttribute}`)
-
-  return response.value
-}

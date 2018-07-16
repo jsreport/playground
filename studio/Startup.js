@@ -1,132 +1,190 @@
 import React, {Component} from 'react'
+import shortid from 'shortid'
 import Studio from 'jsreport-studio'
+import login from './login.js'
+import style from './style.scss'
+import debounce from 'lodash.debounce'
+import DeleteWorkspaceModal from './DeleteWorkspaceModal'
+import WorskpacesList from './WorkspacesList'
 
 export default class Startup extends Component {
   constructor () {
     super()
-    this.state = {}
+    this.state = { tab: 'popular', searchTerm: '' }
+
+    this.handleSearchChange = debounce(this.handleSearchChange.bind(this), 500)
   }
 
-  async componentDidMount () {
-    const response = await Studio.api.get('/odata/workspaces?$orderby=creationDate desc&$top=10')
+  componentWillMount () {
+    if (Studio.playground.startupReloadTrigger) {
+      Studio.playground.startupReloadTrigger = false
+    }
 
-    this.setState({ lastCreated: response.value })
+    this.refresh()
   }
 
-  renderExamples () {
-    return <table className='table'>
-      <tbody>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/SyUrRILTg/198' target='_blank'>Invoice pdf</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/SkDFywLpe/3' target='_blank'>Orders with data fetch script</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/ry0peD8pl/9' target='_blank'>Population Excel</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/HkqlE-Ww/318' target='_blank'>Live dashboard</a>
-          </td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/Y3BG0fnPa/1201' target='_blank'>Html table to Excel</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/gkxJuycgR5/1' target='_blank'>Pdf rendering with Apache FOP</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/ZJZMyHgm2e/204' target='_blank'>Chrome based pdf rendering using electron</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/bkBXJqNOae/119' target='_blank'>wkhtmltopdf with page numbers</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/Y3QQDfP9a/34' target='_blank'>csv</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/HkM7PSFSl/15' target='_blank'>Template layouts</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/HyGQQ-KHl/28' target='_blank'>Custom font in pdf</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/gyHJRWnpn/79' target='_blank'>Pdf page breaks</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/r1vaurbw/3' target='_blank'>Add row to Excel</a>
-          </td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/ryaUvq21e/3' target='_blank'>Excel debug</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/Hkr4xanxg/145' target='_blank'>Update excel cell</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/rkWcRiHog/128' target='_blank'>Dynamic formula in excel</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/BkcNMahxg/6' target='_blank'>Auto recalculate excel formulas</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/Hy_V2BSh/4' target='_blank'>Excel table</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/SyL6aErP/2' target='_blank'>Add sheet to excel</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/rkX89bHD/2' target='_blank'>Merged excel cells</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/H1BHqBZw/9' target='_blank'>Conditional excel formatting</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/BJa5OBWD/2' target='_blank'>Rename excel sheet</a></td>
-        </tr>
-        <tr>
-          <td className='selection'><a href='/studio/workspace/HyQH-eKv/115' target='_blank'>Excel pivot table</a></td>
-        </tr>
-      </tbody>
-    </table>
+  componentDidUpdate () {
+    if (Studio.playground.startupReloadTrigger) {
+      Studio.playground.startupReloadTrigger = false
+
+      this.refresh()
+    }
   }
 
-  open (w) {
-    window.open(`/studio/workspace/${w.shortid}/${w.version}`, '_blank')
+  refresh () {
+    this.setState({
+      refreshKey: shortid.generate()
+    })
   }
 
-  renderLastCreated () {
-    return <table className='table'>
-      <thead>
-        <tr>
-          <th>name</th>
-          <th>version</th>
-        </tr>
-      </thead>
-      <tbody>
-        {(this.state.lastCreated || []).map(
-          (w) => <tr key={w._id} onClick={() => this.open(w)}>
-            <td className='selection'>{w.name || 'Anonymous'}</td>
-            <td>{w.version}</td>
-          </tr>
-        )}
-      </tbody>
-    </table>
+  handleSearchChange () {
+    this.refresh()
+  }
+
+  handleRemove (w) {
+    Studio.openModal(DeleteWorkspaceModal, {
+      workspace: w
+    })
+  }
+
+  renderPinnedExamples () {
+    const { refreshKey } = this.state
+
+    return (
+      <div>
+        <WorskpacesList
+          key={refreshKey}
+          resolveUrl={(pageNumber) => `/api/playground/workspaces/examples?pageNumber=${pageNumber}`}
+          onRemove={this.handleRemove}
+        />
+      </div>
+    )
+  }
+
+  renderPopularWorkspaces () {
+    const { refreshKey } = this.state
+
+    return (
+      <div>
+        <WorskpacesList
+          key={refreshKey}
+          resolveUrl={(pageNumber) => `/api/playground/workspaces/popular?pageNumber=${pageNumber}`}
+          onRemove={this.handleRemove}
+        />
+      </div>
+    )
+  }
+
+  renderUserWorkspaces () {
+    return Studio.playground.user ? this.renderForUser() : this.renderForAnonym()
+  }
+
+  renderForUser () {
+    const { refreshKey } = this.state
+
+    return (
+      <div>
+        <WorskpacesList
+          key={refreshKey}
+          resolveUrl={(pageNumber) => `/api/playground/workspaces/user/${Studio.playground.user._id}?pageNumber=${pageNumber}`}
+          onRemove={this.handleRemove}
+        />
+      </div>
+    )
+  }
+
+  renderForAnonym () {
+    return (
+      <div>
+        {login()}
+      </div>
+    )
+  }
+
+  renderActions () {
+    return <div>
+      <h3>actions</h3>
+      <div>
+        <button className='button confirmation' onClick={() => Studio.playground.create()}>new workspace</button>
+        <button className='button confirmation'>search</button>
+      </div>
+    </div>
+  }
+
+  resolveSearchUrl () {
+    const { searchTerm } = this.state
+
+    return `/api/playground/search?q=${encodeURIComponent(searchTerm != null ? searchTerm : '')}`
+  }
+
+  renderSearch () {
+    const { searchTerm, refreshKey } = this.state
+
+    return (
+      <div>
+        <div className={style.searchBox}>
+          <label>search for a workspace...</label>
+          <input
+            type='text'
+            value={searchTerm}
+            onChange={(ev) => this.setState({ searchTerm: ev.target.value })}
+            onKeyUp={this.handleSearchChange}
+          />
+        </div>
+        <div>
+          <WorskpacesList
+            key={refreshKey}
+            ref='searchList'
+            resolveUrl={(pageNumber) => this.resolveSearchUrl()}
+            editable={false}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  renderTab () {
+    switch (this.state.tab) {
+      case 'examples': return <div>{this.renderPinnedExamples()}</div>
+      case 'my': return <div>{this.renderUserWorkspaces()}</div>
+      case 'popular': return <div>{this.renderPopularWorkspaces()}</div>
+      case 'search': return <div>{this.renderSearch()}</div>
+    }
   }
 
   render () {
-    return <div className='custom-editor' style={{overflow: 'auto'}}>
-      <h2>quick start</h2>
-      <button className='button confirmation' onClick={() => Studio.openNewModal('templates')}>
-        <i className='fa fa-plus' /> Create template
-      </button>
-      <button className='button confirmation' onClick={() => this.refs.lastCreatedWorkspaces.scrollIntoView()}>
-        <i className='fa fa-user' /> Last created workspaces
-      </button>
-      <h2>playground samples</h2>
-      {this.renderExamples()}
-      <h2 ref='lastCreatedWorkspaces'>last created workspaces</h2>
-      {this.renderLastCreated()}
+    return <div className='custom-editor block'>
+      <div>
+        {Studio.playground.user ? <h2>welcome <b>{Studio.playground.user.fullName}</b></h2> : ''}
+      </div>
+      <div className={style.newBox}>
+        Start by creating a new workspace
+        <button
+          className='button confirmation'
+          onClick={() => Studio.playground.create()}
+          title='create template in new workspace'
+        >
+          <i className='fa fa-plus-square' />
+        </button>
+      </div>
+      <div>
+        <buton
+          className='button confirmation'
+          style={{ display: 'inline-block', marginLeft: 0, marginBottom: '1rem' }}
+          onClick={() => this.refresh()}
+        >
+          <i className='fa fa-refresh' /> Refresh
+        </buton>
+      </div>
+      <div className={style.tabs}>
+        <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>
+        <div className={this.state.tab === 'my' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'my' })}>My workspaces</div>
+        <div className={this.state.tab === 'popular' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'popular' })}>Popular workspaces</div>
+        <div className={this.state.tab === 'search' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'search' })}><i className='fa fa-search' /> Search</div>
+      </div>
+      <div className='block-item' style={{overflow: 'auto'}}>
+        {this.renderTab()}
+      </div>
     </div>
   }
 }

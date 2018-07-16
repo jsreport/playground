@@ -1,0 +1,76 @@
+@import "~jsreport-studio/src/theme/common";
+
+.workspacesTable > tbody > tr > td:nth-child(4),
+.workspacesTable > tbody > tr > td:nth-child(5) {
+    text-align: right
+}
+
+.workspacesTable > tbody > th:nth-child(2) {
+    text-align: right
+}
+
+.workspacesTable > tbody > tr > td > i {
+    color: #555555;
+    margin-left: 0.3rem
+}
+
+.tabs {
+    display: flex;
+    width: 100%;
+    background-color: #FEFEFE;
+    border-bottom: 0.1rem #1C97EA solid;
+    margin-bottom: 2rem
+}
+
+.tabs > div {
+    border-right: 1px #E6E6E6 solid;
+    cursor: pointer
+}
+
+.tabs > div:hover {
+    background-color: #1C97EA;
+    color: #FFFFFF;
+}
+
+.tabs > .selectedTab {
+    background: #007ACC;
+    color: #FFFFFF;
+}
+
+.tabs > div {
+    padding: 0.5rem
+}
+
+.searchBox {
+    margin-bottom: 2rem
+}
+
+.newBox {
+    margin-bottom: 2rem
+}
+
+.contextMenu {
+  background-color: $secondaryColor;
+  position: absolute;
+  padding: 0.5rem;
+  min-width: 9rem;
+  z-index: 200;
+}
+
+.contextMenuContainer {
+  position: relative;
+  z-index: 200;
+}
+
+.contextButton {
+  color: $primaryColor;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  @include no-select();
+}
+
+.contextButton:hover {
+  background-color: $primaryHoverBackgroundColor;
+  color: $primaryHoverColor
+}
