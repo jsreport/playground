@@ -9,7 +9,7 @@
     "build": "jsreport-studio-build",
     "start": "jsreport-studio-start --entry-point ./server.js --httpPort 5488"
   },
-  "version": "2.0.9",
+  "version": "2.0.10",
   "eslintIgnore": [
     "studio/main.js",
     "studio/main.js.map"
