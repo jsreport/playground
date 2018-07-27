@@ -28,13 +28,14 @@ describe('playground', () => {
       workspace: {
         name: 'foo'
       }
-    }, { __isInitial: true }, 'user')
+    }, { __isInitial: true }, 'user', true)
 
     const workspace = await reporter.playground.findWorkspace({ name: 'foo' })
     workspace._id.should.be.ok()
     workspace.shortid.should.be.ok()
     workspace.userId.should.be.eql('user')
     workspace.name.should.be.eql('foo')
+    workspace.isAnonymous.should.be.true()
   })
 
   it('saveWorkspace with currentWorkspace set and user matches should update', async () => {
@@ -42,7 +43,7 @@ describe('playground', () => {
       workspace: {
         name: 'foo'
       }
-    }, { __isInitial: true }, 'user')
+    }, { __isInitial: true }, 'user', false)
 
     await reporter.playground.saveWorkspace({
       workspace: {
@@ -51,6 +52,7 @@ describe('playground', () => {
     }, workspace, 'user')
 
     workspace = await reporter.playground.findWorkspace({ name: 'changed' })
+    workspace.isAnonymous.should.be.false()
     workspace.should.be.ok()
   })
 
