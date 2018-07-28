@@ -271,7 +271,7 @@ describe('playground', () => {
       isPinned: true
     })
 
-    const ws = await reporter.playground.listExampleWorkspaces(0)
+    const ws = await reporter.playground.listExampleWorkspaces()
     ws.items.should.have.length(2)
     ws.items[0].name.should.be.eql('b')
     ws.items[1].name.should.be.eql('c')
@@ -294,7 +294,7 @@ describe('playground', () => {
       userId: 'b'
     })
 
-    const ws = await reporter.playground.listUserWorkspaces('a', 0)
+    const ws = await reporter.playground.listUserWorkspaces('a')
     ws.items.should.have.length(2)
     ws.items[0].name.should.be.eql('b')
     ws.items[1].name.should.be.eql('a')
@@ -310,13 +310,13 @@ describe('playground', () => {
       likes: 10
     })
 
-    const ws = await reporter.playground.listPopularWorkspaces(0)
+    const ws = await reporter.playground.listPopularWorkspaces()
     ws.items.should.have.length(2)
     ws.items[0].name.should.be.eql('b')
     ws.items[1].name.should.be.eql('a')
   })
 
-  it('listPopularWorkspaces should do paging', async () => {
+  it('listPopularWorkspaces should limit to pageSize', async () => {
     await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'a',
       likes: 5
@@ -329,11 +329,6 @@ describe('playground', () => {
     reporter.playground.pageSize = 1
     let ws = await reporter.playground.listPopularWorkspaces(0)
     ws.items.should.have.length(1)
-    ws.items[0].name.should.be.eql('a')
-
-    ws = await reporter.playground.listPopularWorkspaces(1)
-    ws.items.should.have.length(1)
-    ws.items[0].name.should.be.eql('b')
   })
 
   it('listPopularWorkspaces should expand user', async () => {
@@ -346,7 +341,7 @@ describe('playground', () => {
       _id: 'a'
     })
 
-    let ws = await reporter.playground.listPopularWorkspaces(0)
+    let ws = await reporter.playground.listPopularWorkspaces()
     ws.items.should.have.length(1)
     ws.items[0].user.name.should.be.eql('foo')
   })

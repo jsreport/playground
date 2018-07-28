@@ -1,24 +1,20 @@
 import React, {Component} from 'react'
 import Studio from 'jsreport-studio'
 import style from './style.scss'
-import ReactList from 'react-list'
 
 export default class WorkspacesList extends Component {
   constructor () {
     super()
-    this.loading = false
-    this.mounted = false
     this.state = this.initialState()
     this.tryHide = this.tryHide.bind(this)
   }
 
   initialState () {
-    return { items: [], count: 0, pageNumber: 0 }
+    return { items: [] }
   }
 
   componentWillMount () {
-    this.mounted = true
-    this.lazyFetch()
+    this.fetch()
   }
 
   componentDidMount () {
@@ -26,7 +22,6 @@ export default class WorkspacesList extends Component {
   }
 
   componentWillUnmount () {
-    this.mounted = false
     window.removeEventListener('click', this.tryHide)
   }
 
@@ -43,49 +38,11 @@ export default class WorkspacesList extends Component {
     }
   }
 
-  async lazyFetch () {
-    if (this.loading) {
-      return
-    }
-
-    let response
-    this.loading = true
-    try {
-      response = await Studio.api.get(this.props.resolveUrl(this.state.pageNumber))
-    } finally {
-      this.loading = false
-    }
-
-    if (!this.mounted) {
-      return
-    }
-
+  async fetch () {
+    const response = await Studio.api.get(this.props.url)
     this.setState({
-      items: this.state.items.concat(response.items),
-      count: response.count,
-      pageNumber: this.state.pageNumber + 1
+      items: this.state.items.concat(response.items)
     })
-
-    if (this.state.items.length <= this.state.pending && response.count) {
-      this.lazyFetch()
-    }
-  }
-
-  tryRenderItem (index) {
-    const w = this.state.items[index]
-
-    if (!w) {
-      this.state.pending = Math.max(this.state.pending, index)
-      this.lazyFetch()
-
-      return (
-        <tr key={index}>
-          <td><i className='fa fa-spinner fa-spin fa-fw' /></td>
-        </tr>
-      )
-    }
-
-    return this.renderItem(w, index)
   }
 
   openUser (e, u) {
@@ -118,7 +75,7 @@ export default class WorkspacesList extends Component {
     )
   }
 
-  renderItem (w, index) {
+  renderItem (w) {
     const { contextMenuId } = this.state
     const { editable } = this.props
 
@@ -156,34 +113,21 @@ export default class WorkspacesList extends Component {
       </tr>
     )
   }
-
-  renderTable (items, ref) {
-    return (
-      <table className={'table ' + style.workspacesTable} ref={ref}>
-        <thead>
-          <tr>
-            <th>name</th>
-            <th>user</th>
-            <th>modified</th>
-            <th />
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {items}
-        </tbody>
-      </table>
-    )
-  }
-
   render () {
-    return (
-      <ReactList
-        type='uniform'
-        itemsRenderer={this.renderTable}
-        itemRenderer={(index) => this.tryRenderItem(index)}
-        length={this.state.count}
-      />
-    )
+    const { items } = this.state
+    return <table className={'table ' + style.workspacesTable}>
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>user</th>
+          <th>modified</th>
+          <th />
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        {items.map((i) => this.renderItem(i))}
+      </tbody>
+    </table>
   }
 }

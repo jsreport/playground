@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import shortid from 'shortid'
 import Studio from 'jsreport-studio'
 import login from './login.js'
 import style from './style.scss'
@@ -11,34 +10,11 @@ export default class Startup extends Component {
   constructor () {
     super()
     this.state = { tab: 'popular', searchTerm: '' }
-
     this.handleSearchChange = debounce(this.handleSearchChange.bind(this), 500)
   }
 
-  componentWillMount () {
-    if (Studio.playground.startupReloadTrigger) {
-      Studio.playground.startupReloadTrigger = false
-    }
-
-    this.refresh()
-  }
-
-  componentDidUpdate () {
-    if (Studio.playground.startupReloadTrigger) {
-      Studio.playground.startupReloadTrigger = false
-
-      this.refresh()
-    }
-  }
-
-  refresh () {
-    this.setState({
-      refreshKey: shortid.generate()
-    })
-  }
-
   handleSearchChange () {
-    this.refresh()
+    this.setState({ searchRefreshKey: this.state.searchTerm })
   }
 
   handleRemove (w) {
@@ -47,14 +23,20 @@ export default class Startup extends Component {
     })
   }
 
-  renderPinnedExamples () {
-    const { refreshKey } = this.state
+  componentDidUpdate () {
+    if (Studio.playground.startupReloadTrigger) {
+      Studio.playground.startupReloadTrigger = false
+      // eslint-disable-next-line
+      this.setState({ refreshKey: Date.now() })
+    }
+  }
 
+  renderPinnedExamples () {
     return (
       <div>
         <WorskpacesList
-          key={refreshKey}
-          resolveUrl={(pageNumber) => `/api/playground/workspaces/examples?pageNumber=${pageNumber}`}
+          key={`examples-${this.state.refreshKey}`}
+          url={`/api/playground/workspaces/examples?pageNumber=0`}
           onRemove={this.handleRemove}
         />
       </div>
@@ -62,13 +44,11 @@ export default class Startup extends Component {
   }
 
   renderPopularWorkspaces () {
-    const { refreshKey } = this.state
-
     return (
       <div>
         <WorskpacesList
-          key={refreshKey}
-          resolveUrl={(pageNumber) => `/api/playground/workspaces/popular?pageNumber=${pageNumber}`}
+          key={`popular-${this.state.refreshKey}`}
+          url={`/api/playground/workspaces/popular?pageNumber=0`}
           onRemove={this.handleRemove}
         />
       </div>
@@ -80,13 +60,11 @@ export default class Startup extends Component {
   }
 
   renderForUser () {
-    const { refreshKey } = this.state
-
     return (
       <div>
         <WorskpacesList
-          key={refreshKey}
-          resolveUrl={(pageNumber) => `/api/playground/workspaces/user/${Studio.playground.user._id}?pageNumber=${pageNumber}`}
+          key={`users-${this.state.refreshKey}`}
+          url={`/api/playground/workspaces/user/${Studio.playground.user._id}?pageNumber=0`}
           onRemove={this.handleRemove}
         />
       </div>
@@ -111,14 +89,8 @@ export default class Startup extends Component {
     </div>
   }
 
-  resolveSearchUrl () {
-    const { searchTerm } = this.state
-
-    return `/api/playground/search?q=${encodeURIComponent(searchTerm != null ? searchTerm : '')}`
-  }
-
   renderSearch () {
-    const { searchTerm, refreshKey } = this.state
+    const { searchTerm, searchRefreshKey } = this.state
 
     return (
       <div>
@@ -133,9 +105,8 @@ export default class Startup extends Component {
         </div>
         <div>
           <WorskpacesList
-            key={refreshKey}
-            ref='searchList'
-            resolveUrl={(pageNumber) => this.resolveSearchUrl()}
+            key={`search-${searchRefreshKey}-${this.state.refreshKey}`}
+            url={`/api/playground/search?q=${encodeURIComponent(searchTerm != null ? searchTerm : '')}`}
             editable={false}
           />
         </div>
@@ -166,15 +137,6 @@ export default class Startup extends Component {
         >
           <i className='fa fa-plus-square' />
         </button>
-      </div>
-      <div>
-        <buton
-          className='button confirmation'
-          style={{ display: 'inline-block', marginLeft: 0, marginBottom: '1rem' }}
-          onClick={() => this.refresh()}
-        >
-          <i className='fa fa-refresh' /> Refresh
-        </buton>
       </div>
       <div className={style.tabs}>
         <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>
