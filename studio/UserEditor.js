@@ -11,7 +11,7 @@ export default class Startup extends Component {
           <h2>{user.fullName}</h2>
         </div>
         <div>
-          <WorskpacesList resolveUrl={(pageNumber) => `/api/playground/workspaces/user/${user._id}?pageNumber=${pageNumber}`} />
+          <WorskpacesList url={`/api/playground/workspaces/user/${user._id}`} />
         </div>
       </div>
     )

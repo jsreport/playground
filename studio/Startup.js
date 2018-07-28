@@ -36,7 +36,7 @@ export default class Startup extends Component {
       <div>
         <WorskpacesList
           key={`examples-${this.state.refreshKey}`}
-          url={`/api/playground/workspaces/examples?pageNumber=0`}
+          url={`/api/playground/workspaces/examples`}
           onRemove={this.handleRemove}
         />
       </div>
@@ -48,7 +48,7 @@ export default class Startup extends Component {
       <div>
         <WorskpacesList
           key={`popular-${this.state.refreshKey}`}
-          url={`/api/playground/workspaces/popular?pageNumber=0`}
+          url={`/api/playground/workspaces/popular`}
           onRemove={this.handleRemove}
         />
       </div>
@@ -64,7 +64,7 @@ export default class Startup extends Component {
       <div>
         <WorskpacesList
           key={`users-${this.state.refreshKey}`}
-          url={`/api/playground/workspaces/user/${Studio.playground.user._id}?pageNumber=0`}
+          url={`/api/playground/workspaces/user/${Studio.playground.user._id}`}
           onRemove={this.handleRemove}
         />
       </div>
