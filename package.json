@@ -7,7 +7,7 @@
   "scripts": {
     "test": "mocha test --timeout 8000",
     "build": "jsreport-studio-build",
-    "start": "jsreport-studio-start --entry-point ./server.js --httpPort 5488"
+    "start": "jsreport-studio-start --entry-point ./server.js"
   },
   "version": "2.0.10",
   "eslintIgnore": [
@@ -31,6 +31,7 @@
     "jsreport-fop-pdf": "2.0.0",
     "jsreport-mongodb-store": "1.1.0",
     "jsreport-pdf-utils": "1.0.2",
+    "jsreport-version-control": "1.0.6",
     "jsreport-phantom-pdf": "2.1.3",
     "jsreport-pug": "3.0.0",
     "jsreport-studio": "2.1.1",
