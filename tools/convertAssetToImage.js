@@ -3,14 +3,7 @@ const asyncReplace = util.promisify(require('async-replace'))
 
 module.exports = async (db) => {
   console.log('add indexes')
-  await Promise.all([
-    db.collection('workspaces').createIndex({name: 'text', description: 'text'}),
-    db.collection('workspaces').createIndex({userId: 1}),
-    db.collection('workspaces').createIndex({name: 1, isPinned: 1}),
-    db.collection('workspaces').createIndex({likes: -1})
-  ])
-
-  const entities = ['assets', 'data', 'scripts', 'templates', 'xlsxTemplates', 'versions', 'images']
+  const entities = ['assets', 'templates', 'images']
   await Promise.all(entities.map((c) => db.collection(c).createIndex({workspaceId: 1})))
 
   console.log('converting images to assets')

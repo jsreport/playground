@@ -257,37 +257,15 @@ describe('playground', () => {
     items.should.have.length(1)
   })
 
-  it('listExampleWorkspaces should return pinned workspaces ordered by name', async () => {
-    await reporter.documentStore.internalCollection('workspaces').insert({
-      name: 'd',
-      isPinned: false
-    })
+  it('listUserWorkspaces should return user workspaces ordered by name', async () => {
     await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'b',
-      isPinned: true
-    })
-    await reporter.documentStore.internalCollection('workspaces').insert({
-      name: 'c',
-      isPinned: true
-    })
+      userId: 'a'
 
-    const ws = await reporter.playground.listExampleWorkspaces()
-    ws.items.should.have.length(2)
-    ws.items[0].name.should.be.eql('b')
-    ws.items[1].name.should.be.eql('c')
-  })
-
-  it('listUserWorkspaces should return user workspaces ordered by modificationDate', async () => {
+    })
     await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'a',
-      userId: 'a',
-      modificationDate: new Date(1000)
-
-    })
-    await reporter.documentStore.internalCollection('workspaces').insert({
-      name: 'b',
-      userId: 'a',
-      modificationDate: new Date(2000)
+      userId: 'a'
     })
     await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'c',
@@ -296,8 +274,8 @@ describe('playground', () => {
 
     const ws = await reporter.playground.listUserWorkspaces('a')
     ws.items.should.have.length(2)
-    ws.items[0].name.should.be.eql('b')
-    ws.items[1].name.should.be.eql('a')
+    ws.items[0].name.should.be.eql('a')
+    ws.items[1].name.should.be.eql('b')
   })
 
   it('listPopularWorkspaes should return popular workspaces ordered by number of likes', async () => {
