@@ -31,6 +31,7 @@
     "jsreport-fop-pdf": "2.0.0",
     "jsreport-mongodb-store": "1.1.0",
     "jsreport-pdf-utils": "1.0.2",
+    "jsreport-xlsx": "2.0.1",
     "jsreport-version-control": "1.0.6",
     "jsreport-phantom-pdf": "2.1.3",
     "jsreport-pug": "3.0.0",
