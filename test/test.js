@@ -71,7 +71,7 @@ describe('playground', () => {
     })
 
     await reporter.documentStore.internalCollection('workspaces').update({ _id: workspace._id }, {
-      $set: { views: 5, likes: 5, default: template._id }
+      $set: { views: 5, likes: 5, default: template.shortid }
     })
 
     workspace = await reporter.documentStore.internalCollection('workspaces').findOne({ _id: workspace._id })
@@ -101,7 +101,7 @@ describe('playground', () => {
     forkedTemplate.recipe.should.be.eql('html')
     forkedTemplate.content.should.be.eql('content')
 
-    forked.default.should.be.eql(forkedTemplate._id)
+    forked.default.should.be.eql(forkedTemplate.shortid)
   })
 
   it('addLike and removeLike should increase/decrease likes on workspace', async () => {

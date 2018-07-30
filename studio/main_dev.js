@@ -129,6 +129,9 @@ Studio.readyListeners.push(async () => {
   }
 
   if (Studio.playground.current.default) {
-    Studio.openTab({ _id: Studio.playground.current.default })
+    const defaultEntity = entities.find((e) => e.shortid === Studio.playground.current.default)
+    if (defaultEntity) {
+      Studio.openTab({ _id: defaultEntity._id })
+    }
   }
 })
