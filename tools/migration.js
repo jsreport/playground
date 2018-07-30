@@ -1,7 +1,7 @@
 const convertImagesToAssets = require('./convertAssetToImage')
 const MongoClient = require('mongodb').MongoClient
 const connectionString = 'mongodb://localhost:27017'
-const database = 'playground3'
+const database = 'playground'
 
 async function migrate () {
   const client = await MongoClient.connect(connectionString)
