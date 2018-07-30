@@ -33,12 +33,13 @@ module.exports = async (db) => {
         continue
       }
 
-      let asset = await db.collection('assets').findOne({workspaceId: wid, name: image.name})
+      const assetName = `${image.name}.${image.contentType.split('/')[1]}`
+
+      let asset = await db.collection('assets').findOne({workspaceId: wid, name: assetName})
       if (asset) {
         continue
       }
 
-      const assetName = `${image.name}.${image.contentType.split('/')[1]}`
       asset = { name: assetName, content: image.content, shortid: image.shortid, workspaceId: wid }
       await db.collection('assets').insert(asset)
       imageToAssetMap[image.name] = assetName
