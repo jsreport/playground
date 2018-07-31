@@ -58,39 +58,39 @@
 	
 	var _Startup2 = _interopRequireDefault(_Startup);
 	
-	var _ToolbarSaveForkButton = __webpack_require__(23);
+	var _ToolbarSaveForkButton = __webpack_require__(12);
 	
 	var _ToolbarSaveForkButton2 = _interopRequireDefault(_ToolbarSaveForkButton);
 	
-	var _LogoutButton = __webpack_require__(24);
+	var _LogoutButton = __webpack_require__(13);
 	
 	var _LogoutButton2 = _interopRequireDefault(_LogoutButton);
 	
-	var _LoginModal = __webpack_require__(25);
+	var _LoginModal = __webpack_require__(14);
 	
 	var _LoginModal2 = _interopRequireDefault(_LoginModal);
 	
-	var _SaveModal = __webpack_require__(26);
+	var _SaveModal = __webpack_require__(15);
 	
 	var _SaveModal2 = _interopRequireDefault(_SaveModal);
 	
-	var _ShareModal = __webpack_require__(27);
+	var _ShareModal = __webpack_require__(16);
 	
 	var _ShareModal2 = _interopRequireDefault(_ShareModal);
 	
-	var _RenameModal = __webpack_require__(28);
+	var _RenameModal = __webpack_require__(17);
 	
 	var _RenameModal2 = _interopRequireDefault(_RenameModal);
 	
-	var _playground = __webpack_require__(29);
+	var _playground = __webpack_require__(18);
 	
 	var _playground2 = _interopRequireDefault(_playground);
 	
-	var _UserEditor = __webpack_require__(30);
+	var _UserEditor = __webpack_require__(19);
 	
 	var _UserEditor2 = _interopRequireDefault(_UserEditor);
 	
-	var _utils = __webpack_require__(31);
+	var _utils = __webpack_require__(20);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -178,7 +178,7 @@
 	}
 	
 	_jsreportStudio2.default.readyListeners.push(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-	  var entities;
+	  var entities, defaultEntity;
 	  return regeneratorRuntime.wrap(function _callee2$(_context2) {
 	    while (1) {
 	      switch (_context2.prev = _context2.next) {
@@ -302,7 +302,13 @@
 	          }
 	
 	          if (_jsreportStudio2.default.playground.current.default) {
-	            _jsreportStudio2.default.openTab({ _id: _jsreportStudio2.default.playground.current.default });
+	            defaultEntity = entities.find(function (e) {
+	              return e.shortid === _jsreportStudio2.default.playground.current.default;
+	            });
+	
+	            if (defaultEntity) {
+	              _jsreportStudio2.default.openTab({ _id: defaultEntity._id });
+	            }
 	          }
 	
 	        case 10:
@@ -341,31 +347,27 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _shortid = __webpack_require__(4);
-	
-	var _shortid2 = _interopRequireDefault(_shortid);
-	
 	var _jsreportStudio = __webpack_require__(2);
 	
 	var _jsreportStudio2 = _interopRequireDefault(_jsreportStudio);
 	
-	var _login = __webpack_require__(14);
+	var _login = __webpack_require__(4);
 	
 	var _login2 = _interopRequireDefault(_login);
 	
-	var _style = __webpack_require__(15);
+	var _style = __webpack_require__(5);
 	
 	var _style2 = _interopRequireDefault(_style);
 	
-	var _lodash = __webpack_require__(19);
+	var _lodash = __webpack_require__(9);
 	
 	var _lodash2 = _interopRequireDefault(_lodash);
 	
-	var _DeleteWorkspaceModal = __webpack_require__(20);
+	var _DeleteWorkspaceModal = __webpack_require__(10);
 	
 	var _DeleteWorkspaceModal2 = _interopRequireDefault(_DeleteWorkspaceModal);
 	
-	var _WorkspacesList = __webpack_require__(21);
+	var _WorkspacesList = __webpack_require__(11);
 	
 	var _WorkspacesList2 = _interopRequireDefault(_WorkspacesList);
 	
@@ -386,40 +388,14 @@
 	    var _this = _possibleConstructorReturn(this, (Startup.__proto__ || Object.getPrototypeOf(Startup)).call(this));
 	
 	    _this.state = { tab: 'popular', searchTerm: '' };
-	
 	    _this.handleSearchChange = (0, _lodash2.default)(_this.handleSearchChange.bind(_this), 500);
 	    return _this;
 	  }
 	
 	  _createClass(Startup, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      if (_jsreportStudio2.default.playground.startupReloadTrigger) {
-	        _jsreportStudio2.default.playground.startupReloadTrigger = false;
-	      }
-	
-	      this.refresh();
-	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      if (_jsreportStudio2.default.playground.startupReloadTrigger) {
-	        _jsreportStudio2.default.playground.startupReloadTrigger = false;
-	
-	        this.refresh();
-	      }
-	    }
-	  }, {
-	    key: 'refresh',
-	    value: function refresh() {
-	      this.setState({
-	        refreshKey: _shortid2.default.generate()
-	      });
-	    }
-	  }, {
 	    key: 'handleSearchChange',
 	    value: function handleSearchChange() {
-	      this.refresh();
+	      this.setState({ searchRefreshKey: this.state.searchTerm });
 	    }
 	  }, {
 	    key: 'handleRemove',
@@ -429,19 +405,23 @@
 	      });
 	    }
 	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      if (_jsreportStudio2.default.playground.startupReloadTrigger) {
+	        _jsreportStudio2.default.playground.startupReloadTrigger = false;
+	        // eslint-disable-next-line
+	        this.setState({ refreshKey: Date.now() });
+	      }
+	    }
+	  }, {
 	    key: 'renderPinnedExamples',
 	    value: function renderPinnedExamples() {
-	      var refreshKey = this.state.refreshKey;
-	
-	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(_WorkspacesList2.default, {
-	          key: refreshKey,
-	          resolveUrl: function resolveUrl(pageNumber) {
-	            return '/api/playground/workspaces/examples?pageNumber=' + pageNumber;
-	          },
+	          key: 'examples-' + this.state.refreshKey,
+	          url: '/api/playground/workspaces/examples',
 	          onRemove: this.handleRemove
 	        })
 	      );
@@ -449,17 +429,12 @@
 	  }, {
 	    key: 'renderPopularWorkspaces',
 	    value: function renderPopularWorkspaces() {
-	      var refreshKey = this.state.refreshKey;
-	
-	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(_WorkspacesList2.default, {
-	          key: refreshKey,
-	          resolveUrl: function resolveUrl(pageNumber) {
-	            return '/api/playground/workspaces/popular?pageNumber=' + pageNumber;
-	          },
+	          key: 'popular-' + this.state.refreshKey,
+	          url: '/api/playground/workspaces/popular',
 	          onRemove: this.handleRemove
 	        })
 	      );
@@ -472,17 +447,12 @@
 	  }, {
 	    key: 'renderForUser',
 	    value: function renderForUser() {
-	      var refreshKey = this.state.refreshKey;
-	
-	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(_WorkspacesList2.default, {
-	          key: refreshKey,
-	          resolveUrl: function resolveUrl(pageNumber) {
-	            return '/api/playground/workspaces/user/' + _jsreportStudio2.default.playground.user._id + '?pageNumber=' + pageNumber;
-	          },
+	          key: 'users-' + this.state.refreshKey,
+	          url: '/api/playground/workspaces/user/' + _jsreportStudio2.default.playground.user._id,
 	          onRemove: this.handleRemove
 	        })
 	      );
@@ -526,21 +496,13 @@
 	      );
 	    }
 	  }, {
-	    key: 'resolveSearchUrl',
-	    value: function resolveSearchUrl() {
-	      var searchTerm = this.state.searchTerm;
-	
-	
-	      return '/api/playground/search?q=' + encodeURIComponent(searchTerm != null ? searchTerm : '');
-	    }
-	  }, {
 	    key: 'renderSearch',
 	    value: function renderSearch() {
 	      var _this2 = this;
 	
 	      var _state = this.state,
 	          searchTerm = _state.searchTerm,
-	          refreshKey = _state.refreshKey;
+	          searchRefreshKey = _state.searchRefreshKey;
 	
 	
 	      return _react2.default.createElement(
@@ -567,11 +529,8 @@
 	          'div',
 	          null,
 	          _react2.default.createElement(_WorkspacesList2.default, {
-	            key: refreshKey,
-	            ref: 'searchList',
-	            resolveUrl: function resolveUrl(pageNumber) {
-	              return _this2.resolveSearchUrl();
-	            },
+	            key: 'search-' + searchRefreshKey + '-' + this.state.refreshKey,
+	            url: '/api/playground/search?q=' + encodeURIComponent(searchTerm != null ? searchTerm : ''),
 	            editable: false
 	          })
 	        )
@@ -647,22 +606,6 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'buton',
-	            {
-	              className: 'button confirmation',
-	              style: { display: 'inline-block', marginLeft: 0, marginBottom: '1rem' },
-	              onClick: function onClick() {
-	                return _this3.refresh();
-	              }
-	            },
-	            _react2.default.createElement('i', { className: 'fa fa-refresh' }),
-	            ' Refresh'
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
 	          { className: _style2.default.tabs },
 	          _react2.default.createElement(
 	            'div',
@@ -713,376 +656,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	module.exports = __webpack_require__(5);
-
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var alphabet = __webpack_require__(6);
-	var encode = __webpack_require__(8);
-	var decode = __webpack_require__(10);
-	var build = __webpack_require__(11);
-	var isValid = __webpack_require__(12);
-	
-	// if you are using cluster or multiple servers use this to make each instance
-	// has a unique value for worker
-	// Note: I don't know if this is automatically set when using third
-	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(13) || 0;
-	
-	/**
-	 * Set the seed.
-	 * Highly recommended if you don't want people to try to figure out your id schema.
-	 * exposed as shortid.seed(int)
-	 * @param seed Integer value to seed the random alphabet.  ALWAYS USE THE SAME SEED or you might get overlaps.
-	 */
-	function seed(seedValue) {
-	    alphabet.seed(seedValue);
-	    return module.exports;
-	}
-	
-	/**
-	 * Set the cluster worker or machine id
-	 * exposed as shortid.worker(int)
-	 * @param workerId worker must be positive integer.  Number less than 16 is recommended.
-	 * returns shortid module so it can be chained.
-	 */
-	function worker(workerId) {
-	    clusterWorkerId = workerId;
-	    return module.exports;
-	}
-	
-	/**
-	 *
-	 * sets new characters to use in the alphabet
-	 * returns the shuffled alphabet
-	 */
-	function characters(newCharacters) {
-	    if (newCharacters !== undefined) {
-	        alphabet.characters(newCharacters);
-	    }
-	
-	    return alphabet.shuffled();
-	}
-	
-	/**
-	 * Generate unique id
-	 * Returns string id
-	 */
-	function generate() {
-	  return build(clusterWorkerId);
-	}
-	
-	// Export all other functions as properties of the generate function
-	module.exports = generate;
-	module.exports.generate = generate;
-	module.exports.seed = seed;
-	module.exports.worker = worker;
-	module.exports.characters = characters;
-	module.exports.decode = decode;
-	module.exports.isValid = isValid;
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var randomFromSeed = __webpack_require__(7);
-	
-	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
-	var alphabet;
-	var previousSeed;
-	
-	var shuffled;
-	
-	function reset() {
-	    shuffled = false;
-	}
-	
-	function setCharacters(_alphabet_) {
-	    if (!_alphabet_) {
-	        if (alphabet !== ORIGINAL) {
-	            alphabet = ORIGINAL;
-	            reset();
-	        }
-	        return;
-	    }
-	
-	    if (_alphabet_ === alphabet) {
-	        return;
-	    }
-	
-	    if (_alphabet_.length !== ORIGINAL.length) {
-	        throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. You submitted ' + _alphabet_.length + ' characters: ' + _alphabet_);
-	    }
-	
-	    var unique = _alphabet_.split('').filter(function(item, ind, arr){
-	       return ind !== arr.lastIndexOf(item);
-	    });
-	
-	    if (unique.length) {
-	        throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. These characters were not unique: ' + unique.join(', '));
-	    }
-	
-	    alphabet = _alphabet_;
-	    reset();
-	}
-	
-	function characters(_alphabet_) {
-	    setCharacters(_alphabet_);
-	    return alphabet;
-	}
-	
-	function setSeed(seed) {
-	    randomFromSeed.seed(seed);
-	    if (previousSeed !== seed) {
-	        reset();
-	        previousSeed = seed;
-	    }
-	}
-	
-	function shuffle() {
-	    if (!alphabet) {
-	        setCharacters(ORIGINAL);
-	    }
-	
-	    var sourceArray = alphabet.split('');
-	    var targetArray = [];
-	    var r = randomFromSeed.nextValue();
-	    var characterIndex;
-	
-	    while (sourceArray.length > 0) {
-	        r = randomFromSeed.nextValue();
-	        characterIndex = Math.floor(r * sourceArray.length);
-	        targetArray.push(sourceArray.splice(characterIndex, 1)[0]);
-	    }
-	    return targetArray.join('');
-	}
-	
-	function getShuffled() {
-	    if (shuffled) {
-	        return shuffled;
-	    }
-	    shuffled = shuffle();
-	    return shuffled;
-	}
-	
-	/**
-	 * lookup shuffled letter
-	 * @param index
-	 * @returns {string}
-	 */
-	function lookup(index) {
-	    var alphabetShuffled = getShuffled();
-	    return alphabetShuffled[index];
-	}
-	
-	module.exports = {
-	    characters: characters,
-	    seed: setSeed,
-	    lookup: lookup,
-	    shuffled: getShuffled
-	};
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	// Found this seed-based random generator somewhere
-	// Based on The Central Randomizer 1.3 (C) 1997 by Paul Houle (houle@msc.cornell.edu)
-	
-	var seed = 1;
-	
-	/**
-	 * return a random number based on a seed
-	 * @param seed
-	 * @returns {number}
-	 */
-	function getNextValue() {
-	    seed = (seed * 9301 + 49297) % 233280;
-	    return seed/(233280.0);
-	}
-	
-	function setSeed(_seed_) {
-	    seed = _seed_;
-	}
-	
-	module.exports = {
-	    nextValue: getNextValue,
-	    seed: setSeed
-	};
-
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var randomByte = __webpack_require__(9);
-	
-	function encode(lookup, number) {
-	    var loopCounter = 0;
-	    var done;
-	
-	    var str = '';
-	
-	    while (!done) {
-	        str = str + lookup( ( (number >> (4 * loopCounter)) & 0x0f ) | randomByte() );
-	        done = number < (Math.pow(16, loopCounter + 1 ) );
-	        loopCounter++;
-	    }
-	    return str;
-	}
-	
-	module.exports = encode;
-
-
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	var crypto = typeof window === 'object' && (window.crypto || window.msCrypto); // IE 11 uses window.msCrypto
-	
-	function randomByte() {
-	    if (!crypto || !crypto.getRandomValues) {
-	        return Math.floor(Math.random() * 256) & 0x30;
-	    }
-	    var dest = new Uint8Array(1);
-	    crypto.getRandomValues(dest);
-	    return dest[0] & 0x30;
-	}
-	
-	module.exports = randomByte;
-
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var alphabet = __webpack_require__(6);
-	
-	/**
-	 * Decode the id to get the version and worker
-	 * Mainly for debugging and testing.
-	 * @param id - the shortid-generated id.
-	 */
-	function decode(id) {
-	    var characters = alphabet.shuffled();
-	    return {
-	        version: characters.indexOf(id.substr(0, 1)) & 0x0f,
-	        worker: characters.indexOf(id.substr(1, 1)) & 0x0f
-	    };
-	}
-	
-	module.exports = decode;
-
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var encode = __webpack_require__(8);
-	var alphabet = __webpack_require__(6);
-	
-	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
-	// This number should be updated every year or so to keep the generated id short.
-	// To regenerate `new Date() - 0` and bump the version. Always bump the version!
-	var REDUCE_TIME = 1459707606518;
-	
-	// don't change unless we change the algos or REDUCE_TIME
-	// must be an integer and less than 16
-	var version = 6;
-	
-	// Counter is used when shortid is called multiple times in one second.
-	var counter;
-	
-	// Remember the last time shortid was called in case counter is needed.
-	var previousSeconds;
-	
-	/**
-	 * Generate unique id
-	 * Returns string id
-	 */
-	function build(clusterWorkerId) {
-	
-	    var str = '';
-	
-	    var seconds = Math.floor((Date.now() - REDUCE_TIME) * 0.001);
-	
-	    if (seconds === previousSeconds) {
-	        counter++;
-	    } else {
-	        counter = 0;
-	        previousSeconds = seconds;
-	    }
-	
-	    str = str + encode(alphabet.lookup, version);
-	    str = str + encode(alphabet.lookup, clusterWorkerId);
-	    if (counter > 0) {
-	        str = str + encode(alphabet.lookup, counter);
-	    }
-	    str = str + encode(alphabet.lookup, seconds);
-	
-	    return str;
-	}
-	
-	module.exports = build;
-
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	var alphabet = __webpack_require__(6);
-	
-	function isShortId(id) {
-	    if (!id || typeof id !== 'string' || id.length < 6 ) {
-	        return false;
-	    }
-	
-	    var characters = alphabet.characters();
-	    var len = id.length;
-	    for(var i = 0; i < len;i++) {
-	        if (characters.indexOf(id[i]) === -1) {
-	            return false;
-	        }
-	    }
-	    return true;
-	}
-	
-	module.exports = isShortId;
-
-
-/***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = 0;
-
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -1129,16 +702,16 @@
 	};
 
 /***/ },
-/* 15 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(16);
+	var content = __webpack_require__(6);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(18)(content, {});
+	var update = __webpack_require__(8)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -1155,10 +728,10 @@
 	}
 
 /***/ },
-/* 16 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(17)();
+	exports = module.exports = __webpack_require__(7)();
 	// imports
 	
 	
@@ -1178,7 +751,7 @@
 	};
 
 /***/ },
-/* 17 */
+/* 7 */
 /***/ function(module, exports) {
 
 	/*
@@ -1234,7 +807,7 @@
 
 
 /***/ },
-/* 18 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -1486,7 +1059,7 @@
 
 
 /***/ },
-/* 19 */
+/* 9 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -1870,7 +1443,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 20 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1991,7 +1564,7 @@
 	exports.default = DeleteWorkspaceModal;
 
 /***/ },
-/* 21 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2010,13 +1583,9 @@
 	
 	var _jsreportStudio2 = _interopRequireDefault(_jsreportStudio);
 	
-	var _style = __webpack_require__(15);
+	var _style = __webpack_require__(5);
 	
 	var _style2 = _interopRequireDefault(_style);
-	
-	var _reactList = __webpack_require__(22);
-	
-	var _reactList2 = _interopRequireDefault(_reactList);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -2036,8 +1605,6 @@
 	
 	    var _this = _possibleConstructorReturn(this, (WorkspacesList.__proto__ || Object.getPrototypeOf(WorkspacesList)).call(this));
 	
-	    _this.loading = false;
-	    _this.mounted = false;
 	    _this.state = _this.initialState();
 	    _this.tryHide = _this.tryHide.bind(_this);
 	    return _this;
@@ -2046,13 +1613,12 @@
 	  _createClass(WorkspacesList, [{
 	    key: 'initialState',
 	    value: function initialState() {
-	      return { items: [], count: 0, pageNumber: 0 };
+	      return { items: [] };
 	    }
 	  }, {
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      this.mounted = true;
-	      this.lazyFetch();
+	      this.fetch();
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -2062,7 +1628,6 @@
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      this.mounted = false;
 	      window.removeEventListener('click', this.tryHide);
 	    }
 	  }, {
@@ -2081,7 +1646,7 @@
 	      }
 	    }
 	  }, {
-	    key: 'lazyFetch',
+	    key: 'fetch',
 	    value: function () {
 	      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
 	        var response;
@@ -2089,86 +1654,30 @@
 	          while (1) {
 	            switch (_context.prev = _context.next) {
 	              case 0:
-	                if (!this.loading) {
-	                  _context.next = 2;
-	                  break;
-	                }
-	
-	                return _context.abrupt('return');
+	                _context.next = 2;
+	                return _jsreportStudio2.default.api.get(this.props.url);
 	
 	              case 2:
-	                response = void 0;
-	
-	                this.loading = true;
-	                _context.prev = 4;
-	                _context.next = 7;
-	                return _jsreportStudio2.default.api.get(this.props.resolveUrl(this.state.pageNumber));
-	
-	              case 7:
 	                response = _context.sent;
 	
-	              case 8:
-	                _context.prev = 8;
-	
-	                this.loading = false;
-	                return _context.finish(8);
-	
-	              case 11:
-	                if (this.mounted) {
-	                  _context.next = 13;
-	                  break;
-	                }
-	
-	                return _context.abrupt('return');
-	
-	              case 13:
-	
 	                this.setState({
-	                  items: this.state.items.concat(response.items),
-	                  count: response.count,
-	                  pageNumber: this.state.pageNumber + 1
+	                  items: this.state.items.concat(response.items)
 	                });
 	
-	                if (this.state.items.length <= this.state.pending && response.count) {
-	                  this.lazyFetch();
-	                }
-	
-	              case 15:
+	              case 4:
 	              case 'end':
 	                return _context.stop();
 	            }
 	          }
-	        }, _callee, this, [[4,, 8, 11]]);
+	        }, _callee, this);
 	      }));
 	
-	      function lazyFetch() {
+	      function fetch() {
 	        return _ref.apply(this, arguments);
 	      }
 	
-	      return lazyFetch;
+	      return fetch;
 	    }()
-	  }, {
-	    key: 'tryRenderItem',
-	    value: function tryRenderItem(index) {
-	      var w = this.state.items[index];
-	
-	      if (!w) {
-	        this.state.pending = Math.max(this.state.pending, index);
-	        this.lazyFetch();
-	
-	        return _react2.default.createElement(
-	          'tr',
-	          { key: index },
-	          _react2.default.createElement(
-	            'td',
-	            null,
-	            _react2.default.createElement('i', { className: 'fa fa-spinner fa-spin fa-fw' })
-	          )
-	        );
-	      }
-	
-	      return this.renderItem(w, index);
-	    }
 	  }, {
 	    key: 'openUser',
 	    value: function openUser(e, u) {
@@ -2211,7 +1720,7 @@
 	    }
 	  }, {
 	    key: 'renderItem',
-	    value: function renderItem(w, index) {
+	    value: function renderItem(w) {
 	      var _this3 = this;
 	
 	      var contextMenuId = this.state.contextMenuId;
@@ -2275,11 +1784,15 @@
 	      );
 	    }
 	  }, {
-	    key: 'renderTable',
-	    value: function renderTable(items, ref) {
+	    key: 'render',
+	    value: function render() {
+	      var _this4 = this;
+	
+	      var items = this.state.items;
+	
 	      return _react2.default.createElement(
 	        'table',
-	        { className: 'table ' + _style2.default.workspacesTable, ref: ref },
+	        { className: 'table ' + _style2.default.workspacesTable },
 	        _react2.default.createElement(
 	          'thead',
 	          null,
@@ -2308,23 +1821,11 @@
 	        _react2.default.createElement(
 	          'tbody',
 	          null,
-	          items
+	          items.map(function (i) {
+	            return _this4.renderItem(i);
+	          })
 	        )
 	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this4 = this;
-	
-	      return _react2.default.createElement(_reactList2.default, {
-	        type: 'uniform',
-	        itemsRenderer: this.renderTable,
-	        itemRenderer: function itemRenderer(index) {
-	          return _this4.tryRenderItem(index);
-	        },
-	        length: this.state.count
-	      });
 	    }
 	  }]);
 	
@@ -2334,13 +1835,7 @@
 	exports.default = WorkspacesList;
 
 /***/ },
-/* 22 */
-/***/ function(module, exports) {
-
-	module.exports = Studio.libraries['react-list'];
-
-/***/ },
-/* 23 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2433,7 +1928,7 @@
 	exports.default = ToolbarSaveForkButton;
 
 /***/ },
-/* 24 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2500,7 +1995,7 @@
 	exports.default = LogoutButton;
 
 /***/ },
-/* 25 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2530,14 +2025,14 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _login = __webpack_require__(14);
+	var _login = __webpack_require__(4);
 	
 	var _login2 = _interopRequireDefault(_login);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 26 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2552,7 +2047,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _login = __webpack_require__(14);
+	var _login = __webpack_require__(4);
 	
 	var _login2 = _interopRequireDefault(_login);
 	
@@ -2668,7 +2163,7 @@
 	exports.default = SaveModal;
 
 /***/ },
-/* 27 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2734,7 +2229,7 @@
 	exports.default = ShareModal;
 
 /***/ },
-/* 28 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2867,7 +2362,7 @@
 	exports.default = SaveModal;
 
 /***/ },
-/* 29 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3220,7 +2715,7 @@
 	};
 
 /***/ },
-/* 30 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3235,7 +2730,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _WorkspacesList = __webpack_require__(21);
+	var _WorkspacesList = __webpack_require__(11);
 	
 	var _WorkspacesList2 = _interopRequireDefault(_WorkspacesList);
 	
@@ -3277,9 +2772,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          null,
-	          _react2.default.createElement(_WorkspacesList2.default, { resolveUrl: function resolveUrl(pageNumber) {
-	              return '/api/playground/workspaces/user/' + user._id + '?pageNumber=' + pageNumber;
-	            } })
+	          _react2.default.createElement(_WorkspacesList2.default, { url: '/api/playground/workspaces/user/' + user._id })
 	        )
 	      );
 	    }
@@ -3291,7 +2784,7 @@
 	exports.default = Startup;
 
 /***/ },
-/* 31 */
+/* 20 */
 /***/ function(module, exports) {
 
 	'use strict';
