@@ -17,7 +17,7 @@
     "appPath": "/",
     "extensions": {
         "worker-docker-manager": {
-          "containerImage": "jsreport/jsreport-worker",
+          "containerImage": "jsreport/playground-worker",
           "containerNamePrefix": "playground_worker",
           "network": "nw_playground_workers_docker_manager",
           "subnet": "182.30.0.0/24"
@@ -73,6 +73,9 @@
         },
         "licensing": {
             "enabled": false
+        },
+        "xlsx": {  
+            "showExcelOnlineWarning": false          
         }
     }
 }
