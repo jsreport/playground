@@ -36,8 +36,7 @@
                 "clientSecret": "<fill>"
             }
         },
-        "mongodb-store": {
-            "address": "localhost",
+        "mongodb-store": {        
             "databaseName" : "playground"
         },
         "fs-store": {
