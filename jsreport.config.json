@@ -17,7 +17,7 @@
     "appPath": "/",
     "extensions": {
         "worker-docker-manager": {
-          "containerImage": "jsreport/playground-worker",
+          "containerImage": "jsreport/playground-worker:0.1.0",
           "containerNamePrefix": "playground_worker",
           "network": "nw_playground_workers_docker_manager",
           "subnet": "182.30.0.0/24"
