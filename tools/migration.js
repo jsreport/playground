@@ -8,6 +8,7 @@ async function migrate () {
   const db = client.db(database)
 
   console.log('adding user and modificationDate')
+
   await db.collection('workspaces').updateMany({}, {$set: { userId: 'migration', modificationDate: new Date() }})
   console.log('recalculating workspace shortid')
   const workspaces = await db.collection('workspaces').find({}).project({ _id: 1, shortid: 1, version: 1 }).toArray()
@@ -18,9 +19,6 @@ async function migrate () {
       console.log(`processing ${wCounter}/${workspaces.length}`)
     }
     cache[`${w.shortid}-${w.version}`] = w._id.toString()
-    if (w.shortid.length !== 9) {
-      continue
-    }
     await db.collection('workspaces').update({_id: w._id}, {$set: {shortid: `${w.shortid}-${w.version}`}})
   }
 
