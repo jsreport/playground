@@ -120,9 +120,7 @@ Studio.readyListeners.push(async () => {
   }
 
   const entities = Studio.getAllEntities()
-  if (entities.length < 5) {
-    await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
-  }
+  await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
 
   if (entities.length > 0) {
     Studio.openTab({ _id: entities[0]._id })
