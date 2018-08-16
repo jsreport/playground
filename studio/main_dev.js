@@ -59,6 +59,7 @@ Studio.readyListeners.push(async () => {
   if (!isEmbed) {
     Studio.addToolbarComponent((props) => (
       <ToolbarSaveForkButton
+        enabled={Studio.getAllEntities().some(e => e.__isDirty)}
         canEdit={Studio.playground.current.__isInitial ? true : Studio.playground.current.canEdit}
         save={save}
       />

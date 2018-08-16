@@ -27,11 +27,11 @@ class ToolbarSaveForkButton extends Component {
   }
 
   render () {
-    const { save, canEdit } = this.props
+    const { save, canEdit, enabled } = this.props
 
     return (
       <div
-        className='toolbar-button' onClick={() => save()}>
+        className={'toolbar-button ' + (!enabled && canEdit ? 'disabled' : '')} onClick={() => save()}>
         {canEdit
           ? <span title='Save workspace (CTRL+S)'><i className='fa fa-floppy-o' /> Save</span>
           : <span title='Fork workspace'><i className='fa fa-clone' /> Fork</span>}
