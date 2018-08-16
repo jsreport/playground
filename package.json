@@ -45,7 +45,9 @@
     "passport-github": "1.1.0",
     "passport-twitter": "1.0.4",
     "phantomjs-exact-2-1-1": "0.1.0",
-    "slugify": "1.3.0"
+    "slugify": "1.3.0",
+    "winston": "2.4.0",
+    "winston-loggly": "1.3.1"
   },
   "devDependencies": {
     "eslint": "4.19.1",

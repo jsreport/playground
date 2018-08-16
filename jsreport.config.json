@@ -14,11 +14,17 @@
     "chrome": {
         "timeout": 30000
     },
+    "loggly": {
+        "level": "info",
+        "subdomain": "jsreport"        
+    },
     "appPath": "/",
     "extensions": {
         "worker-docker-manager": {
-          "containerImage": "jsreport/playground-worker:0.1.0",
+          "containerImage": "jsreport/playground-worker:0.2.0",
           "containerNamePrefix": "playground_worker",
+          "containerMemory": "200m",
+          "containerMemorySwap": "200m",
           "network": "nw_playground_workers_docker_manager",
           "subnet": "182.30.0.0/24"
         },
@@ -37,7 +43,7 @@
             }
         },
         "mongodb-store": {        
-            "databaseName" : "playground"
+           "databaseName" : "playground"        
         },
         "fs-store": {
            "syncModifications": false

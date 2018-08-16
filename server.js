@@ -1,3 +1,6 @@
+const winston = require('winston')
+require('winston-loggly')
+
 process.env.extensions_workerDockerManager_discriminatorPath = 'context.clientIp'
 
 if (process.env.NODE_ENV === 'jsreport-development') {
@@ -15,6 +18,14 @@ if (process.env.JSREPORT_CLI) {
   jsreport.__electron_html_to__ = () => { }
 
   jsreport.init().then(() => {
+    // cannot use afterConfigLoaded because it is used in jsreport package
+    jsreport.logger.add(winston.transports.Loggly, {
+      level: jsreport.options.loggly.level,
+      token: jsreport.options.loggly.token,
+      subdomain: jsreport.options.loggly.subdomain,
+      json: true,
+      tags: ['playground']
+    })
     // running
   }).catch((e) => {
     // error during startup
