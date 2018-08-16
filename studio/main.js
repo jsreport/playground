@@ -186,6 +186,9 @@
 	          if (!isEmbed) {
 	            _jsreportStudio2.default.addToolbarComponent(function (props) {
 	              return _react2.default.createElement(_ToolbarSaveForkButton2.default, {
+	                enabled: _jsreportStudio2.default.getAllEntities().some(function (e) {
+	                  return e.__isDirty;
+	                }),
 	                canEdit: _jsreportStudio2.default.playground.current.__isInitial ? true : _jsreportStudio2.default.playground.current.canEdit,
 	                save: save
 	              });
@@ -284,18 +287,12 @@
 	          }
 	
 	          entities = _jsreportStudio2.default.getAllEntities();
-	
-	          if (!(entities.length < 5)) {
-	            _context2.next = 8;
-	            break;
-	          }
-	
-	          _context2.next = 8;
+	          _context2.next = 7;
 	          return Promise.all(entities.map(function (v) {
 	            return _jsreportStudio2.default.openTab({ _id: v._id });
 	          }));
 	
-	        case 8:
+	        case 7:
 	
 	          if (entities.length > 0) {
 	            _jsreportStudio2.default.openTab({ _id: entities[0]._id });
@@ -311,7 +308,7 @@
 	            }
 	          }
 	
-	        case 10:
+	        case 9:
 	        case 'end':
 	          return _context2.stop();
 	      }
@@ -387,7 +384,10 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Startup.__proto__ || Object.getPrototypeOf(Startup)).call(this));
 	
-	    _this.state = { tab: 'popular', searchTerm: '' };
+	    _this.state = {
+	      tab: _jsreportStudio2.default.playground.user ? 'my' : 'examples',
+	      searchTerm: ''
+	    };
 	    _this.handleSearchChange = (0, _lodash2.default)(_this.handleSearchChange.bind(_this), 500);
 	    return _this;
 	  }
@@ -1898,13 +1898,14 @@
 	    value: function render() {
 	      var _props = this.props,
 	          save = _props.save,
-	          canEdit = _props.canEdit;
+	          canEdit = _props.canEdit,
+	          enabled = _props.enabled;
 	
 	
 	      return _react2.default.createElement(
 	        'div',
 	        {
-	          className: 'toolbar-button', onClick: function onClick() {
+	          className: 'toolbar-button ' + (!enabled && canEdit ? 'disabled' : ''), onClick: function onClick() {
 	            return save();
 	          } },
 	        canEdit ? _react2.default.createElement(
@@ -2202,22 +2203,38 @@
 	        'div',
 	        { style: { padding: '1.5rem' } },
 	        _react2.default.createElement(
+	          'h3',
+	          null,
+	          'simple link'
+	        ),
+	        _react2.default.createElement(
 	          'p',
 	          null,
+	          'You can just copy paste browser url to share the playground workspace:',
+	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
-	            'b',
-	            null,
-	            _react2.default.createElement('i', { className: 'fa fa-code' }),
-	            '\xA0Use the following code to embed your workspace in another page:'
+	            'a',
+	            { href: '{window.location.href}' },
+	            window.location.href
 	          )
 	        ),
-	        _react2.default.createElement('br', null),
 	        _react2.default.createElement(
-	          'code',
-	          { style: { backgroundColor: 'wheat' } },
-	          '<iframe src="',
-	          window.location.href,
-	          '?embed=1" width="100%" height="400" frameborder="0"></iframe>'
+	          'h3',
+	          null,
+	          'embed into website'
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          'If you want embed playgorund into another page, you can use this html code:',
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(
+	            'code',
+	            { style: { backgroundColor: 'wheat' } },
+	            '<iframe src="',
+	            window.location.href,
+	            '?embed=1" width="100%" height="400" frameborder="0"></iframe>'
+	          )
 	        )
 	      );
 	    }
@@ -2305,11 +2322,11 @@
 	          ),
 	          _react2.default.createElement(
 	            'select',
-	            { ref: 'defaultEntity' },
+	            { ref: 'defaultEntity', value: _jsreportStudio2.default.playground.current.default },
 	            _jsreportStudio2.default.getAllEntities().map(function (e) {
 	              return _react2.default.createElement(
 	                'option',
-	                { key: e._id, value: e._id },
+	                { key: e._id, value: e.shortid },
 	                e.name + ' (' + e.__entitySet + ')'
 	              );
 	            })
@@ -2382,17 +2399,7 @@
 	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 	
 	function updateTitle(workspaceName) {
-	  var separatorIndex = document.title.lastIndexOf('|');
-	
-	  if (!workspaceName) {
-	    document.title = document.title.slice(separatorIndex + 2);
-	  } else {
-	    if (separatorIndex === -1) {
-	      document.title = workspaceName + ' | ' + document.title;
-	    } else {
-	      document.title = workspaceName + ' | ' + document.title.slice(separatorIndex + 2);
-	    }
-	  }
+	  document.title = workspaceName || 'jsreport playground';
 	}
 	
 	exports.default = function () {
@@ -2650,15 +2657,16 @@
 	          while (1) {
 	            switch (_context5.prev = _context5.next) {
 	              case 0:
+	                updateTitle(null);
 	                _this5.current = { canEdit: true, __isInitial: true };
-	                _context5.next = 3;
+	                _context5.next = 4;
 	                return _jsreportStudio2.default.reset();
 	
-	              case 3:
+	              case 4:
 	                _jsreportStudio2.default.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' });
 	                _jsreportStudio2.default.openNewModal('templates');
 	
-	              case 5:
+	              case 6:
 	              case 'end':
 	                return _context5.stop();
 	            }
