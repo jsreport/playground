@@ -2,17 +2,7 @@
 import Studio from 'jsreport-studio'
 
 function updateTitle (workspaceName) {
-  const separatorIndex = document.title.lastIndexOf('|')
-
-  if (!workspaceName) {
-    document.title = document.title.slice(separatorIndex + 2)
-  } else {
-    if (separatorIndex === -1) {
-      document.title = `${workspaceName} | ${document.title}`
-    } else {
-      document.title = `${workspaceName} | ${document.title.slice(separatorIndex + 2)}`
-    }
-  }
+  document.title = workspaceName || 'jsreport playground'
 }
 
 export default () => ({
@@ -120,6 +110,7 @@ export default () => ({
   },
 
   async create () {
+    updateTitle(null)
     this.current = { canEdit: true, __isInitial: true }
     await Studio.reset()
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
