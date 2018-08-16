@@ -16,7 +16,7 @@ export default class SaveModal extends Component {
         <label>default entity</label>
         <select ref='defaultEntity'>
           {Studio.getAllEntities().map((e) =>
-            <option key={e._id} value={e._id}>{e.name + ' (' + e.__entitySet + ')'}</option>
+            <option key={e._id} value={e.shortid}>{e.name + ' (' + e.__entitySet + ')'}</option>
           )}
         </select>
       </div>
