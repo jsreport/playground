@@ -9,7 +9,10 @@ import WorskpacesList from './WorkspacesList'
 export default class Startup extends Component {
   constructor () {
     super()
-    this.state = { tab: 'popular', searchTerm: '' }
+    this.state = {
+      tab: Studio.playground.user ? 'my' : 'examples',
+      searchTerm: ''
+    }
     this.handleSearchChange = debounce(this.handleSearchChange.bind(this), 500)
   }
 
