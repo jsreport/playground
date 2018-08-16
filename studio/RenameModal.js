@@ -14,7 +14,7 @@ export default class SaveModal extends Component {
       </div>
       <div className='form-group'>
         <label>default entity</label>
-        <select ref='defaultEntity'>
+        <select ref='defaultEntity' value={Studio.playground.current.default}>
           {Studio.getAllEntities().map((e) =>
             <option key={e._id} value={e.shortid}>{e.name + ' (' + e.__entitySet + ')'}</option>
           )}
