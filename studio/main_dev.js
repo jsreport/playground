@@ -121,11 +121,8 @@ Studio.readyListeners.push(async () => {
   }
 
   const entities = Studio.getAllEntities()
-  await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
 
-  if (entities.length > 0) {
-    Studio.openTab({ _id: entities[0]._id })
-  }
+  await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
 
   if (Studio.playground.current.default) {
     const defaultEntity = entities.find((e) => e.shortid === Studio.playground.current.default)

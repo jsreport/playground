@@ -294,10 +294,6 @@
 	
 	        case 7:
 	
-	          if (entities.length > 0) {
-	            _jsreportStudio2.default.openTab({ _id: entities[0]._id });
-	          }
-	
 	          if (_jsreportStudio2.default.playground.current.default) {
 	            defaultEntity = entities.find(function (e) {
 	              return e.shortid === _jsreportStudio2.default.playground.current.default;
@@ -308,7 +304,7 @@
 	            }
 	          }
 	
-	        case 9:
+	        case 8:
 	        case 'end':
 	          return _context2.stop();
 	      }
@@ -2624,7 +2620,7 @@
 	      var _this4 = this;
 	
 	      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-	        var entities;
+	        var entities, defaultEntity;
 	        return regeneratorRuntime.wrap(function _callee4$(_context4) {
 	          while (1) {
 	            switch (_context4.prev = _context4.next) {
@@ -2646,12 +2642,24 @@
 	              case 9:
 	                _jsreportStudio2.default.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' });
 	                entities = _jsreportStudio2.default.getAllEntities();
+	                _context4.next = 13;
+	                return Promise.all(entities.map(function (v) {
+	                  return _jsreportStudio2.default.openTab({ _id: v._id });
+	                }));
 	
-	                if (entities.length > 0) {
-	                  _jsreportStudio2.default.openTab({ _id: entities[0]._id });
+	              case 13:
+	
+	                if (_jsreportStudio2.default.playground.current.default) {
+	                  defaultEntity = entities.find(function (e) {
+	                    return e.shortid === _jsreportStudio2.default.playground.current.default;
+	                  });
+	
+	                  if (defaultEntity) {
+	                    _jsreportStudio2.default.openTab({ _id: defaultEntity._id });
+	                  }
 	                }
 	
-	              case 12:
+	              case 14:
 	              case 'end':
 	                return _context4.stop();
 	            }

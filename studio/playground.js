@@ -104,8 +104,13 @@ export default () => ({
     await Studio.reset()
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
     const entities = Studio.getAllEntities()
-    if (entities.length > 0) {
-      Studio.openTab({ _id: entities[0]._id })
+    await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
+
+    if (Studio.playground.current.default) {
+      const defaultEntity = entities.find((e) => e.shortid === Studio.playground.current.default)
+      if (defaultEntity) {
+        Studio.openTab({ _id: defaultEntity._id })
+      }
     }
   },
 
