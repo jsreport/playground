@@ -19,13 +19,15 @@ if (process.env.JSREPORT_CLI) {
 
   jsreport.init().then(() => {
     // cannot use afterConfigLoaded because it is used in jsreport package
-    jsreport.logger.add(winston.transports.Loggly, {
-      level: jsreport.options.loggly.level,
-      token: jsreport.options.loggly.token,
-      subdomain: jsreport.options.loggly.subdomain,
-      json: true,
-      tags: ['playground']
-    })
+    if (jsreport.options.loggly.token) {
+      jsreport.logger.add(winston.transports.Loggly, {
+        level: jsreport.options.loggly.level,
+        token: jsreport.options.loggly.token,
+        subdomain: jsreport.options.loggly.subdomain,
+        json: true,
+        tags: ['playground']
+      })
+    }
     // running
   }).catch((e) => {
     // error during startup

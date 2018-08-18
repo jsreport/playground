@@ -2278,13 +2278,21 @@
 	var SaveModal = function (_Component) {
 	  _inherits(SaveModal, _Component);
 	
-	  function SaveModal() {
+	  function SaveModal(props) {
 	    _classCallCheck(this, SaveModal);
 	
-	    return _possibleConstructorReturn(this, (SaveModal.__proto__ || Object.getPrototypeOf(SaveModal)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (SaveModal.__proto__ || Object.getPrototypeOf(SaveModal)).call(this, props));
+	
+	    _this.state = { default: _jsreportStudio2.default.playground.current.default };
+	    return _this;
 	  }
 	
 	  _createClass(SaveModal, [{
+	    key: 'change',
+	    value: function change(event) {
+	      this.setState({ default: event.target.value });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this2 = this;
@@ -2322,7 +2330,9 @@
 	          ),
 	          _react2.default.createElement(
 	            'select',
-	            { ref: 'defaultEntity', value: _jsreportStudio2.default.playground.current.default },
+	            { ref: 'defaultEntity', value: this.state.default, onChange: function onChange(e) {
+	                return _this2.change(e);
+	              } },
 	            _jsreportStudio2.default.getAllEntities().map(function (e) {
 	              return _react2.default.createElement(
 	                'option',
@@ -2346,7 +2356,7 @@
 	                      case 0:
 	                        _jsreportStudio2.default.playground.current.name = _this2.refs.name.value;
 	                        _jsreportStudio2.default.playground.current.description = _this2.refs.description.value;
-	                        _jsreportStudio2.default.playground.current.default = _this2.refs.defaultEntity.value;
+	                        _jsreportStudio2.default.playground.current.default = _this2.state.default;
 	
 	                        if (!_jsreportStudio2.default.playground.current._id) {
 	                          _context.next = 6;
