@@ -286,31 +286,26 @@
 	            _jsreportStudio2.default.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' });
 	          }
 	
-	          console.log('getting all entities');
 	          entities = _jsreportStudio2.default.getAllEntities();
-	
-	
-	          console.log('opening all tabs');
-	          _context2.next = 9;
+	          _context2.next = 7;
 	          return Promise.all(entities.map(function (v) {
 	            return _jsreportStudio2.default.openTab({ _id: v._id });
 	          }));
 	
-	        case 9:
+	        case 7:
 	
-	          console.log('the default is ' + _jsreportStudio2.default.playground.current.default);
 	          if (_jsreportStudio2.default.playground.current.default) {
 	            defaultEntity = entities.find(function (e) {
 	              return e.shortid === _jsreportStudio2.default.playground.current.default;
 	            });
 	
-	            console.log('found', defaultEntity);
+	
 	            if (defaultEntity) {
 	              _jsreportStudio2.default.openTab({ _id: defaultEntity._id });
 	            }
 	          }
 	
-	        case 11:
+	        case 8:
 	        case 'end':
 	          return _context2.stop();
 	      }
