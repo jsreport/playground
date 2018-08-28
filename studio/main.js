@@ -286,25 +286,31 @@
 	            _jsreportStudio2.default.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' });
 	          }
 	
+	          console.log('getting all entities');
 	          entities = _jsreportStudio2.default.getAllEntities();
-	          _context2.next = 7;
+	
+	
+	          console.log('opening all tabs');
+	          _context2.next = 9;
 	          return Promise.all(entities.map(function (v) {
 	            return _jsreportStudio2.default.openTab({ _id: v._id });
 	          }));
 	
-	        case 7:
+	        case 9:
 	
+	          console.log('the default is ' + _jsreportStudio2.default.playground.current.default);
 	          if (_jsreportStudio2.default.playground.current.default) {
 	            defaultEntity = entities.find(function (e) {
 	              return e.shortid === _jsreportStudio2.default.playground.current.default;
 	            });
 	
+	            console.log('found', defaultEntity);
 	            if (defaultEntity) {
 	              _jsreportStudio2.default.openTab({ _id: defaultEntity._id });
 	            }
 	          }
 	
-	        case 8:
+	        case 11:
 	        case 'end':
 	          return _context2.stop();
 	      }
@@ -2441,7 +2447,7 @@
 	      var _this2 = this;
 	
 	      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-	        var shouldInvokeSave, newEntities, entities, prevDefault, newDefault;
+	        var shouldInvokeSave, entities;
 	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
 	          while (1) {
 	            switch (_context2.prev = _context2.next) {
@@ -2463,15 +2469,12 @@
 	              case 6:
 	                _this2.lock = true;
 	                shouldInvokeSave = _this2.current.canEdit;
-	                newEntities = _jsreportStudio2.default.getAllEntities().filter(function (e) {
-	                  return e.__isNew;
-	                });
 	                entities = _jsreportStudio2.default.getAllEntities().filter(function (e) {
 	                  return e.__isLoaded;
 	                }).map(function (e) {
 	                  return _jsreportStudio2.default.entities.actions.prune(e);
 	                });
-	                _context2.next = 12;
+	                _context2.next = 11;
 	                return _jsreportStudio2.default.api.post('/api/playground/workspace', {
 	                  data: {
 	                    workspace: _extends({
@@ -2481,84 +2484,49 @@
 	                  }
 	                });
 	
-	              case 12:
+	              case 11:
 	                _this2.current = _context2.sent;
-	                _context2.next = 15;
+	                _context2.next = 14;
 	                return _jsreportStudio2.default.store.dispatch(_jsreportStudio2.default.editor.actions.updateHistory());
 	
-	              case 15:
+	              case 14:
 	                if (!shouldInvokeSave) {
-	                  _context2.next = 27;
+	                  _context2.next = 22;
 	                  break;
 	                }
 	
-	                prevDefault = newEntities.find(function (e) {
-	                  return e._id === _this2.current.default;
-	                });
-	                newDefault = void 0;
-	                _context2.next = 20;
+	                _context2.next = 17;
 	                return _jsreportStudio2.default.store.dispatch(_jsreportStudio2.default.editor.actions.saveAll());
 	
-	              case 20:
-	
-	                if (prevDefault) {
-	                  newDefault = _jsreportStudio2.default.getAllEntities().find(function (e) {
-	                    return e.shortid === prevDefault.shortid && e.name === prevDefault.name && e.__entitySet === prevDefault.__entitySet;
-	                  });
-	                }
-	
-	                if (!newDefault) {
-	                  _context2.next = 25;
-	                  break;
-	                }
-	
-	                _context2.next = 24;
-	                return _jsreportStudio2.default.api.post('/api/playground/workspace', {
-	                  data: {
-	                    workspace: _extends({}, _this2.current, {
-	                      default: newDefault._id
-	                    })
-	                  }
-	                });
-	
-	              case 24:
-	                _this2.current = _context2.sent;
-	
-	              case 25:
-	                _context2.next = 31;
-	                break;
-	
-	              case 27:
-	                _context2.next = 29;
-	                return _jsreportStudio2.default.reset();
-	
-	              case 29:
-	                _jsreportStudio2.default.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' });
-	                _jsreportStudio2.default.getAllEntities().forEach(function (e) {
-	                  return _jsreportStudio2.default.openTab({ _id: e._id });
-	                });
-	
-	              case 31:
-	                _context2.next = 33;
+	              case 17:
+	                _context2.next = 19;
 	                return _jsreportStudio2.default.api.get('api/playground/workspace');
 	
-	              case 33:
+	              case 19:
 	                _this2.current = _context2.sent;
+	                _context2.next = 24;
+	                break;
+	
+	              case 22:
+	                _context2.next = 24;
+	                return _this2.open(_this2.current);
+	
+	              case 24:
 	
 	                _this2.startupReloadTrigger = true;
 	
-	              case 35:
-	                _context2.prev = 35;
+	              case 25:
+	                _context2.prev = 25;
 	
 	                _this2.lock = false;
-	                return _context2.finish(35);
+	                return _context2.finish(25);
 	
-	              case 38:
+	              case 28:
 	              case 'end':
 	                return _context2.stop();
 	            }
 	          }
-	        }, _callee2, _this2, [[2,, 35, 38]]);
+	        }, _callee2, _this2, [[2,, 25, 28]]);
 	      }))();
 	    },
 	    like: function like() {

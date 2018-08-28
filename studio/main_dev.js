@@ -120,12 +120,16 @@ Studio.readyListeners.push(async () => {
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
   }
 
+  console.log('getting all entities')
   const entities = Studio.getAllEntities()
 
+  console.log('opening all tabs')
   await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
 
+  console.log('the default is ' + Studio.playground.current.default)
   if (Studio.playground.current.default) {
     const defaultEntity = entities.find((e) => e.shortid === Studio.playground.current.default)
+    console.log('found', defaultEntity)
     if (defaultEntity) {
       Studio.openTab({ _id: defaultEntity._id })
     }
