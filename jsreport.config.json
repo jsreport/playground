@@ -23,8 +23,8 @@
         "worker-docker-manager": {
           "containerImage": "jsreport/playground-worker:0.2.2",
           "containerNamePrefix": "playground_worker",
-          "containerMemory": "200m",
-          "containerMemorySwap": "200m",
+          "containerMemory": "320m",
+          "containerMemorySwap": "320m",
           "network": "nw_playground_workers_docker_manager",
           "subnet": "182.30.0.0/24"
         },
