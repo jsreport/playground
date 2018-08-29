@@ -21,7 +21,7 @@
     "appPath": "/",
     "extensions": {
         "worker-docker-manager": {
-          "containerImage": "jsreport/playground-worker:0.2.0",
+          "containerImage": "jsreport/playground-worker:0.2.2",
           "containerNamePrefix": "playground_worker",
           "containerMemory": "200m",
           "containerMemorySwap": "200m",
