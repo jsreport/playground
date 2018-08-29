@@ -9,7 +9,7 @@
     "build": "jsreport-studio-build",
     "start": "jsreport-studio-start --entry-point ./server.js"
   },
-  "version": "2.2.4",
+  "version": "2.2.5",
   "eslintIgnore": [
     "studio/main.js",
     "studio/main.js.map"
