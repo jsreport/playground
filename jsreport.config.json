@@ -16,12 +16,12 @@
     },
     "loggly": {
         "level": "info",
-        "subdomain": "jsreport"        
+        "subdomain": "jsreport"
     },
     "appPath": "/",
     "extensions": {
         "worker-docker-manager": {
-          "containerImage": "jsreport/playground-worker:0.2.2",
+          "containerImage": "jsreport/playground-worker:0.2.3",
           "containerNamePrefix": "playground_worker",
           "containerMemory": "320m",
           "containerMemorySwap": "320m",
@@ -42,7 +42,7 @@
                 "clientSecret": "<fill>"
             }
         },
-        "mongodb-store": {        
+        "mongodb-store": {
            "databaseName" : "playground"
         },
         "fs-store": {
@@ -79,8 +79,8 @@
         "licensing": {
             "enabled": false
         },
-        "xlsx": {  
-            "showExcelOnlineWarning": false          
+        "xlsx": {
+            "showExcelOnlineWarning": false
         }
     }
 }
