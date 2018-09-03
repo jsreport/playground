@@ -43,7 +43,8 @@
             }
         },
         "mongodb-store": {
-           "databaseName" : "playground"
+           "databaseName" : "playground",
+           "address": "localhost"
         },
         "fs-store": {
            "syncModifications": false
