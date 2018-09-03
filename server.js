@@ -1,9 +1,6 @@
 const winston = require('winston')
 require('winston-loggly')
 
-// just temporary hack until we release full jsreport
-require('rimraf').sync('node_modules/jsreport/node_modules/jsreport-core')
-
 if (!process.env.ip && !process.env.stack) {
   console.log('Using local ip address and localdev stack')
   process.env.ip = require('ip').address()

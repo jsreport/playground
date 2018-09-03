@@ -1,9 +1,6 @@
 const jsreport = require('jsreport')
 const should = require('should')
 
-// just temporary hack until we release full jsreport
-require('rimraf').sync('node_modules/jsreport/node_modules/jsreport-core')
-
 describe('playground', () => {
   let reporter
 
