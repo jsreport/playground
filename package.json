@@ -37,7 +37,7 @@
     "jsreport-studio": "2.1.1",
     "jsreport-version-control": "1.0.6",
     "jsreport-wkhtmltopdf": "2.0.3",
-    "jsreport-worker-docker-manager": "1.0.7",
+    "jsreport-worker-docker-manager": "1.0.9",
     "jsreport-xlsx": "2.0.1",
     "lodash.debounce": "4.0.8",
     "nanoid": "1.2.2",
