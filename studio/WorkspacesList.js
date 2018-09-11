@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 import style from './style.scss'
 
@@ -13,15 +13,13 @@ export default class WorkspacesList extends Component {
     return { items: [] }
   }
 
-  componentWillMount () {
-    this.fetch()
-  }
-
   componentDidMount () {
+    this.mounted = true
     window.addEventListener('click', this.tryHide)
   }
 
   componentWillUnmount () {
+    this.mounted = false
     window.removeEventListener('click', this.tryHide)
   }
 
@@ -38,11 +36,32 @@ export default class WorkspacesList extends Component {
     }
   }
 
+  onTabActive () {
+    this.fetch()
+  }
+
   async fetch () {
-    const response = await Studio.api.get(this.props.url)
-    this.setState({
-      items: this.state.items.concat(response.items)
-    })
+    if (this.fetchRequested) {
+      return
+    }
+
+    this.fetchRequested = true
+
+    let response
+
+    try {
+      response = await Studio.api.get(this.props.url)
+    } catch (e) {
+      throw e
+    } finally {
+      this.fetchRequested = false
+    }
+
+    if (this.mounted) {
+      this.setState({
+        items: response.items
+      })
+    }
   }
 
   openUser (e, u) {
@@ -103,7 +122,7 @@ export default class WorkspacesList extends Component {
           {w.name}
           {editable !== false && contextMenuId === w._id ? this.renderContextMenu(w) : null}
         </td>
-        <td onClick={(e) => contextMenuId == null && this.openUser(e, w.user)} style={{color: '#007ACC'}}>
+        <td onClick={(e) => contextMenuId == null && this.openUser(e, w.user)} style={{ color: '#007ACC' }}>
           {w.user ? w.user.fullName : ''}
           {isOwner && <i className='fa fa-bolt' title='You are the owner of this workspace' />}
         </td>

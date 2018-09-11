@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 import login from './login.js'
 import style from './style.scss'
@@ -17,7 +17,7 @@ export default class Startup extends Component {
   }
 
   handleSearchChange () {
-    this.setState({ searchRefreshKey: this.state.searchTerm })
+    this.reloadTab(this.state.tab)
   }
 
   handleRemove (w) {
@@ -26,11 +26,31 @@ export default class Startup extends Component {
     })
   }
 
-  componentDidUpdate () {
-    if (Studio.playground.startupReloadTrigger) {
-      Studio.playground.startupReloadTrigger = false
-      // eslint-disable-next-line
-      this.setState({ refreshKey: Date.now() })
+  onTabActive () {
+    this.reloadTab(this.state.tab)
+  }
+
+  componentDidMount () {
+    Studio.playground.startupReload = () => {
+      this.reloadTab(this.state.tab)
+    }
+
+    this.reloadTab(this.state.tab)
+  }
+
+  componentWillUnmount () {
+    Studio.playground.startupReload = null
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.tab !== this.state.tab) {
+      this.reloadTab(this.state.tab)
+    }
+  }
+
+  reloadTab (tab) {
+    if (this.refs[tab]) {
+      this.refs[tab].onTabActive()
     }
   }
 
@@ -38,7 +58,8 @@ export default class Startup extends Component {
     return (
       <div>
         <WorskpacesList
-          key={`examples-${this.state.refreshKey}`}
+          ref='examples'
+          key='examples'
           url={`/api/playground/workspaces/examples`}
           onRemove={this.handleRemove}
         />
@@ -50,7 +71,8 @@ export default class Startup extends Component {
     return (
       <div>
         <WorskpacesList
-          key={`popular-${this.state.refreshKey}`}
+          ref='popular'
+          key='popular'
           url={`/api/playground/workspaces/popular`}
           onRemove={this.handleRemove}
         />
@@ -66,7 +88,8 @@ export default class Startup extends Component {
     return (
       <div>
         <WorskpacesList
-          key={`users-${this.state.refreshKey}`}
+          ref='my'
+          key='my'
           url={`/api/playground/workspaces/user/${Studio.playground.user._id}`}
           onRemove={this.handleRemove}
         />
@@ -93,7 +116,7 @@ export default class Startup extends Component {
   }
 
   renderSearch () {
-    const { searchTerm, searchRefreshKey } = this.state
+    const { searchTerm } = this.state
 
     return (
       <div>
@@ -108,7 +131,7 @@ export default class Startup extends Component {
         </div>
         <div>
           <WorskpacesList
-            key={`search-${searchRefreshKey}-${this.state.refreshKey}`}
+            ref='search'
             url={`/api/playground/search?q=${encodeURIComponent(searchTerm != null ? searchTerm : '')}`}
             editable={false}
           />
@@ -147,7 +170,7 @@ export default class Startup extends Component {
         <div className={this.state.tab === 'popular' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'popular' })}>Popular workspaces</div>
         <div className={this.state.tab === 'search' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'search' })}><i className='fa fa-search' /> Search</div>
       </div>
-      <div className='block-item' style={{overflow: 'auto'}}>
+      <div className='block-item' style={{ overflow: 'auto' }}>
         {this.renderTab()}
       </div>
     </div>

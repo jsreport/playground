@@ -41,7 +41,9 @@ export default () => ({
         await this.open(this.current)
       }
 
-      this.startupReloadTrigger = true
+      if (this.startupReload) {
+        this.startupReload()
+      }
     } finally {
       this.lock = false
     }
@@ -61,7 +63,10 @@ export default () => ({
         this.current.hasLike = true
         await Studio.api.post('/api/playground/like')
       }
-      this.startupReloadTrigger = true
+
+      if (this.startupReload) {
+        this.startupReload()
+      }
     } finally {
       this.lock = false
     }
@@ -107,6 +112,8 @@ export default () => ({
       Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
     }
 
-    this.startupReloadTrigger = true
+    if (this.startupReload) {
+      this.startupReload()
+    }
   }
 })
