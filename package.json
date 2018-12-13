@@ -5,9 +5,9 @@
     "entryPoint": "server.js"
   },
   "scripts": {
+    "start": "jsreport-studio-start --entry-point ./server.js",
     "test": "mocha test --timeout 8000",
-    "build": "jsreport-studio-build",
-    "start": "jsreport-studio-start --entry-point ./server.js"
+    "build": "jsreport-studio-build"
   },
   "version": "2.2.5",
   "eslintIgnore": [
