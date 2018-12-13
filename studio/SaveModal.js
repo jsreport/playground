@@ -20,10 +20,10 @@ export default class SaveModal extends Component {
         <div>
           {login({ onClick: (href) => this.save(href) })}
         </div>
-        <h3 style={{marginTop: '2rem'}}>save as anonym</h3>
+        <h3 style={{ marginTop: '2rem' }}>save as anonym</h3>
         <p>Not so cool but quick</p>
         <div>
-          <button className='button confirmation' style={{float: 'left', marginLeft: 0}} onClick={() => this.save()}>
+          <button className='button confirmation' style={{ float: 'left', marginLeft: 0 }} onClick={() => this.save()}>
             <i className='fa fa-floppy' /> Save as anonym
           </button>
         </div>
