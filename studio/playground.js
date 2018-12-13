@@ -15,11 +15,16 @@ export default () => ({
     if (this.lock) {
       return
     }
+
     try {
       updateTitle(this.current.name)
+
       await Studio.store.dispatch(Studio.entities.actions.flushUpdates())
+
       this.lock = true
-      const shouldInvokeSave = this.current.canEdit
+
+      const isNewWorkspace = this.current.__isInitial === true
+      const shouldInvokeSave = this.current.canEdit === true
       const entities = Studio.getAllEntities().filter((e) => e.__isLoaded).map((e) => Studio.entities.actions.prune(e))
 
       this.current = await Studio.api.post('/api/playground/workspace', {
@@ -38,6 +43,10 @@ export default () => ({
         await Studio.store.dispatch(Studio.editor.actions.saveAll())
         this.current = await Studio.api.get('api/playground/workspace')
       } else {
+        if (isNewWorkspace) {
+          await Studio.store.dispatch(Studio.editor.actions.saveAll())
+        }
+
         await this.open(this.current)
       }
 
