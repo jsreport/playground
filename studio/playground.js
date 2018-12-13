@@ -100,7 +100,9 @@ export default () => ({
 
     if (Studio.playground.current.default) {
       const defaultEntity = entities.find((e) => e.shortid === Studio.playground.current.default)
+
       if (defaultEntity) {
+        Studio.collapseEntity({ _id: defaultEntity._id }, false, { parents: true })
         Studio.openTab({ _id: defaultEntity._id })
       }
     }
