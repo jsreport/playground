@@ -83,13 +83,19 @@ export default () => ({
 
   async open (w) {
     updateTitle(w.name)
+
     this.current = w
+
     await Studio.store.dispatch(Studio.editor.actions.updateHistory())
+
     this.current = await Studio.api.get('api/playground/workspace')
 
     await Studio.reset()
+
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
-    const entities = Studio.getAllEntities()
+
+    const entities = Studio.getAllEntities().filter((e) => e.__entitySet !== 'folders')
+
     await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
 
     if (Studio.playground.current.default) {

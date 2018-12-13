@@ -38,12 +38,18 @@ Studio.initializeListeners.push(async () => {
   await Studio.playground.init()
 
   if (Studio.playground.user) {
-    Studio.addToolbarComponent(() => <div className='toolbar-button'><span><i
-      className='fa fa-user' /> {Studio.playground.user.fullName}</span></div>, 'settingsBottom')
+    Studio.addToolbarComponent(() => (
+      <div className='toolbar-button'>
+        <span><i className='fa fa-user' /> {Studio.playground.user.fullName}</span>
+      </div>
+    ), 'settingsBottom')
     Studio.addToolbarComponent(LogoutButton, 'settingsBottom')
   } else {
-    Studio.addToolbarComponent(() => <div className='toolbar-button' onClick={() => Studio.openModal(LoginModal)}><span><i
-      className='fa fa-sign-in' /> Login</span></div>, 'settingsBottom')
+    Studio.addToolbarComponent(() => (
+      <div className='toolbar-button' onClick={() => Studio.openModal(LoginModal)}>
+        <span><i className='fa fa-sign-in' /> Login</span>
+      </div>
+    ), 'settingsBottom')
   }
 })
 
@@ -66,29 +72,46 @@ Studio.readyListeners.push(async () => {
     ))
 
     if (Studio.playground.user) {
-      Studio.addToolbarComponent((props) => <div className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}
-        onClick={() => Studio.playground.like()}><i className='fa fa-heart' title='Like workspace' style={{
-          color: (Studio.playground.current.hasLike) ? 'red' : undefined
-        }} /></div>)
+      Studio.addToolbarComponent((props) => (
+        <div
+          className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}
+          onClick={() => Studio.playground.like()}
+        >
+          <i className='fa fa-heart' title='Like workspace' style={{
+            color: (Studio.playground.current.hasLike) ? 'red' : undefined
+          }} />
+        </div>
+      ))
     }
   }
 
-  Studio.addToolbarComponent((props) => <div style={{backgroundColor: '#E67E22', float: 'right'}}
-    className='toolbar-button' onClick={() => {
-      if (!isEmbed) {
-        Studio.openModal(RenameModal)
-      }
-    }}>
-    <i className={`fa fa-${!isEmbed ? 'pencil' : 'flag'}`} />
-    <h1 style={{display: 'inline', fontSize: '1rem', color: '#FFFFFF'}}>
-      {Studio.playground.current.name ? trim(Studio.playground.current.name) : 'Untitled ...'}
-    </h1>
-  </div>, 'right')
+  Studio.addToolbarComponent((props) => (
+    <div
+      style={{ backgroundColor: '#E67E22', float: 'right' }}
+      className='toolbar-button'
+      onClick={() => {
+        if (!isEmbed) {
+          Studio.openModal(RenameModal)
+        }
+      }}
+    >
+      <i className={`fa fa-${!isEmbed ? 'pencil' : 'flag'}`} />
+      <h1 style={{ display: 'inline', fontSize: '1rem', color: '#FFFFFF' }}>
+        {Studio.playground.current.name ? trim(Studio.playground.current.name) : 'Untitled ...'}
+      </h1>
+    </div>
+  ), 'right')
 
   if (!isEmbed) {
-    Studio.addToolbarComponent((props) => <div className='toolbar-button' style={{backgroundColor: '#2ECC71'}}
-      onClick={() => Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })}>
-      <i className='fa fa-home' />Home</div>, 'right')
+    Studio.addToolbarComponent((props) => (
+      <div
+        className='toolbar-button'
+        style={{ backgroundColor: '#2ECC71' }}
+        onClick={() => Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })}
+      >
+        <i className='fa fa-home' />Home
+      </div>
+    ), 'right')
 
     if (Studio.playground.user) {
       Studio.addToolbarComponent((props) => (
@@ -98,20 +121,27 @@ Studio.readyListeners.push(async () => {
       ), 'right')
     }
 
-    Studio.addToolbarComponent((props) => <div
-      className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}
-      onClick={() => {
-        if (Studio.playground.current.name) {
-          Studio.openModal(ShareModal)
-        }
-      }}>
-      <i className='fa fa-share' />Share
-    </div>, 'right')
+    Studio.addToolbarComponent((props) => (
+      <div
+        className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}
+        onClick={() => {
+          if (Studio.playground.current.name) {
+            Studio.openModal(ShareModal)
+          }
+        }}
+      >
+        <i className='fa fa-share' />Share
+      </div>
+    ), 'right')
   } else {
-    Studio.addToolbarComponent((props) => <div
-      className='toolbar-button' onClick={() => (window.open(window.location.href.split('?')[0], '_blank'))}>
-      <i className='fa fa-desktop' />Full
-    </div>, 'right')
+    Studio.addToolbarComponent((props) => (
+      <div
+        className='toolbar-button'
+        onClick={() => (window.open(window.location.href.split('?')[0], '_blank'))}
+      >
+        <i className='fa fa-desktop' />Full
+      </div>
+    ), 'right')
   }
 
   if (isEmbed) {
@@ -122,7 +152,7 @@ Studio.readyListeners.push(async () => {
 
   const entities = Studio.getAllEntities()
 
-  await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
+  await Promise.all(entities.filter((e) => e.__entitySet !== 'folders').map((v) => Studio.openTab({ _id: v._id })))
 
   if (Studio.playground.current.default) {
     const defaultEntity = entities.find((e) => e.shortid === Studio.playground.current.default)

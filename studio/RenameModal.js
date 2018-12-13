@@ -23,7 +23,7 @@ export default class RenameModal extends Component {
       </div>
       <div className='form-group'>
         <label>default entity</label>
-        <select ref='defaultEntity' value={this.state.default} onChange={(e) => this.change(e)}>
+        <select ref='defaultEntity' value={this.state.default != null ? this.state.default : ''} onChange={(e) => this.change(e)}>
           {Studio.getAllEntities().filter((e) => e.__entitySet !== 'folders').map((e) => (
             <option key={e._id} value={e.shortid}>{e.name + ' (' + e.__entitySet + ')'}</option>
           ))}
