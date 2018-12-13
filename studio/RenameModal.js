@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 
-export default class SaveModal extends Component {
+export default class RenameModal extends Component {
   constructor (props) {
     super(props)
     this.state = {default: Studio.playground.current.default}
