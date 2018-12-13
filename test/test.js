@@ -6,11 +6,12 @@ describe('playground', () => {
 
   beforeEach(() => {
     reporter = jsreport({
+      migrateEntitySetsToFolders: false,
       store: {
         provider: 'memory'
       },
       extensions: {
-        'worker-docker-manager': {
+        'docker-workers': {
           enabled: false
         },
         express: {

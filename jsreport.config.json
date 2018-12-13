@@ -1,91 +1,94 @@
 {
-    "httpPort": 5488,
-    "allowLocalFilesAccess": false,
-    "store": {
-        "provider": "mongodb"
+  "httpPort": 5488,
+  "allowLocalFilesAccess": false,
+  "migrateEntitySetsToFolders": false,
+  "store": {
+    "provider": "mongodb"
+  },
+  "blobStorage": {
+    "provider": "fs"
+  },
+  "templatingEngines": {
+    "strategy": "in-process",
+    "allowedModules": "lodash,handlebars",
+    "timeout": 10000
+  },
+  "chrome": {
+    "timeout": 30000,
+    "strategy": "chrome-pool",
+    "numberOfWorkers": 2
+  },
+  "loggly": {
+    "level": "info",
+    "subdomain": "jsreport"
+  },
+  "appPath": "/",
+  "extensions": {
+    "docker-workers": {
+      "network": "nw_playground_docker_workers",
+      "subnet": "182.30.0.0/24",
+      "container": {
+        "image": "jsreport/playground-worker:0.2.6",
+        "namePrefix": "playground_worker",
+        "memory": "320m",
+        "memorySwap": "320m"
+      }
     },
-    "blobStorage": {
-        "provider": "fs"
+    "playground": {
+      "facebook": {
+        "clientID": "<fill>",
+        "clientSecret": "<fill>"
+      },
+      "twitter": {
+        "consumerKey": "<fill>",
+        "consumerSecret": "<fill>"
+      },
+      "github": {
+        "clientID": "<fill>",
+        "clientSecret": "<fill>"
+      }
     },
-    "templatingEngines": {
-        "strategy": "in-process",
-        "allowedModules": "lodash,handlebars",
-        "timeout": 10000
+    "mongodb-store": {
+      "databaseName": "playground",
+      "address": "localhost"
     },
-    "chrome": {
-        "timeout": 30000,
-        "strategy": "chrome-pool",
-        "numberOfWorkers": 2
+    "fs-store": {
+      "syncModifications": false
     },
-    "loggly": {
-        "level": "info",
-        "subdomain": "jsreport"
+    "templates": {
+      "studio-link-button-visibility": false
     },
-    "appPath": "/",
-    "extensions": {
-        "worker-docker-manager": {
-          "containerImage": "jsreport/playground-worker:0.2.5",
-          "containerNamePrefix": "playground_worker",
-          "containerMemory": "320m",
-          "containerMemorySwap": "320m",
-          "network": "nw_playground_workers_docker_manager",
-          "subnet": "182.30.0.0/24"
-        },
-        "playground": {
-            "facebook": {
-                "clientID": "<fill>",
-                "clientSecret": "<fill>"
-            },
-            "twitter": {
-                "consumerKey": "<fill>",
-                "consumerSecret": "<fill>"
-            },
-            "github": {
-                "clientID": "<fill>",
-                "clientSecret": "<fill>"
-            }
-        },
-        "mongodb-store": {
-           "databaseName" : "playground",
-           "address": "localhost"
-        },
-        "fs-store": {
-           "syncModifications": false
-        },
-        "templates": {
-            "studio-link-button-visibility": false
-        },
-        "authentication" : {
-            "cookieSession": {
-                "secret": "<your strong secret>"
-            },
-            "admin": {
-                "username" : "admin",
-                "password": "password"
-            },
-            "enabled": false
-        },
-        "freeze": {
-            "enabled": false
-        },
-        "reports": {
-            "enabled": false
-        },
-        "sample-template": {
-            "enabled": false
-        },
-        "scripts": {
-            "timeout": 30000,
-            "allowedModules": "http,https,lodash,bluebird,async,axios,request"
-        },
-        "scheduling": {
-            "enabled": false
-        },
-        "licensing": {
-            "enabled": false
-        },
-        "xlsx": {
-            "showExcelOnlineWarning": false
-        }
+    "authentication": {
+      "cookieSession": {
+        "secret": "<your strong secret>"
+      },
+      "admin": {
+        "username": "admin",
+        "password": "password"
+      },
+      "enabled": false
+    },
+    "freeze": {
+      "enabled": false
+    },
+    "reports": {
+      "enabled": false
+    },
+    "sample-template": {
+      "enabled": false
+    },
+    "scripts": {
+      "timeout": 30000,
+      "allowedModules": "http,https,lodash,bluebird,async,axios,request"
+    },
+    "scheduling": {
+      "enabled": false
+    },
+    "licensing": {
+      "enabled": false
+    },
+    "xlsx": {
+      "showExcelOnlineWarning": false
     }
+  }
 }
