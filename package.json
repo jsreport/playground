@@ -30,6 +30,7 @@
     "jsreport-docker-workers": "1.2.0",
     "jsreport-ejs": "2.0.1",
     "jsreport-electron-pdf": "3.0.0",
+    "jsreport-express": "github:jsreport/jsreport-express",
     "jsreport-fop-pdf": "2.0.0",
     "jsreport-mongodb-store": "1.1.1",
     "jsreport-phantom-pdf": "2.1.4",
