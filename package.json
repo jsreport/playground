@@ -38,6 +38,7 @@
     "jsreport-studio": "github:jsreport/jsreport-studio",
     "jsreport-wkhtmltopdf": "2.0.4",
     "lodash.debounce": "4.0.8",
+    "morgan": "1.9.1",
     "nanoid": "1.2.2",
     "passport": "0.4.0",
     "passport-facebook": "2.1.1",
