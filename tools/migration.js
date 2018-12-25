@@ -1,46 +1,75 @@
-const convertImagesToAssets = require('./convertAssetToImage')
 const MongoClient = require('mongodb').MongoClient
 const connectionString = 'mongodb://localhost:27017'
 const database = 'playground'
+const nanoid = require('nanoid')
 
 async function migrate () {
   const client = await MongoClient.connect(connectionString)
   const db = client.db(database)
 
-  console.log('adding user and modificationDate')
+  console.log('creating workspace folders')
 
-  await db.collection('workspaces').updateMany({}, {$set: { userId: 'migration', modificationDate: new Date() }})
-  console.log('recalculating workspace shortid')
-  const workspaces = await db.collection('workspaces').find({}).project({ _id: 1, shortid: 1, version: 1 }).toArray()
-  const cache = {}
+  const workspaces = await db.collection('workspaces').find({}).project({ _id: 1 }).toArray()
   let wCounter = 1
   for (const w of workspaces) {
     if (wCounter++ % 10000 === 0) {
       console.log(`processing ${wCounter}/${workspaces.length}`)
     }
-    cache[`${w.shortid}-${w.version}`] = w._id.toString()
-    await db.collection('workspaces').update({_id: w._id}, {$set: {shortid: `${w.shortid}-${w.version}`}})
-  }
 
-  const collections = ['assets', 'data', 'scripts', 'templates', 'xlsxTemplates', 'images']
+    const collections = ['assets', 'data', 'scripts', 'templates', 'xlsxTemplates', 'images']
+    let allEntities = []
+    for (const c of collections) {
+      const entities = await db.collection(c).find({
+        workspaceId: w._id.toString()
+      }).project({ _id: 1, name: 1 }).toArray()
 
-  for (const c of collections) {
-    console.log('migrating ' + c)
-    const entities = await db.collection(c).find({}).project({_id: 1, workspaceShortid: 1, workspaceVersion: 1}).toArray()
-    let eCounter = 0
-    for (const e of entities) {
-      if (eCounter++ % 10000 === 0) {
-        console.log(`processing ${eCounter}/${entities.length}`)
-      }
-      if (!cache[`${e.workspaceShortid}-${e.workspaceVersion}`]) {
-        console.log(`workpsace not in cache for ${e.workspaceShortid}-${e.workspaceVersion}`)
+      allEntities = allEntities.concat(entities.map(e => ({
+        __entitySet: c,
+        ...e
+      })))
+    }
+
+    let unique = true
+    for (const e of allEntities) {
+      if (!unique) {
         continue
       }
-      await db.collection(c).update({_id: e._id}, { $set: { workspaceId: cache[`${e.workspaceShortid}-${e.workspaceVersion}`] } })
+
+      if (allEntities.find(a => a._id !== e._id && a.name === e.name)) {
+        unique = false
+      }
+    }
+
+    if (unique) {
+      continue
+    }
+
+    for (const c of collections) {
+      if (!allEntities.find(e => e.__entitySet === c)) {
+        continue
+      }
+
+      const folder = {
+        name: c,
+        workspaceId: w._id.toString(),
+        shortid: nanoid(8)
+      }
+
+      await db.collection('folders').insertOne(folder)
+
+      for (const e of allEntities.filter(e => e.__entitySet === c)) {
+        await db.collection(c).updateOne({
+          _id: e._id
+        }, {
+          $set: {
+            folder: {
+              shortid: folder.shortid
+            }
+          }
+        })
+      }
     }
   }
-
-  await convertImagesToAssets(db)
 
   client.close()
 }

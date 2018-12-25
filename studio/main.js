@@ -135,8 +135,7 @@
 	                _react2.default.createElement(
 	                  'span',
 	                  null,
-	                  _react2.default.createElement('i', {
-	                    className: 'fa fa-user' }),
+	                  _react2.default.createElement('i', { className: 'fa fa-user' }),
 	                  ' ',
 	                  _jsreportStudio2.default.playground.user.fullName
 	                )
@@ -153,8 +152,7 @@
 	                _react2.default.createElement(
 	                  'span',
 	                  null,
-	                  _react2.default.createElement('i', {
-	                    className: 'fa fa-sign-in' }),
+	                  _react2.default.createElement('i', { className: 'fa fa-sign-in' }),
 	                  ' Login'
 	                )
 	              );
@@ -198,10 +196,12 @@
 	              _jsreportStudio2.default.addToolbarComponent(function (props) {
 	                return _react2.default.createElement(
 	                  'div',
-	                  { className: 'toolbar-button ' + (_jsreportStudio2.default.playground.current.name == null ? 'disabled' : ''),
+	                  {
+	                    className: 'toolbar-button ' + (_jsreportStudio2.default.playground.current.name == null ? 'disabled' : ''),
 	                    onClick: function onClick() {
 	                      return _jsreportStudio2.default.playground.like();
-	                    } },
+	                    }
+	                  },
 	                  _react2.default.createElement('i', { className: 'fa fa-heart', title: 'Like workspace', style: {
 	                      color: _jsreportStudio2.default.playground.current.hasLike ? 'red' : undefined
 	                    } })
@@ -213,12 +213,15 @@
 	          _jsreportStudio2.default.addToolbarComponent(function (props) {
 	            return _react2.default.createElement(
 	              'div',
-	              { style: { backgroundColor: '#E67E22', float: 'right' },
-	                className: 'toolbar-button', onClick: function onClick() {
+	              {
+	                style: { backgroundColor: '#E67E22', float: 'right' },
+	                className: 'toolbar-button',
+	                onClick: function onClick() {
 	                  if (!isEmbed) {
 	                    _jsreportStudio2.default.openModal(_RenameModal2.default);
 	                  }
-	                } },
+	                }
+	              },
 	              _react2.default.createElement('i', { className: 'fa fa-' + (!isEmbed ? 'pencil' : 'flag') }),
 	              _react2.default.createElement(
 	                'h1',
@@ -232,10 +235,13 @@
 	            _jsreportStudio2.default.addToolbarComponent(function (props) {
 	              return _react2.default.createElement(
 	                'div',
-	                { className: 'toolbar-button', style: { backgroundColor: '#2ECC71' },
+	                {
+	                  className: 'toolbar-button',
+	                  style: { backgroundColor: '#2ECC71' },
 	                  onClick: function onClick() {
 	                    return _jsreportStudio2.default.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' });
-	                  } },
+	                  }
+	                },
 	                _react2.default.createElement('i', { className: 'fa fa-home' }),
 	                'Home'
 	              );
@@ -261,7 +267,8 @@
 	                    if (_jsreportStudio2.default.playground.current.name) {
 	                      _jsreportStudio2.default.openModal(_ShareModal2.default);
 	                    }
-	                  } },
+	                  }
+	                },
 	                _react2.default.createElement('i', { className: 'fa fa-share' }),
 	                'Share'
 	              );
@@ -271,9 +278,11 @@
 	              return _react2.default.createElement(
 	                'div',
 	                {
-	                  className: 'toolbar-button', onClick: function onClick() {
+	                  className: 'toolbar-button',
+	                  onClick: function onClick() {
 	                    return window.open(window.location.href.split('?')[0], '_blank');
-	                  } },
+	                  }
+	                },
 	                _react2.default.createElement('i', { className: 'fa fa-desktop' }),
 	                'Full'
 	              );
@@ -288,7 +297,9 @@
 	
 	          entities = _jsreportStudio2.default.getAllEntities();
 	          _context2.next = 7;
-	          return Promise.all(entities.map(function (v) {
+	          return Promise.all(entities.filter(function (e) {
+	            return e.__entitySet !== 'folders';
+	          }).map(function (v) {
 	            return _jsreportStudio2.default.openTab({ _id: v._id });
 	          }));
 	
@@ -301,6 +312,7 @@
 	
 	
 	            if (defaultEntity) {
+	              _jsreportStudio2.default.collapseEntity({ _id: defaultEntity._id }, false, { parents: true, self: false });
 	              _jsreportStudio2.default.openTab({ _id: defaultEntity._id });
 	            }
 	          }
@@ -392,7 +404,7 @@
 	  _createClass(Startup, [{
 	    key: 'handleSearchChange',
 	    value: function handleSearchChange() {
-	      this.setState({ searchRefreshKey: this.state.searchTerm });
+	      this.reloadTab(this.state.tab);
 	    }
 	  }, {
 	    key: 'handleRemove',
@@ -402,12 +414,38 @@
 	      });
 	    }
 	  }, {
+	    key: 'onTabActive',
+	    value: function onTabActive() {
+	      this.reloadTab(this.state.tab);
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+	
+	      _jsreportStudio2.default.playground.startupReload = function () {
+	        _this2.reloadTab(_this2.state.tab);
+	      };
+	
+	      this.reloadTab(this.state.tab);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _jsreportStudio2.default.playground.startupReload = null;
+	    }
+	  }, {
 	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      if (_jsreportStudio2.default.playground.startupReloadTrigger) {
-	        _jsreportStudio2.default.playground.startupReloadTrigger = false;
-	        // eslint-disable-next-line
-	        this.setState({ refreshKey: Date.now() });
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (prevState.tab !== this.state.tab) {
+	        this.reloadTab(this.state.tab);
+	      }
+	    }
+	  }, {
+	    key: 'reloadTab',
+	    value: function reloadTab(tab) {
+	      if (this.refs[tab]) {
+	        this.refs[tab].onTabActive();
 	      }
 	    }
 	  }, {
@@ -417,7 +455,8 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_WorkspacesList2.default, {
-	          key: 'examples-' + this.state.refreshKey,
+	          ref: 'examples',
+	          key: 'examples',
 	          url: '/api/playground/workspaces/examples',
 	          onRemove: this.handleRemove
 	        })
@@ -430,7 +469,8 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_WorkspacesList2.default, {
-	          key: 'popular-' + this.state.refreshKey,
+	          ref: 'popular',
+	          key: 'popular',
 	          url: '/api/playground/workspaces/popular',
 	          onRemove: this.handleRemove
 	        })
@@ -448,7 +488,8 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_WorkspacesList2.default, {
-	          key: 'users-' + this.state.refreshKey,
+	          ref: 'my',
+	          key: 'my',
 	          url: '/api/playground/workspaces/user/' + _jsreportStudio2.default.playground.user._id,
 	          onRemove: this.handleRemove
 	        })
@@ -495,11 +536,9 @@
 	  }, {
 	    key: 'renderSearch',
 	    value: function renderSearch() {
-	      var _this2 = this;
+	      var _this3 = this;
 	
-	      var _state = this.state,
-	          searchTerm = _state.searchTerm,
-	          searchRefreshKey = _state.searchRefreshKey;
+	      var searchTerm = this.state.searchTerm;
 	
 	
 	      return _react2.default.createElement(
@@ -517,7 +556,7 @@
 	            type: 'text',
 	            value: searchTerm,
 	            onChange: function onChange(ev) {
-	              return _this2.setState({ searchTerm: ev.target.value });
+	              return _this3.setState({ searchTerm: ev.target.value });
 	            },
 	            onKeyUp: this.handleSearchChange
 	          })
@@ -526,7 +565,7 @@
 	          'div',
 	          null,
 	          _react2.default.createElement(_WorkspacesList2.default, {
-	            key: 'search-' + searchRefreshKey + '-' + this.state.refreshKey,
+	            ref: 'search',
 	            url: '/api/playground/search?q=' + encodeURIComponent(searchTerm != null ? searchTerm : ''),
 	            editable: false
 	          })
@@ -566,7 +605,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this3 = this;
+	      var _this4 = this;
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -607,28 +646,28 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: this.state.tab === 'examples' ? _style2.default.selectedTab : '', onClick: function onClick() {
-	                return _this3.setState({ tab: 'examples' });
+	                return _this4.setState({ tab: 'examples' });
 	              } },
 	            'Examples'
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { className: this.state.tab === 'my' ? _style2.default.selectedTab : '', onClick: function onClick() {
-	                return _this3.setState({ tab: 'my' });
+	                return _this4.setState({ tab: 'my' });
 	              } },
 	            'My workspaces'
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { className: this.state.tab === 'popular' ? _style2.default.selectedTab : '', onClick: function onClick() {
-	                return _this3.setState({ tab: 'popular' });
+	                return _this4.setState({ tab: 'popular' });
 	              } },
 	            'Popular workspaces'
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { className: this.state.tab === 'search' ? _style2.default.selectedTab : '', onClick: function onClick() {
-	                return _this3.setState({ tab: 'search' });
+	                return _this4.setState({ tab: 'search' });
 	              } },
 	            _react2.default.createElement('i', { className: 'fa fa-search' }),
 	            ' Search'
@@ -733,7 +772,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".workspacesTable___2qtx1 > tbody > tr > td:nth-child(4),\n.workspacesTable___2qtx1 > tbody > tr > td:nth-child(5) {\n  text-align: right;\n}\n\n.workspacesTable___2qtx1 > tbody > th:nth-child(2) {\n  text-align: right;\n}\n\n.workspacesTable___2qtx1 > tbody > tr > td > i {\n  color: #555555;\n  margin-left: 0.3rem;\n}\n\n.tabs___2dVUS {\n  display: -ms-flexbox;\n  display: flex;\n  width: 100%;\n  background-color: #FEFEFE;\n  border-bottom: 0.1rem #1C97EA solid;\n  margin-bottom: 2rem;\n}\n\n.tabs___2dVUS > div {\n  border-right: 1px #E6E6E6 solid;\n  cursor: pointer;\n}\n\n.tabs___2dVUS > div:hover {\n  background-color: #1C97EA;\n  color: #FFFFFF;\n}\n\n.tabs___2dVUS > .selectedTab___1ej3A {\n  background: #007ACC;\n  color: #FFFFFF;\n}\n\n.tabs___2dVUS > div {\n  padding: 0.5rem;\n}\n\n.searchBox___LauJK {\n  margin-bottom: 2rem;\n}\n\n.newBox___2zSAI {\n  margin-bottom: 2rem;\n}\n\n.contextMenu___3PI92 {\n  background-color: #c6c6c6;\n  position: absolute;\n  padding: 0.5rem;\n  min-width: 9rem;\n  z-index: 200;\n}\n\n.contextMenuContainer___f0_Ko {\n  position: relative;\n  z-index: 200;\n}\n\n.contextButton___1CVdi {\n  color: #2f2f2f;\n  padding: 0.5rem;\n  font-size: 0.8rem;\n  cursor: pointer;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\n.contextButton___1CVdi:hover {\n  background-color: #1C97EA;\n  color: #FFFFFF;\n}\n", "", {"version":3,"sources":["/./studio/studio/style.scss","/./studio/work/jsreport/playground/node_modules/jsreport-studio/src/theme/common.scss"],"names":[],"mappings":"AAEA;;EAEI,kBACJ;CAAE;;AAEF;EACI,kBACJ;CAAE;;AAEF;EACI,eAAc;EACd,oBACJ;CAAE;;AAEF;EACI,qBAAa;EAAb,cAAa;EACb,YAAW;EACX,0BAAyB;EACzB,oCAAmC;EACnC,oBACJ;CAAE;;AAEF;EACI,gCAA+B;EAC/B,gBACJ;CAAE;;AAEF;EACI,0BAAyB;EACzB,eAAc;CACjB;;AAED;EACI,oBAAmB;EACnB,eAAc;CACjB;;AAED;EACI,gBACJ;CAAE;;AAEF;EACI,oBACJ;CAAE;;AAEF;EACI,oBACJ;CAAE;;AAEF;EACE,0BC1CsB;ED2CtB,mBAAkB;EAClB,gBAAe;EACf,gBAAe;EACf,aAAY;CACb;;AAED;EACE,mBAAkB;EAClB,aAAY;CACb;;AAED;EACE,eCjEoB;EDkEpB,gBAAe;EACf,kBAAiB;EACjB,gBAAe;EC3Cf,4BAA2B;EAC3B,0BAAyB;EAEzB,uBAAsB;EACtB,sBAAqB;EACrB,kBAAiB;CDwClB;;AAED;EACE,0BCnEmC;EDoEnC,eCrEyB;CDsE1B","file":"style.scss","sourcesContent":["@import \"~jsreport-studio/src/theme/common\";\r\n\r\n.workspacesTable > tbody > tr > td:nth-child(4),\r\n.workspacesTable > tbody > tr > td:nth-child(5) {\r\n    text-align: right\r\n}\r\n\r\n.workspacesTable > tbody > th:nth-child(2) {\r\n    text-align: right\r\n}\r\n\r\n.workspacesTable > tbody > tr > td > i {\r\n    color: #555555;\r\n    margin-left: 0.3rem\r\n}\r\n\r\n.tabs {\r\n    display: flex;\r\n    width: 100%;\r\n    background-color: #FEFEFE;\r\n    border-bottom: 0.1rem #1C97EA solid;\r\n    margin-bottom: 2rem\r\n}\r\n\r\n.tabs > div {\r\n    border-right: 1px #E6E6E6 solid;\r\n    cursor: pointer\r\n}\r\n\r\n.tabs > div:hover {\r\n    background-color: #1C97EA;\r\n    color: #FFFFFF;\r\n}\r\n\r\n.tabs > .selectedTab {\r\n    background: #007ACC;\r\n    color: #FFFFFF;\r\n}\r\n\r\n.tabs > div {\r\n    padding: 0.5rem\r\n}\r\n\r\n.searchBox {\r\n    margin-bottom: 2rem\r\n}\r\n\r\n.newBox {\r\n    margin-bottom: 2rem\r\n}\r\n\r\n.contextMenu {\r\n  background-color: $secondaryColor;\r\n  position: absolute;\r\n  padding: 0.5rem;\r\n  min-width: 9rem;\r\n  z-index: 200;\r\n}\r\n\r\n.contextMenuContainer {\r\n  position: relative;\r\n  z-index: 200;\r\n}\r\n\r\n.contextButton {\r\n  color: $primaryColor;\r\n  padding: 0.5rem;\r\n  font-size: 0.8rem;\r\n  cursor: pointer;\r\n  @include no-select();\r\n}\r\n\r\n.contextButton:hover {\r\n  background-color: $primaryHoverBackgroundColor;\r\n  color: $primaryHoverColor\r\n}\r\n","$primaryColor: #2f2f2f;\n\n$primarySelectionBackgroundColor: #007ACC;\n$primarySelectionColor: #FFFFFF;\n\n$primaryHoverColor: #FFFFFF;\n$primaryHoverBackgroundColor: #1C97EA;\n\n$formPrimaryColor: #ffc40d;\n\n$secondaryColor: #c6c6c6;\n$secondaryBackgroundColor: #F6F6F6;\n\n$tertiaryColor: $primarySelectionColor;\n$tertiaryBackgroundColor:rgb(85, 85, 85);\n\n\n\n$secondaryHoverColor: #c6c6c6;\n$secondaryHoverBackgroundColor: #73a2ff;\n\n$alternativeHoverColor: #4CAF50;\n\n\n@mixin no-select() {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}"],"sourceRoot":"webpack://"}]);
+	exports.push([module.id, ".workspacesTable___2qtx1 > tbody > tr > td:nth-child(4),\n.workspacesTable___2qtx1 > tbody > tr > td:nth-child(5) {\n  text-align: right;\n}\n\n.workspacesTable___2qtx1 > tbody > th:nth-child(2) {\n  text-align: right;\n}\n\n.workspacesTable___2qtx1 > tbody > tr > td > i {\n  color: #555555;\n  margin-left: 0.3rem;\n}\n\n.tabs___2dVUS {\n  display: -ms-flexbox;\n  display: flex;\n  width: 100%;\n  background-color: #FEFEFE;\n  border-bottom: 0.1rem #1C97EA solid;\n  margin-bottom: 2rem;\n}\n\n.tabs___2dVUS > div {\n  border-right: 1px #E6E6E6 solid;\n  cursor: pointer;\n}\n\n.tabs___2dVUS > div:hover {\n  background-color: #1C97EA;\n  color: #FFFFFF;\n}\n\n.tabs___2dVUS > .selectedTab___1ej3A {\n  background: #007ACC;\n  color: #FFFFFF;\n}\n\n.tabs___2dVUS > div {\n  padding: 0.5rem;\n}\n\n.searchBox___LauJK {\n  margin-bottom: 2rem;\n}\n\n.newBox___2zSAI {\n  margin-bottom: 2rem;\n}\n\n.contextMenu___3PI92 {\n  background-color: #d9d9d9;\n  position: absolute;\n  padding: 0.5rem;\n  min-width: 9rem;\n  z-index: 200;\n}\n\n.contextMenuContainer___f0_Ko {\n  position: relative;\n  z-index: 200;\n}\n\n.contextButton___1CVdi {\n  color: #2f2f2f;\n  padding: 0.5rem;\n  font-size: 0.8rem;\n  cursor: pointer;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\n.contextButton___1CVdi:hover {\n  background-color: #1C97EA;\n  color: #FFFFFF;\n}\n", "", {"version":3,"sources":["/./studio/studio/style.scss","/./studio/work/jsreport/playground/node_modules/jsreport-studio/src/theme/common.scss"],"names":[],"mappings":"AAEA;;EAEI,kBACJ;CAAC;;AAED;EACI,kBACJ;CAAC;;AAED;EACI,eAAc;EACd,oBACJ;CAAC;;AAED;EACI,qBAAa;EAAb,cAAa;EACb,YAAW;EACX,0BAAyB;EACzB,oCAAmC;EACnC,oBACJ;CAAC;;AAED;EACI,gCAA+B;EAC/B,gBACJ;CAAC;;AAED;EACI,0BAAyB;EACzB,eAAc;CACjB;;AAED;EACI,oBAAmB;EACnB,eAAc;CACjB;;AAED;EACI,gBACJ;CAAC;;AAED;EACI,oBACJ;CAAC;;AAED;EACI,oBACJ;CAAC;;AAED;EACE,0BC1CsB;ED2CtB,mBAAkB;EAClB,gBAAe;EACf,gBAAe;EACf,aAAY;CACb;;AAED;EACE,mBAAkB;EAClB,aAAY;CACb;;AAED;EACE,eCjEoB;EDkEpB,gBAAe;EACf,kBAAiB;EACjB,gBAAe;EC3Cf,4BAA2B;EAC3B,0BAAyB;EAEzB,uBAAsB;EACtB,sBAAqB;EACrB,kBAAiB;CDwClB;;AAED;EACE,0BCnEmC;EDoEnC,eCrEyB;CDsE1B","file":"style.scss","sourcesContent":["@import \"~jsreport-studio/src/theme/common\";\r\n\r\n.workspacesTable > tbody > tr > td:nth-child(4),\r\n.workspacesTable > tbody > tr > td:nth-child(5) {\r\n    text-align: right\r\n}\r\n\r\n.workspacesTable > tbody > th:nth-child(2) {\r\n    text-align: right\r\n}\r\n\r\n.workspacesTable > tbody > tr > td > i {\r\n    color: #555555;\r\n    margin-left: 0.3rem\r\n}\r\n\r\n.tabs {\r\n    display: flex;\r\n    width: 100%;\r\n    background-color: #FEFEFE;\r\n    border-bottom: 0.1rem #1C97EA solid;\r\n    margin-bottom: 2rem\r\n}\r\n\r\n.tabs > div {\r\n    border-right: 1px #E6E6E6 solid;\r\n    cursor: pointer\r\n}\r\n\r\n.tabs > div:hover {\r\n    background-color: #1C97EA;\r\n    color: #FFFFFF;\r\n}\r\n\r\n.tabs > .selectedTab {\r\n    background: #007ACC;\r\n    color: #FFFFFF;\r\n}\r\n\r\n.tabs > div {\r\n    padding: 0.5rem\r\n}\r\n\r\n.searchBox {\r\n    margin-bottom: 2rem\r\n}\r\n\r\n.newBox {\r\n    margin-bottom: 2rem\r\n}\r\n\r\n.contextMenu {\r\n  background-color: $secondaryColor;\r\n  position: absolute;\r\n  padding: 0.5rem;\r\n  min-width: 9rem;\r\n  z-index: 200;\r\n}\r\n\r\n.contextMenuContainer {\r\n  position: relative;\r\n  z-index: 200;\r\n}\r\n\r\n.contextButton {\r\n  color: $primaryColor;\r\n  padding: 0.5rem;\r\n  font-size: 0.8rem;\r\n  cursor: pointer;\r\n  @include no-select();\r\n}\r\n\r\n.contextButton:hover {\r\n  background-color: $primaryHoverBackgroundColor;\r\n  color: $primaryHoverColor\r\n}\r\n","$primaryColor: #2f2f2f;\r\n\r\n$primarySelectionBackgroundColor: #007ACC;\r\n$primarySelectionColor: #FFFFFF;\r\n\r\n$primaryHoverColor: #FFFFFF;\r\n$primaryHoverBackgroundColor: #1C97EA;\r\n\r\n$formPrimaryColor: #ffc40d;\r\n\r\n$secondaryColor: #d9d9d9;\r\n$secondaryBackgroundColor: #F6F6F6;\r\n\r\n$tertiaryColor: $primarySelectionColor;\r\n$tertiaryBackgroundColor:rgb(85, 85, 85);\r\n\r\n\r\n\r\n$secondaryHoverColor: #c6c6c6;\r\n$secondaryHoverBackgroundColor: #73a2ff;\r\n\r\n$alternativeHoverColor: #4CAF50;\r\n\r\n\r\n@mixin no-select() {\r\n  -webkit-touch-callout: none;\r\n  -webkit-user-select: none;\r\n  -khtml-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n}"],"sourceRoot":"webpack://"}]);
 	
 	// exports
 	exports.locals = {
@@ -1613,18 +1652,15 @@
 	      return { items: [] };
 	    }
 	  }, {
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      this.fetch();
-	    }
-	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      this.mounted = true;
 	      window.addEventListener('click', this.tryHide);
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
+	      this.mounted = false;
 	      window.removeEventListener('click', this.tryHide);
 	    }
 	  }, {
@@ -1643,6 +1679,11 @@
 	      }
 	    }
 	  }, {
+	    key: 'onTabActive',
+	    value: function onTabActive() {
+	      this.fetch();
+	    }
+	  }, {
 	    key: 'fetch',
 	    value: function () {
 	      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -1651,22 +1692,52 @@
 	          while (1) {
 	            switch (_context.prev = _context.next) {
 	              case 0:
-	                _context.next = 2;
-	                return _jsreportStudio2.default.api.get(this.props.url);
+	                if (!this.fetchRequested) {
+	                  _context.next = 2;
+	                  break;
+	                }
+	
+	                return _context.abrupt('return');
 	
 	              case 2:
+	
+	                this.fetchRequested = true;
+	
+	                response = void 0;
+	                _context.prev = 4;
+	                _context.next = 7;
+	                return _jsreportStudio2.default.api.get(this.props.url);
+	
+	              case 7:
 	                response = _context.sent;
+	                _context.next = 13;
+	                break;
 	
-	                this.setState({
-	                  items: this.state.items.concat(response.items)
-	                });
+	              case 10:
+	                _context.prev = 10;
+	                _context.t0 = _context['catch'](4);
+	                throw _context.t0;
 	
-	              case 4:
+	              case 13:
+	                _context.prev = 13;
+	
+	                this.fetchRequested = false;
+	                return _context.finish(13);
+	
+	              case 16:
+	
+	                if (this.mounted) {
+	                  this.setState({
+	                    items: response.items
+	                  });
+	                }
+	
+	              case 17:
 	              case 'end':
 	                return _context.stop();
 	            }
 	          }
-	        }, _callee, this);
+	        }, _callee, this, [[4, 10, 13, 16]]);
 	      }));
 	
 	      function fetch() {
@@ -2272,19 +2343,19 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var SaveModal = function (_Component) {
-	  _inherits(SaveModal, _Component);
+	var RenameModal = function (_Component) {
+	  _inherits(RenameModal, _Component);
 	
-	  function SaveModal(props) {
-	    _classCallCheck(this, SaveModal);
+	  function RenameModal(props) {
+	    _classCallCheck(this, RenameModal);
 	
-	    var _this = _possibleConstructorReturn(this, (SaveModal.__proto__ || Object.getPrototypeOf(SaveModal)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (RenameModal.__proto__ || Object.getPrototypeOf(RenameModal)).call(this, props));
 	
 	    _this.state = { default: _jsreportStudio2.default.playground.current.default };
 	    return _this;
 	  }
 	
-	  _createClass(SaveModal, [{
+	  _createClass(RenameModal, [{
 	    key: 'change',
 	    value: function change(event) {
 	      this.setState({ default: event.target.value });
@@ -2327,16 +2398,22 @@
 	          ),
 	          _react2.default.createElement(
 	            'select',
-	            { ref: 'defaultEntity', value: this.state.default, onChange: function onChange(e) {
+	            { ref: 'defaultEntity', value: this.state.default != null ? this.state.default : '', onChange: function onChange(e) {
 	                return _this2.change(e);
 	              } },
-	            _jsreportStudio2.default.getAllEntities().map(function (e) {
+	            [_react2.default.createElement(
+	              'option',
+	              { key: '<default>', value: '' },
+	              '<none>'
+	            )].concat(_jsreportStudio2.default.getAllEntities().filter(function (e) {
+	              return e.__entitySet !== 'folders';
+	            }).map(function (e) {
 	              return _react2.default.createElement(
 	                'option',
 	                { key: e._id, value: e.shortid },
 	                e.name + ' (' + e.__entitySet + ')'
 	              );
-	            })
+	            }))
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -2364,6 +2441,7 @@
 	                        return _jsreportStudio2.default.playground.save();
 	
 	                      case 6:
+	
 	                        _this2.props.close();
 	
 	                      case 7:
@@ -2380,10 +2458,10 @@
 	    }
 	  }]);
 	
-	  return SaveModal;
+	  return RenameModal;
 	}(_react.Component);
 	
-	exports.default = SaveModal;
+	exports.default = RenameModal;
 
 /***/ },
 /* 18 */
@@ -2442,7 +2520,7 @@
 	      var _this2 = this;
 	
 	      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-	        var shouldInvokeSave, entities;
+	        var isNewWorkspace, shouldInvokeSave, entities;
 	        return regeneratorRuntime.wrap(function _callee2$(_context2) {
 	          while (1) {
 	            switch (_context2.prev = _context2.next) {
@@ -2458,18 +2536,22 @@
 	                _context2.prev = 2;
 	
 	                updateTitle(_this2.current.name);
+	
 	                _context2.next = 6;
 	                return _jsreportStudio2.default.store.dispatch(_jsreportStudio2.default.entities.actions.flushUpdates());
 	
 	              case 6:
+	
 	                _this2.lock = true;
-	                shouldInvokeSave = _this2.current.canEdit;
+	
+	                isNewWorkspace = _this2.current.__isInitial === true;
+	                shouldInvokeSave = _this2.current.canEdit === true;
 	                entities = _jsreportStudio2.default.getAllEntities().filter(function (e) {
 	                  return e.__isLoaded;
 	                }).map(function (e) {
 	                  return _jsreportStudio2.default.entities.actions.prune(e);
 	                });
-	                _context2.next = 11;
+	                _context2.next = 12;
 	                return _jsreportStudio2.default.api.post('/api/playground/workspace', {
 	                  data: {
 	                    workspace: _extends({
@@ -2479,49 +2561,60 @@
 	                  }
 	                });
 	
-	              case 11:
+	              case 12:
 	                _this2.current = _context2.sent;
-	                _context2.next = 14;
+	                _context2.next = 15;
 	                return _jsreportStudio2.default.store.dispatch(_jsreportStudio2.default.editor.actions.updateHistory());
 	
-	              case 14:
+	              case 15:
 	                if (!shouldInvokeSave) {
-	                  _context2.next = 22;
+	                  _context2.next = 23;
 	                  break;
 	                }
 	
-	                _context2.next = 17;
+	                _context2.next = 18;
 	                return _jsreportStudio2.default.store.dispatch(_jsreportStudio2.default.editor.actions.saveAll());
 	
-	              case 17:
-	                _context2.next = 19;
+	              case 18:
+	                _context2.next = 20;
 	                return _jsreportStudio2.default.api.get('api/playground/workspace');
 	
-	              case 19:
+	              case 20:
 	                _this2.current = _context2.sent;
-	                _context2.next = 24;
+	                _context2.next = 28;
 	                break;
 	
-	              case 22:
-	                _context2.next = 24;
+	              case 23:
+	                if (!isNewWorkspace) {
+	                  _context2.next = 26;
+	                  break;
+	                }
+	
+	                _context2.next = 26;
+	                return _jsreportStudio2.default.store.dispatch(_jsreportStudio2.default.editor.actions.saveAll());
+	
+	              case 26:
+	                _context2.next = 28;
 	                return _this2.open(_this2.current);
 	
-	              case 24:
+	              case 28:
 	
-	                _this2.startupReloadTrigger = true;
+	                if (_this2.startupReload) {
+	                  _this2.startupReload();
+	                }
 	
-	              case 25:
-	                _context2.prev = 25;
+	              case 29:
+	                _context2.prev = 29;
 	
 	                _this2.lock = false;
-	                return _context2.finish(25);
+	                return _context2.finish(29);
 	
-	              case 28:
+	              case 32:
 	              case 'end':
 	                return _context2.stop();
 	            }
 	          }
-	        }, _callee2, _this2, [[2,, 25, 28]]);
+	        }, _callee2, _this2, [[2,, 29, 32]]);
 	      }))();
 	    },
 	    like: function like() {
@@ -2563,7 +2656,10 @@
 	                return _jsreportStudio2.default.api.post('/api/playground/like');
 	
 	              case 13:
-	                _this3.startupReloadTrigger = true;
+	
+	                if (_this3.startupReload) {
+	                  _this3.startupReload();
+	                }
 	
 	              case 14:
 	                _context3.prev = 14;
@@ -2589,7 +2685,9 @@
 	            switch (_context4.prev = _context4.next) {
 	              case 0:
 	                updateTitle(w.name);
+	
 	                _this4.current = w;
+	
 	                _context4.next = 4;
 	                return _jsreportStudio2.default.store.dispatch(_jsreportStudio2.default.editor.actions.updateHistory());
 	
@@ -2603,8 +2701,12 @@
 	                return _jsreportStudio2.default.reset();
 	
 	              case 9:
+	
 	                _jsreportStudio2.default.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' });
-	                entities = _jsreportStudio2.default.getAllEntities();
+	
+	                entities = _jsreportStudio2.default.getAllEntities().filter(function (e) {
+	                  return e.__entitySet !== 'folders';
+	                });
 	                _context4.next = 13;
 	                return Promise.all(entities.map(function (v) {
 	                  return _jsreportStudio2.default.openTab({ _id: v._id });
@@ -2617,7 +2719,9 @@
 	                    return e.shortid === _jsreportStudio2.default.playground.current.default;
 	                  });
 	
+	
 	                  if (defaultEntity) {
+	                    _jsreportStudio2.default.collapseEntity({ _id: defaultEntity._id }, false, { parents: true, self: false });
 	                    _jsreportStudio2.default.openTab({ _id: defaultEntity._id });
 	                  }
 	                }
@@ -2690,7 +2794,9 @@
 	
 	              case 12:
 	
-	                _this6.startupReloadTrigger = true;
+	                if (_this6.startupReload) {
+	                  _this6.startupReload();
+	                }
 	
 	              case 13:
 	              case 'end':
@@ -2731,16 +2837,28 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var Startup = function (_Component) {
-	  _inherits(Startup, _Component);
+	var UserEditor = function (_Component) {
+	  _inherits(UserEditor, _Component);
 	
-	  function Startup() {
-	    _classCallCheck(this, Startup);
+	  function UserEditor() {
+	    _classCallCheck(this, UserEditor);
 	
-	    return _possibleConstructorReturn(this, (Startup.__proto__ || Object.getPrototypeOf(Startup)).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (UserEditor.__proto__ || Object.getPrototypeOf(UserEditor)).apply(this, arguments));
 	  }
 	
-	  _createClass(Startup, [{
+	  _createClass(UserEditor, [{
+	    key: 'reloadTab',
+	    value: function reloadTab() {
+	      if (this.refs.workspaces) {
+	        this.refs.workspaces.onTabActive();
+	      }
+	    }
+	  }, {
+	    key: 'onTabActive',
+	    value: function onTabActive() {
+	      this.reloadTab();
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var user = this.props.tab.user;
@@ -2761,16 +2879,16 @@
 	        _react2.default.createElement(
 	          'div',
 	          null,
-	          _react2.default.createElement(_WorkspacesList2.default, { url: '/api/playground/workspaces/user/' + user._id })
+	          _react2.default.createElement(_WorkspacesList2.default, { ref: 'workspaces', url: '/api/playground/workspaces/user/' + user._id })
 	        )
 	      );
 	    }
 	  }]);
 	
-	  return Startup;
+	  return UserEditor;
 	}(_react.Component);
 	
-	exports.default = Startup;
+	exports.default = UserEditor;
 
 /***/ },
 /* 20 */
