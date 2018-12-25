@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient
 const connectionString = 'mongodb://localhost:27017'
+
 const database = 'playground'
 const nanoid = require('nanoid')
 
@@ -9,14 +10,14 @@ async function migrate () {
 
   console.log('creating workspace folders')
 
-  const workspaces = await db.collection('workspaces').find({}).project({ _id: 1 }).toArray()
+  const workspaces = await db.collection('workspaces').find({ migrated: null }).project({ _id: 1 }).toArray()
   let wCounter = 1
   for (const w of workspaces) {
-    if (wCounter++ % 10000 === 0) {
+    if (wCounter++ % 100 === 0) {
       console.log(`processing ${wCounter}/${workspaces.length}`)
     }
 
-    const collections = ['assets', 'data', 'scripts', 'templates', 'xlsxTemplates', 'images']
+    const collections = ['assets', 'data', 'scripts', 'templates', 'xlsxTemplates', 'images', 'tags']
     let allEntities = []
     for (const c of collections) {
       const entities = await db.collection(c).find({
@@ -41,6 +42,9 @@ async function migrate () {
     }
 
     if (unique) {
+      await db.collection('workspaces').updateOne({
+        _id: w._id
+      }, { $set: { migrated: 1 } })
       continue
     }
 
@@ -69,6 +73,10 @@ async function migrate () {
         })
       }
     }
+
+    await db.collection('workspaces').updateOne({
+      _id: w._id
+    }, { $set: { migrated: 1 } })
   }
 
   client.close()
