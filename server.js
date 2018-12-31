@@ -7,7 +7,10 @@ if (!process.env.ip && !process.env.stack) {
   process.env.stack = 'localdev'
 }
 
-process.env.extensions_dockerWorkers_discriminatorPath = 'context.clientIp'
+const REQUEST_DISCRIMINATOR = 'context.clientIp'
+
+process.env.extensions_dockerWorkers_discriminatorPath = REQUEST_DISCRIMINATOR
+process.env.extensions_studio_requestLogDiscriminatorPath = REQUEST_DISCRIMINATOR
 
 if (process.env.NODE_ENV === 'jsreport-development') {
   process.env.extensions_studio_extensionsInDevMode = require('./jsreport.config').name
