@@ -73,6 +73,9 @@
       },
       "enabled": false
     },
+    "authorization": {
+      "foldersMigrationEnabled": false
+    },
     "freeze": {
       "enabled": false
     },
