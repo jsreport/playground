@@ -56,6 +56,10 @@
     "templates": {
       "studio-link-button-visibility": false
     },
+    "studio": {
+      "requestLogEnabled": false,
+      "startupPage": false
+    },
     "assets": {
       "allowAssetsLinkedToFiles": false
     },
