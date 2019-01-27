@@ -37,6 +37,7 @@
     "jsreport-pug": "3.0.0",
     "jsreport-studio": "2.3.3",
     "jsreport-wkhtmltopdf": "2.0.4",
+    "jsreport-pdf-utils": "jsreport/jsreport-pdf-utils",
     "lodash.debounce": "4.0.8",
     "morgan": "1.9.1",
     "nanoid": "1.2.2",
