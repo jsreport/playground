@@ -27,7 +27,7 @@
     "eslint-config-standard-react": "7.0.2",
     "ip": "1.1.5",
     "jsreport": "2.3.0",
-    "jsreport-docker-workers": "github:jsreport/jsreport-docker-workers",
+    "jsreport-docker-workers": "1.2.0",
     "jsreport-ejs": "2.0.1",
     "jsreport-electron-pdf": "3.0.0",
     "jsreport-express": "2.2.4",
