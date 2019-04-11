@@ -10,7 +10,7 @@
   },
   "templatingEngines": {
     "strategy": "in-process",
-    "allowedModules": "lodash,handlebars",
+    "allowedModules": "lodash,handlebars,moment",
     "timeout": 10000
   },
   "chrome": {
@@ -87,7 +87,7 @@
     },
     "scripts": {
       "timeout": 30000,
-      "allowedModules": "http,https,lodash,bluebird,async,axios,request"
+      "allowedModules": "http,https,lodash,bluebird,async,axios,request,moment"
     },
     "scheduling": {
       "enabled": false
