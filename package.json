@@ -32,6 +32,7 @@
     "jsreport-electron-pdf": "3.0.0",
     "jsreport-fop-pdf": "2.1.0",
     "jsreport-mongodb-store": "1.2.1",
+    "jsreport-pdf-utils": "github:jsreport/jsreport-pdf-utils",
     "jsreport-phantom-pdf": "2.2.0",
     "jsreport-pug": "3.0.0",
     "jsreport-wkhtmltopdf": "2.1.0",
