@@ -34,6 +34,7 @@
     "jsreport-mongodb-store": "1.2.2",
     "jsreport-phantom-pdf": "2.2.0",
     "jsreport-pug": "3.1.0",
+    "jsreport-studio": "github:jsreport/jsreport-studio",
     "jsreport-wkhtmltopdf": "2.1.0",
     "lodash.debounce": "4.0.8",
     "morgan": "1.9.1",
