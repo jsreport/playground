@@ -3,6 +3,7 @@ import Studio from 'jsreport-studio'
 import Startup from './Startup'
 import ToolbarSaveForkButton from './ToolbarSaveForkButton'
 import LogoutButton from './LogoutButton.js'
+import AboutModal from './AboutModal'
 import LoginModal from './LoginModal.js'
 import SaveModal from './SaveModal.js'
 import ShareModal from './ShareModal.js'
@@ -10,6 +11,8 @@ import RenameModal from './RenameModal.js'
 import Playground from './playground.js'
 import UserEditor from './UserEditor.js'
 import { getQueryParameter, removeFacebookQuery, trim } from './utils'
+
+Studio.setAboutModal(AboutModal)
 
 Studio.playground = Playground()
 

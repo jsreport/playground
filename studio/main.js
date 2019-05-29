@@ -503,35 +503,41 @@ var _LogoutButton = __webpack_require__(15);
 
 var _LogoutButton2 = _interopRequireDefault(_LogoutButton);
 
-var _LoginModal = __webpack_require__(16);
+var _AboutModal = __webpack_require__(16);
+
+var _AboutModal2 = _interopRequireDefault(_AboutModal);
+
+var _LoginModal = __webpack_require__(17);
 
 var _LoginModal2 = _interopRequireDefault(_LoginModal);
 
-var _SaveModal = __webpack_require__(17);
+var _SaveModal = __webpack_require__(18);
 
 var _SaveModal2 = _interopRequireDefault(_SaveModal);
 
-var _ShareModal = __webpack_require__(18);
+var _ShareModal = __webpack_require__(19);
 
 var _ShareModal2 = _interopRequireDefault(_ShareModal);
 
-var _RenameModal = __webpack_require__(19);
+var _RenameModal = __webpack_require__(20);
 
 var _RenameModal2 = _interopRequireDefault(_RenameModal);
 
-var _playground = __webpack_require__(20);
+var _playground = __webpack_require__(21);
 
 var _playground2 = _interopRequireDefault(_playground);
 
-var _UserEditor = __webpack_require__(21);
+var _UserEditor = __webpack_require__(22);
 
 var _UserEditor2 = _interopRequireDefault(_UserEditor);
 
-var _utils = __webpack_require__(22);
+var _utils = __webpack_require__(23);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+_jsreportStudio2.default.setAboutModal(_AboutModal2.default);
 
 _jsreportStudio2.default.playground = (0, _playground2.default)();
 
@@ -2429,6 +2435,118 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var logo = 'data:image/png;base64,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';
+
+var AboutModal = function (_Component) {
+  _inherits(AboutModal, _Component);
+
+  function AboutModal() {
+    _classCallCheck(this, AboutModal);
+
+    return _possibleConstructorReturn(this, (AboutModal.__proto__ || Object.getPrototypeOf(AboutModal)).apply(this, arguments));
+  }
+
+  _createClass(AboutModal, [{
+    key: 'render',
+    value: function render() {
+      var _props$options = this.props.options,
+          version = _props$options.version,
+          extensions = _props$options.extensions;
+
+      var playgroundVersion = extensions.playground.options.version;
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'h2',
+          null,
+          'About'
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement('img', { src: logo, style: { width: '100px', height: 'auto', marginBottom: '15px' } })
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          'playground version: ',
+          _react2.default.createElement(
+            'b',
+            null,
+            playgroundVersion
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          'jsreport version: ',
+          _react2.default.createElement(
+            'b',
+            null,
+            version
+          )
+        ),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(
+          'div',
+          null,
+          'See more information about the playground release in the release notes'
+        ),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'a',
+            {
+              className: 'button confirmation',
+              href: 'https://github.com/jsreport/playground/releases/tag/' + playgroundVersion,
+              target: '_blank',
+              style: { marginLeft: 0 }
+            },
+            'Release notes'
+          )
+        )
+      );
+    }
+  }]);
+
+  return AboutModal;
+}(_react.Component);
+
+AboutModal.propTypes = {
+  options: _react.PropTypes.object.isRequired
+};
+exports.default = AboutModal;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 exports.default = function () {
   return _react2.default.createElement(
     'div',
@@ -2457,7 +2575,7 @@ var _login2 = _interopRequireDefault(_login);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2589,7 +2707,7 @@ var SaveModal = function (_Component) {
 exports.default = SaveModal;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2672,7 +2790,7 @@ var ShareModal = function (_Component) {
 exports.default = ShareModal;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2823,7 +2941,7 @@ var RenameModal = function (_Component) {
 exports.default = RenameModal;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3170,7 +3288,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3252,7 +3370,7 @@ var UserEditor = function (_Component) {
 exports.default = UserEditor;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
