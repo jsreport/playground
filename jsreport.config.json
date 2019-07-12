@@ -13,6 +13,11 @@
     "allowedModules": "lodash,handlebars,moment",
     "timeout": 10000
   },
+  "office": {
+    "preview": {
+      "enabled": false
+    }
+  },
   "chrome": {
     "timeout": 30000
   },
@@ -22,12 +27,11 @@
   },
   "appPath": "/",
   "extensions": {
-
     "docker-workers": {
       "network": "nw_playground_docker_workers",
       "subnet": "182.30.0.0/24",
       "container": {
-        "image": "jsreport/playground-worker:0.2.14",
+        "image": "jsreport/playground-worker:0.3.0",
         "namePrefix": "playground_worker",
         "memory": "320m",
         "memorySwap": "320m"
@@ -98,12 +102,6 @@
     },
     "xlsx": {
       "showExcelOnlineWarning": false
-    },
-    "docx": {
-      "showOfficeOnlineWarning": false
-    },
-    "pptx": {
-      "showOfficeOnlineWarning": false
     }
   }
 }
