@@ -15,7 +15,7 @@
   },
   "office": {
     "preview": {
-      "enabled": false
+      "showWarning": false
     }
   },
   "chrome": {
@@ -99,9 +99,6 @@
     },
     "licensing": {
       "enabled": false
-    },
-    "xlsx": {
-      "showExcelOnlineWarning": false
     }
   }
 }

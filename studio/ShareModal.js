@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
+import style from './style.scss'
 
 export default class ShareModal extends Component {
   render () {
     return (
-      <div style={{padding: '1.5rem'}}>
+      <div style={{ padding: '1.5rem' }}>
         <h3>simple link</h3>
         <p>
           You can just copy paste browser url to share the playground workspace:
@@ -14,7 +15,7 @@ export default class ShareModal extends Component {
         <p>
           If you want embed playgorund into another page, you can use this html code:
           <br />
-          <code style={{ backgroundColor: 'wheat' }}>
+          <code className={style.code}>
           &lt;iframe src=&quot;{window.location.href}?embed=1&quot; width=&quot;100%&quot; height=&quot;400&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
           </code>
         </p>
