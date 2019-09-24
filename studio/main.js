@@ -151,26 +151,8 @@ exports.default = function () {
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-var content = __webpack_require__(7);
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(9)(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
+// extracted by mini-css-extract-plugin
+module.exports = {"workspacesTable":"x-playground-style-workspacesTable","tabs":"x-playground-style-tabs","selectedTab":"x-playground-style-selectedTab","searchBox":"x-playground-style-searchBox","newBox":"x-playground-style-newBox","contextMenu":"x-playground-style-contextMenu","contextMenuContainer":"x-playground-style-contextMenuContainer","contextButton":"x-playground-style-contextButton","code":"x-playground-style-code"};
 
 /***/ }),
 /* 4 */
@@ -416,12 +398,6 @@ var WorkspacesList = function (_Component) {
           null,
           w.views || 0,
           _react2.default.createElement('i', { className: 'fa fa-eye' })
-        ),
-        _react2.default.createElement(
-          'td',
-          null,
-          w.likes || 0,
-          _react2.default.createElement('i', { className: 'fa fa-heart' })
         )
       );
     }
@@ -456,7 +432,6 @@ var WorkspacesList = function (_Component) {
               null,
               'modified'
             ),
-            _react2.default.createElement('th', null),
             _react2.default.createElement('th', null)
           )
         ),
@@ -495,43 +470,43 @@ var _Startup = __webpack_require__(6);
 
 var _Startup2 = _interopRequireDefault(_Startup);
 
-var _ToolbarSaveForkButton = __webpack_require__(14);
+var _ToolbarSaveForkButton = __webpack_require__(10);
 
 var _ToolbarSaveForkButton2 = _interopRequireDefault(_ToolbarSaveForkButton);
 
-var _LogoutButton = __webpack_require__(15);
+var _LogoutButton = __webpack_require__(11);
 
 var _LogoutButton2 = _interopRequireDefault(_LogoutButton);
 
-var _AboutModal = __webpack_require__(16);
+var _AboutModal = __webpack_require__(12);
 
 var _AboutModal2 = _interopRequireDefault(_AboutModal);
 
-var _LoginModal = __webpack_require__(17);
+var _LoginModal = __webpack_require__(13);
 
 var _LoginModal2 = _interopRequireDefault(_LoginModal);
 
-var _SaveModal = __webpack_require__(18);
+var _SaveModal = __webpack_require__(14);
 
 var _SaveModal2 = _interopRequireDefault(_SaveModal);
 
-var _ShareModal = __webpack_require__(19);
+var _ShareModal = __webpack_require__(15);
 
 var _ShareModal2 = _interopRequireDefault(_ShareModal);
 
-var _RenameModal = __webpack_require__(20);
+var _RenameModal = __webpack_require__(16);
 
 var _RenameModal2 = _interopRequireDefault(_RenameModal);
 
-var _playground = __webpack_require__(21);
+var _playground = __webpack_require__(17);
 
 var _playground2 = _interopRequireDefault(_playground);
 
-var _UserEditor = __webpack_require__(22);
+var _UserEditor = __webpack_require__(18);
 
 var _UserEditor2 = _interopRequireDefault(_UserEditor);
 
-var _utils = __webpack_require__(23);
+var _utils = __webpack_require__(19);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -634,23 +609,6 @@ _jsreportStudio2.default.readyListeners.push(_asyncToGenerator( /*#__PURE__*/reg
                 save: save
               });
             });
-
-            if (_jsreportStudio2.default.playground.user) {
-              _jsreportStudio2.default.addToolbarComponent(function (props) {
-                return _react2.default.createElement(
-                  'div',
-                  {
-                    className: 'toolbar-button ' + (_jsreportStudio2.default.playground.current.name == null ? 'disabled' : ''),
-                    onClick: function onClick() {
-                      return _jsreportStudio2.default.playground.like();
-                    }
-                  },
-                  _react2.default.createElement('i', { className: 'fa fa-heart', title: 'Like workspace', style: {
-                      color: _jsreportStudio2.default.playground.current.hasLike ? 'red' : undefined
-                    } })
-                );
-              });
-            }
           }
 
           _jsreportStudio2.default.addToolbarComponent(function (props) {
@@ -739,14 +697,20 @@ _jsreportStudio2.default.readyListeners.push(_asyncToGenerator( /*#__PURE__*/reg
           }
 
           entities = _jsreportStudio2.default.getAllEntities();
-          _context2.next = 7;
+
+          if (!_jsreportStudio2.default.extensions.playground.options.workspaceOpenAllEntities) {
+            _context2.next = 8;
+            break;
+          }
+
+          _context2.next = 8;
           return Promise.all(entities.filter(function (e) {
             return e.__entitySet !== 'folders';
           }).map(function (v) {
             return _jsreportStudio2.default.openTab({ _id: v._id });
           }));
 
-        case 7:
+        case 8:
 
           if (_jsreportStudio2.default.playground.current.default) {
             defaultEntity = entities.find(function (e) {
@@ -760,7 +724,7 @@ _jsreportStudio2.default.readyListeners.push(_asyncToGenerator( /*#__PURE__*/reg
             }
           }
 
-        case 8:
+        case 9:
         case 'end':
           return _context2.stop();
       }
@@ -797,11 +761,11 @@ var _style = __webpack_require__(3);
 
 var _style2 = _interopRequireDefault(_style);
 
-var _lodash = __webpack_require__(11);
+var _lodash = __webpack_require__(7);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _DeleteWorkspaceModal = __webpack_require__(13);
+var _DeleteWorkspaceModal = __webpack_require__(9);
 
 var _DeleteWorkspaceModal2 = _interopRequireDefault(_DeleteWorkspaceModal);
 
@@ -1121,616 +1085,6 @@ exports.default = Startup;
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(8)(true);
-// Module
-exports.push([module.i, ".workspacesTable___u8YxY > tbody > tr > td:nth-child(4),\n.workspacesTable___u8YxY > tbody > tr > td:nth-child(5) {\n  text-align: right;\n}\n\n.workspacesTable___u8YxY > tbody > th:nth-child(2) {\n  text-align: right;\n}\n\n.workspacesTable___u8YxY > tbody > tr > td > i {\n  color: #555555;\n  margin-left: 0.3rem;\n}\n\n.tabs___2j1rY {\n  display: flex;\n  width: 100%;\n  background-color: #FEFEFE;\n  border-bottom: 0.1rem #1C97EA solid;\n  margin-bottom: 2rem;\n}\n\n.tabs___2j1rY > div {\n  border-right: 1px #E6E6E6 solid;\n  cursor: pointer;\n}\n\n.tabs___2j1rY > div:hover {\n  background-color: #1C97EA;\n  color: #FFFFFF;\n}\n\n.tabs___2j1rY > .selectedTab___2raEU {\n  background: #007ACC;\n  color: #FFFFFF;\n}\n\n.tabs___2j1rY > div {\n  padding: 0.5rem;\n}\n\n.searchBox___fHETj {\n  margin-bottom: 2rem;\n}\n\n.newBox___l9Pen {\n  margin-bottom: 2rem;\n}\n\n.contextMenu___3OlSq {\n  background-color: #d9d9d9;\n  position: absolute;\n  padding: 0.5rem;\n  min-width: 9rem;\n  z-index: 200;\n}\n\n.contextMenuContainer___2DQFV {\n  position: relative;\n  z-index: 200;\n}\n\n.contextButton___3hHPU {\n  color: #2f2f2f;\n  padding: 0.5rem;\n  font-size: 0.8rem;\n  cursor: pointer;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\n.contextButton___3hHPU:hover {\n  background-color: #1C97EA;\n  color: #FFFFFF;\n}\n", "",{"version":3,"sources":["style.scss"],"names":[],"mappings":"AAAA;;EAEE,iBAAiB;AACnB;;AAEA;EACE,iBAAiB;AACnB;;AAEA;EACE,cAAc;EACd,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,WAAW;EACX,yBAAyB;EACzB,mCAAmC;EACnC,mBAAmB;AACrB;;AAEA;EACE,+BAA+B;EAC/B,eAAe;AACjB;;AAEA;EACE,yBAAyB;EACzB,cAAc;AAChB;;AAEA;EACE,mBAAmB;EACnB,cAAc;AAChB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,mBAAmB;AACrB;;AAEA;EACE,mBAAmB;AACrB;;AAEA;EACE,yBAAyB;EACzB,kBAAkB;EAClB,eAAe;EACf,eAAe;EACf,YAAY;AACd;;AAEA;EACE,kBAAkB;EAClB,YAAY;AACd;;AAEA;EACE,cAAc;EACd,eAAe;EACf,iBAAiB;EACjB,eAAe;EACf,2BAA2B;EAC3B,yBAAyB;EAEzB,sBAAsB;EACtB,qBAAqB;EACrB,iBAAiB;AACnB;;AAEA;EACE,yBAAyB;EACzB,cAAc;AAChB","file":"style.scss","sourcesContent":[".workspacesTable > tbody > tr > td:nth-child(4),\n.workspacesTable > tbody > tr > td:nth-child(5) {\n  text-align: right;\n}\n\n.workspacesTable > tbody > th:nth-child(2) {\n  text-align: right;\n}\n\n.workspacesTable > tbody > tr > td > i {\n  color: #555555;\n  margin-left: 0.3rem;\n}\n\n.tabs {\n  display: flex;\n  width: 100%;\n  background-color: #FEFEFE;\n  border-bottom: 0.1rem #1C97EA solid;\n  margin-bottom: 2rem;\n}\n\n.tabs > div {\n  border-right: 1px #E6E6E6 solid;\n  cursor: pointer;\n}\n\n.tabs > div:hover {\n  background-color: #1C97EA;\n  color: #FFFFFF;\n}\n\n.tabs > .selectedTab {\n  background: #007ACC;\n  color: #FFFFFF;\n}\n\n.tabs > div {\n  padding: 0.5rem;\n}\n\n.searchBox {\n  margin-bottom: 2rem;\n}\n\n.newBox {\n  margin-bottom: 2rem;\n}\n\n.contextMenu {\n  background-color: #d9d9d9;\n  position: absolute;\n  padding: 0.5rem;\n  min-width: 9rem;\n  z-index: 200;\n}\n\n.contextMenuContainer {\n  position: relative;\n  z-index: 200;\n}\n\n.contextButton {\n  color: #2f2f2f;\n  padding: 0.5rem;\n  font-size: 0.8rem;\n  cursor: pointer;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -khtml-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\n.contextButton:hover {\n  background-color: #1C97EA;\n  color: #FFFFFF;\n}\n"]}]);
-
-// Exports
-exports.locals = {
-	"workspacesTable": "workspacesTable___u8YxY",
-	"tabs": "tabs___2j1rY",
-	"selectedTab": "selectedTab___2raEU",
-	"searchBox": "searchBox___fHETj",
-	"newBox": "newBox___l9Pen",
-	"contextMenu": "contextMenu___3OlSq",
-	"contextMenuContainer": "contextMenuContainer___2DQFV",
-	"contextButton": "contextButton___3hHPU"
-};
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function (useSourceMap) {
-  var list = []; // return the list of modules as css string
-
-  list.toString = function toString() {
-    return this.map(function (item) {
-      var content = cssWithMappingToString(item, useSourceMap);
-
-      if (item[2]) {
-        return '@media ' + item[2] + '{' + content + '}';
-      } else {
-        return content;
-      }
-    }).join('');
-  }; // import a list of modules into the list
-
-
-  list.i = function (modules, mediaQuery) {
-    if (typeof modules === 'string') {
-      modules = [[null, modules, '']];
-    }
-
-    var alreadyImportedModules = {};
-
-    for (var i = 0; i < this.length; i++) {
-      var id = this[i][0];
-
-      if (id != null) {
-        alreadyImportedModules[id] = true;
-      }
-    }
-
-    for (i = 0; i < modules.length; i++) {
-      var item = modules[i]; // skip already imported module
-      // this implementation is not 100% perfect for weird media query combinations
-      // when a module is imported multiple times with different media queries.
-      // I hope this will never occur (Hey this way we have smaller bundles)
-
-      if (item[0] == null || !alreadyImportedModules[item[0]]) {
-        if (mediaQuery && !item[2]) {
-          item[2] = mediaQuery;
-        } else if (mediaQuery) {
-          item[2] = '(' + item[2] + ') and (' + mediaQuery + ')';
-        }
-
-        list.push(item);
-      }
-    }
-  };
-
-  return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-  var content = item[1] || '';
-  var cssMapping = item[3];
-
-  if (!cssMapping) {
-    return content;
-  }
-
-  if (useSourceMap && typeof btoa === 'function') {
-    var sourceMapping = toComment(cssMapping);
-    var sourceURLs = cssMapping.sources.map(function (source) {
-      return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */';
-    });
-    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-  }
-
-  return [content].join('\n');
-} // Adapted from convert-source-map (MIT)
-
-
-function toComment(sourceMap) {
-  // eslint-disable-next-line no-undef
-  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-  var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-  return '/*# ' + data + ' */';
-}
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getTarget = function (target, parent) {
-  if (parent){
-    return parent.querySelector(target);
-  }
-  return document.querySelector(target);
-};
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(target, parent) {
-                // If passing function in options, then use it for resolve "head" element.
-                // Useful for Shadow Root style i.e
-                // {
-                //   insertInto: function () { return document.querySelector("#foo").shadowRoot }
-                // }
-                if (typeof target === 'function') {
-                        return target();
-                }
-                if (typeof memo[target] === "undefined") {
-			var styleTarget = getTarget.call(this, target, parent);
-			// Special case to return head of iframe instead of iframe itself
-			if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
-				try {
-					// This will throw an exception if access to iframe is blocked
-					// due to cross-origin restrictions
-					styleTarget = styleTarget.contentDocument.head;
-				} catch(e) {
-					styleTarget = null;
-				}
-			}
-			memo[target] = styleTarget;
-		}
-		return memo[target]
-	};
-})();
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(10);
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-        if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
-		var nextSibling = getElement(options.insertAt.before, target);
-		target.insertBefore(style, nextSibling);
-	} else {
-		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
-
-	if(options.attrs.nonce === undefined) {
-		var nonce = getNonce();
-		if (nonce) {
-			options.attrs.nonce = nonce;
-		}
-	}
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	if(options.attrs.type === undefined) {
-		options.attrs.type = "text/css";
-	}
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function getNonce() {
-	if (false) {}
-
-	return __webpack_require__.nc;
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = typeof options.transform === 'function'
-		 ? options.transform(obj.css) 
-		 : options.transform.default(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
-
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
-
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
-
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
-  }
-
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
-
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -2111,10 +1465,10 @@ function toNumber(value) {
 
 module.exports = debounce;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(12)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(8)))
 
 /***/ }),
-/* 12 */
+/* 8 */
 /***/ (function(module, exports) {
 
 var g;
@@ -2140,7 +1494,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 13 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2262,7 +1616,7 @@ var DeleteWorkspaceModal = function (_Component) {
 exports.default = DeleteWorkspaceModal;
 
 /***/ }),
-/* 14 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2357,7 +1711,7 @@ var ToolbarSaveForkButton = function (_Component) {
 exports.default = ToolbarSaveForkButton;
 
 /***/ }),
-/* 15 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2425,7 +1779,7 @@ var LogoutButton = function (_Component) {
 exports.default = LogoutButton;
 
 /***/ }),
-/* 16 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2537,7 +1891,7 @@ AboutModal.propTypes = {
 exports.default = AboutModal;
 
 /***/ }),
-/* 17 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2575,7 +1929,7 @@ var _login2 = _interopRequireDefault(_login);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 18 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2707,7 +2061,7 @@ var SaveModal = function (_Component) {
 exports.default = SaveModal;
 
 /***/ }),
-/* 19 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2722,6 +2076,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _style = __webpack_require__(3);
+
+var _style2 = _interopRequireDefault(_style);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2774,7 +2132,7 @@ var ShareModal = function (_Component) {
           _react2.default.createElement('br', null),
           _react2.default.createElement(
             'code',
-            { style: { backgroundColor: 'wheat' } },
+            { className: _style2.default.code },
             '<iframe src="',
             window.location.href,
             '?embed=1" width="100%" height="400" frameborder="0"></iframe>'
@@ -2790,7 +2148,7 @@ var ShareModal = function (_Component) {
 exports.default = ShareModal;
 
 /***/ }),
-/* 20 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2941,7 +2299,7 @@ var RenameModal = function (_Component) {
 exports.default = RenameModal;
 
 /***/ }),
-/* 21 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3095,87 +2453,29 @@ exports.default = function () {
         }, _callee2, _this2, [[2,, 29, 32]]);
       }))();
     },
-    like: function like() {
+    open: function open(w) {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+        var entities, defaultEntity;
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                if (!(!_this3.current._id || _this3.lock)) {
-                  _context3.next = 2;
-                  break;
-                }
-
-                return _context3.abrupt('return');
-
-              case 2:
-                _context3.prev = 2;
-
-                _this3.lock = true;
-
-                if (!_this3.current.hasLike) {
-                  _context3.next = 10;
-                  break;
-                }
-
-                _this3.current.hasLike = false;
-                _context3.next = 8;
-                return _jsreportStudio2.default.api.del('/api/playground/like');
-
-              case 8:
-                _context3.next = 13;
-                break;
-
-              case 10:
-                _this3.current.hasLike = true;
-                _context3.next = 13;
-                return _jsreportStudio2.default.api.post('/api/playground/like');
-
-              case 13:
-
-                if (_this3.startupReload) {
-                  _this3.startupReload();
-                }
-
-              case 14:
-                _context3.prev = 14;
-
-                _this3.lock = false;
-                return _context3.finish(14);
-
-              case 17:
-              case 'end':
-                return _context3.stop();
-            }
-          }
-        }, _callee3, _this3, [[2,, 14, 17]]);
-      }))();
-    },
-    open: function open(w) {
-      var _this4 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-        var entities, defaultEntity;
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
                 updateTitle(w.name);
 
-                _this4.current = w;
+                _this3.current = w;
 
-                _context4.next = 4;
+                _context3.next = 4;
                 return _jsreportStudio2.default.store.dispatch(_jsreportStudio2.default.editor.actions.updateHistory());
 
               case 4:
-                _context4.next = 6;
+                _context3.next = 6;
                 return _jsreportStudio2.default.api.get('api/playground/workspace');
 
               case 6:
-                _this4.current = _context4.sent;
-                _context4.next = 9;
+                _this3.current = _context3.sent;
+                _context3.next = 9;
                 return _jsreportStudio2.default.reset();
 
               case 9:
@@ -3185,12 +2485,18 @@ exports.default = function () {
                 entities = _jsreportStudio2.default.getAllEntities().filter(function (e) {
                   return e.__entitySet !== 'folders';
                 });
-                _context4.next = 13;
+
+                if (!_jsreportStudio2.default.extensions.playground.options.workspaceOpenAllEntities) {
+                  _context3.next = 14;
+                  break;
+                }
+
+                _context3.next = 14;
                 return Promise.all(entities.map(function (v) {
                   return _jsreportStudio2.default.openTab({ _id: v._id });
                 }));
 
-              case 13:
+              case 14:
 
                 if (_jsreportStudio2.default.playground.current.default) {
                   defaultEntity = entities.find(function (e) {
@@ -3204,25 +2510,25 @@ exports.default = function () {
                   }
                 }
 
-              case 14:
+              case 15:
               case 'end':
-                return _context4.stop();
+                return _context3.stop();
             }
           }
-        }, _callee4, _this4);
+        }, _callee3, _this3);
       }))();
     },
     create: function create() {
-      var _this5 = this;
+      var _this4 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 updateTitle(null);
-                _this5.current = { canEdit: true, __isInitial: true };
-                _context5.next = 4;
+                _this4.current = { canEdit: true, __isInitial: true };
+                _context4.next = 4;
                 return _jsreportStudio2.default.reset();
 
               case 4:
@@ -3231,64 +2537,64 @@ exports.default = function () {
 
               case 6:
               case 'end':
-                return _context5.stop();
+                return _context4.stop();
             }
           }
-        }, _callee5, _this5);
+        }, _callee4, _this4);
       }))();
     },
     remove: function remove(w) {
-      var _this6 = this;
+      var _this5 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6() {
+      return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
         var wid;
-        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
                 wid = w._id;
-                _context6.next = 3;
+                _context5.next = 3;
                 return _jsreportStudio2.default.api.del('api/playground/workspaces/' + wid + '/remove');
 
               case 3:
-                if (!(w._id === _this6.current._id)) {
-                  _context6.next = 12;
+                if (!(w._id === _this5.current._id)) {
+                  _context5.next = 12;
                   break;
                 }
 
-                _this6.current = { canEdit: true, __isInitial: true };
+                _this5.current = { canEdit: true, __isInitial: true };
                 updateTitle(null);
-                _context6.next = 8;
+                _context5.next = 8;
                 return _jsreportStudio2.default.reset();
 
               case 8:
-                _context6.next = 10;
+                _context5.next = 10;
                 return _jsreportStudio2.default.api.get('api/playground/workspace');
 
               case 10:
-                _this6.current = _context6.sent;
+                _this5.current = _context5.sent;
 
                 _jsreportStudio2.default.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' });
 
               case 12:
 
-                if (_this6.startupReload) {
-                  _this6.startupReload();
+                if (_this5.startupReload) {
+                  _this5.startupReload();
                 }
 
               case 13:
               case 'end':
-                return _context6.stop();
+                return _context5.stop();
             }
           }
-        }, _callee6, _this6);
+        }, _callee5, _this5);
       }))();
     }
   };
 };
 
 /***/ }),
-/* 22 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3370,7 +2676,7 @@ var UserEditor = function (_Component) {
 exports.default = UserEditor;
 
 /***/ }),
-/* 23 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

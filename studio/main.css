@@ -1,0 +1,81 @@
+
+.x-playground-style-workspacesTable > tbody > tr > td:nth-child(4),
+.x-playground-style-workspacesTable > tbody > tr > td:nth-child(5) {
+    text-align: right
+}
+
+.x-playground-style-workspacesTable > tbody > th:nth-child(2) {
+    text-align: right
+}
+
+.x-playground-style-workspacesTable > tbody > tr > td > i {
+    color: #555555;
+    margin-left: 0.3rem
+}
+
+.x-playground-style-tabs {
+    display: flex;
+    width: 100%;
+    background-color: $tab-titles-backgroundColor;
+    border-bottom: 0.1rem $tab-titles-borderColor solid;
+    margin-bottom: 2rem
+}
+
+.x-playground-style-tabs > div {
+    border-right: 1px $tab-title-borderColor solid;
+    cursor: pointer
+}
+
+.x-playground-style-tabs > div:hover {
+    background-color: $tab-title-hover-backgroundColor;
+    color: $tab-title-hover-color;
+}
+
+.x-playground-style-tabs > .x-playground-style-selectedTab {
+    background: $tab-title-active-backgroundColor;
+    color: $tab-title-active-color;
+}
+
+.x-playground-style-tabs > div {
+    padding: 0.5rem
+}
+
+.x-playground-style-searchBox {
+    margin-bottom: 2rem
+}
+
+.x-playground-style-newBox {
+    margin-bottom: 2rem
+}
+
+.x-playground-style-contextMenu {
+  background-color: $contextMenu-backgroundColor;
+  position: absolute;
+  padding: 0.5rem;
+  min-width: 9rem;
+  z-index: 200;
+}
+
+.x-playground-style-contextMenuContainer {
+  position: relative;
+  z-index: 200;
+}
+
+.x-playground-style-contextButton {
+  color: $contextMenu-button-color;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  @include no-select();
+}
+
+.x-playground-style-contextButton:hover {
+  background-color: $contextMenu-button-hover-backgroundColor;
+  color: $contextMenu-button-hover-color;
+}
+
+.x-playground-style-code {
+  background-color: $primary-selection-backgroundColor;
+  color: $primary-selection-color;
+}
+
