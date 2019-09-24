@@ -73,19 +73,6 @@ Studio.readyListeners.push(async () => {
         save={save}
       />
     ))
-
-    if (Studio.playground.user) {
-      Studio.addToolbarComponent((props) => (
-        <div
-          className={`toolbar-button ${Studio.playground.current.name == null ? 'disabled' : ''}`}
-          onClick={() => Studio.playground.like()}
-        >
-          <i className='fa fa-heart' title='Like workspace' style={{
-            color: (Studio.playground.current.hasLike) ? 'red' : undefined
-          }} />
-        </div>
-      ))
-    }
   }
 
   Studio.addToolbarComponent((props) => (

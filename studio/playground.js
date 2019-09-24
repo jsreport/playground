@@ -58,29 +58,6 @@ export default () => ({
     }
   },
 
-  async like () {
-    if (!this.current._id || this.lock) {
-      return
-    }
-    try {
-      this.lock = true
-
-      if (this.current.hasLike) {
-        this.current.hasLike = false
-        await Studio.api.del('/api/playground/like')
-      } else {
-        this.current.hasLike = true
-        await Studio.api.post('/api/playground/like')
-      }
-
-      if (this.startupReload) {
-        this.startupReload()
-      }
-    } finally {
-      this.lock = false
-    }
-  },
-
   async open (w) {
     updateTitle(w.name)
 

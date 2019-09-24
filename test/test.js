@@ -72,7 +72,7 @@ describe('playground', () => {
     })
 
     await reporter.documentStore.internalCollection('workspaces').update({ _id: workspace._id }, {
-      $set: { views: 5, likes: 5, default: template.shortid }
+      $set: { views: 5, default: template.shortid }
     })
 
     workspace = await reporter.documentStore.internalCollection('workspaces').findOne({ _id: workspace._id })
@@ -93,7 +93,6 @@ describe('playground', () => {
     const forked = await reporter.playground.findWorkspace({ name: 'changed' })
     forked.should.be.ok()
     forked._id.should.not.be.eql(workspace._id)
-    should(forked.likes).not.be.ok()
     should(forked.views).not.be.ok()
     forked.shortid.should.be.ok()
 
@@ -105,23 +104,6 @@ describe('playground', () => {
     forked.default.should.be.eql(forkedTemplate.shortid)
   })
 
-  it('addLike and removeLike should increase/decrease likes on workspace', async () => {
-    let workspace = await reporter.playground.saveWorkspace({
-      workspace: {
-        name: 'foo'
-      }
-    }, { __isInitial: true }, 'user')
-
-    await reporter.playground.addLike(workspace, { _id: 'a' })
-    await reporter.playground.addLike(workspace, { _id: 'a' })
-    await reporter.playground.addLike(workspace, { _id: 'b' })
-    await reporter.playground.removeLike(workspace, { _id: 'c' })
-    await reporter.playground.addLike(workspace, { _id: 'd' })
-    await reporter.playground.removeLike(workspace, { _id: 'd' })
-    workspace = await reporter.playground.findWorkspace({ name: 'foo' })
-    workspace.likes.should.be.eql(2)
-  })
-
   it('remove workspace should work', async () => {
     const workspace = await reporter.playground.saveWorkspace({
       workspace: {
@@ -129,21 +111,13 @@ describe('playground', () => {
       }
     }, { __isInitial: true }, 'user')
 
-    await reporter.playground.addLike(workspace, { _id: 'a' })
-    await reporter.playground.addLike(workspace, { _id: 'b' })
-
     await reporter.playground.removeWorkspace(workspace._id, 'user')
 
     const w = await reporter.playground.findWorkspace({
       _id: workspace._id
     })
 
-    const likes = await reporter.documentStore.internalCollection('likes').find({
-      workspaceId: workspace._id
-    })
-
     should(w == null).be.True()
-    should(likes.length).be.eql(0)
   })
 
   it('findOrInsertUser should find or insert', async () => {
@@ -279,17 +253,18 @@ describe('playground', () => {
     ws.items[1].name.should.be.eql('b')
   })
 
-  it('listPopularWorkspaes should return popular workspaces ordered by number of likes', async () => {
+  it('listPopularWorkspaes should return popular workspaces ordered by number of views', async () => {
     await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'a',
-      likes: 5
+      views: 5
     })
     await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'b',
-      likes: 10
+      views: 10
     })
 
     const ws = await reporter.playground.listPopularWorkspaces()
+
     ws.items.should.have.length(2)
     ws.items[0].name.should.be.eql('b')
     ws.items[1].name.should.be.eql('a')
@@ -298,11 +273,11 @@ describe('playground', () => {
   it('listPopularWorkspaces should limit to pageSize', async () => {
     await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'a',
-      likes: 5
+      views: 5
     })
     await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'b',
-      likes: 4
+      views: 4
     })
 
     reporter.playground.pageSize = 1

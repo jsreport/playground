@@ -128,7 +128,6 @@ export default class WorkspacesList extends Component {
         </td>
         <td>{w.modificationDate.toLocaleDateString()}</td>
         <td>{w.views || 0}<i className='fa fa-eye' /></td>
-        <td>{w.likes || 0}<i className='fa fa-heart' /></td>
       </tr>
     )
   }
@@ -140,7 +139,6 @@ export default class WorkspacesList extends Component {
           <th>name</th>
           <th>user</th>
           <th>modified</th>
-          <th />
           <th />
         </tr>
       </thead>
