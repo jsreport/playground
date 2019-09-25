@@ -9,7 +9,7 @@ export default class ShareModal extends Component {
         <p>
           You can just copy paste browser url to share the playground workspace:
           <br />
-          <a href='{window.location.href}'>{window.location.href}</a>
+          <a href={window.location.href}>{window.location.href}</a>
         </p>
         <h3>embed into website</h3>
         <p>
