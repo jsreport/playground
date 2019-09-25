@@ -2116,7 +2116,7 @@ var ShareModal = function (_Component) {
           _react2.default.createElement('br', null),
           _react2.default.createElement(
             'a',
-            { href: '{window.location.href}' },
+            { href: window.location.href },
             window.location.href
           )
         ),
