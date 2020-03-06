@@ -22,6 +22,7 @@
     }
   },
   "dependencies": {
+    "cheerio-page-eval": "1.0.0",
     "client-sessions": "0.8.0",
     "connect-ensure-login": "0.1.1",
     "eslint-config-standard-react": "7.0.2",
