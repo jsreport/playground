@@ -8,6 +8,9 @@
   "blobStorage": {
     "provider": "fs"
   },
+  "encryption": {
+    "enabled": false
+  },
   "templatingEngines": {
     "strategy": "in-process",
     "allowedModules": "lodash,handlebars,moment",
