@@ -8,21 +8,18 @@
   "blobStorage": {
     "provider": "fs"
   },
+  "reportTimeout": 60000,
   "encryption": {
     "enabled": false
   },
   "templatingEngines": {
     "strategy": "in-process",
-    "allowedModules": "lodash,handlebars,moment",
-    "timeout": 10000
+    "allowedModules": "lodash,handlebars,moment"
   },
   "office": {
     "preview": {
       "showWarning": false
     }
-  },
-  "chrome": {
-    "timeout": 30000
   },
   "loggly": {
     "level": "info",
@@ -94,7 +91,6 @@
       "enabled": false
     },
     "scripts": {
-      "timeout": 30000,
       "allowedModules": "http,https,lodash,bluebird,async,axios,request,moment"
     },
     "scheduling": {
