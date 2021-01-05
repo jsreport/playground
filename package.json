@@ -9,7 +9,7 @@
     "test": "mocha test --timeout 8000",
     "build": "jsreport-studio-build"
   },
-  "version": "2.8.0",
+  "version": "2.11.0",
   "eslintIgnore": [
     "studio/main.js",
     "studio/main.js.map"
