@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import style from './style.scss'
 
-export default class ShareModal extends Component {
+class ShareModal extends Component {
   render () {
     return (
       <div style={{ padding: '1.5rem' }}>
@@ -13,13 +13,15 @@ export default class ShareModal extends Component {
         </p>
         <h3>embed into website</h3>
         <p>
-          If you want embed playgorund into another page, you can use this html code:
+          If you want embed playground into another page, you can use this html code:
           <br />
           <code className={style.code}>
-          &lt;iframe src=&quot;{window.location.href}?embed=1&quot; width=&quot;100%&quot; height=&quot;400&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
+            &lt;iframe src=&quot;{window.location.href}?embed=1&quot; width=&quot;100%&quot; height=&quot;400&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
           </code>
         </p>
       </div>
     )
   }
 }
+
+export default ShareModal

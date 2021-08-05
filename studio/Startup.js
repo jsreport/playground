@@ -6,14 +6,21 @@ import debounce from 'lodash.debounce'
 import DeleteWorkspaceModal from './DeleteWorkspaceModal'
 import WorskpacesList from './WorkspacesList'
 
-export default class Startup extends Component {
-  constructor () {
-    super()
+class Startup extends Component {
+  constructor (props) {
+    super(props)
+
     this.state = {
       tab: Studio.playground.user ? 'my' : 'examples',
       searchTerm: ''
     }
+
     this.handleSearchChange = debounce(this.handleSearchChange.bind(this), 500)
+
+    this.examplesRef = React.createRef()
+    this.popularRef = React.createRef()
+    this.myRef = React.createRef()
+    this.searchRef = React.createRef()
   }
 
   handleSearchChange () {
@@ -49,8 +56,10 @@ export default class Startup extends Component {
   }
 
   reloadTab (tab) {
-    if (this.refs[tab]) {
-      this.refs[tab].onTabActive()
+    const ref = this[`${tab}Ref`]
+
+    if (ref && ref.current) {
+      ref.current.onTabActive()
     }
   }
 
@@ -58,9 +67,9 @@ export default class Startup extends Component {
     return (
       <div>
         <WorskpacesList
-          ref='examples'
+          ref={this.examplesRef}
           key='examples'
-          url={`/api/playground/workspaces/examples`}
+          url='/api/playground/workspaces/examples'
           onRemove={this.handleRemove}
         />
       </div>
@@ -71,9 +80,9 @@ export default class Startup extends Component {
     return (
       <div>
         <WorskpacesList
-          ref='popular'
+          ref={this.popularRef}
           key='popular'
-          url={`/api/playground/workspaces/popular`}
+          url='/api/playground/workspaces/popular'
           onRemove={this.handleRemove}
         />
       </div>
@@ -88,7 +97,7 @@ export default class Startup extends Component {
     return (
       <div>
         <WorskpacesList
-          ref='my'
+          ref={this.myRef}
           key='my'
           url={`/api/playground/workspaces/user/${Studio.playground.user._id}`}
           onRemove={this.handleRemove}
@@ -106,13 +115,15 @@ export default class Startup extends Component {
   }
 
   renderActions () {
-    return <div>
-      <h3>actions</h3>
+    return (
       <div>
-        <button className='button confirmation' onClick={() => Studio.playground.create()}>new workspace</button>
-        <button className='button confirmation'>search</button>
+        <h3>actions</h3>
+        <div>
+          <button className='button confirmation' onClick={() => Studio.playground.create()}>new workspace</button>
+          <button className='button confirmation'>search</button>
+        </div>
       </div>
-    </div>
+    )
   }
 
   renderSearch () {
@@ -131,7 +142,7 @@ export default class Startup extends Component {
         </div>
         <div>
           <WorskpacesList
-            ref='search'
+            ref={this.searchRef}
             url={`/api/playground/search?q=${encodeURIComponent(searchTerm != null ? searchTerm : '')}`}
             editable={false}
           />
@@ -150,29 +161,33 @@ export default class Startup extends Component {
   }
 
   render () {
-    return <div className='custom-editor block'>
-      <div>
-        {Studio.playground.user ? <h2>welcome <b>{Studio.playground.user.fullName}</b></h2> : ''}
+    return (
+      <div className='custom-editor block'>
+        <div>
+          {Studio.playground.user ? <h2>welcome <b>{Studio.playground.user.fullName}</b></h2> : ''}
+        </div>
+        <div className={style.newBox}>
+          Start by creating a new workspace
+          <button
+            className='button confirmation'
+            onClick={() => Studio.playground.create()}
+            title='create template in new workspace'
+          >
+            <i className='fa fa-plus-square' />
+          </button>
+        </div>
+        <div className={style.tabs}>
+          <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>
+          <div className={this.state.tab === 'my' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'my' })}>My workspaces</div>
+          <div className={this.state.tab === 'popular' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'popular' })}>Popular workspaces</div>
+          <div className={this.state.tab === 'search' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'search' })}><i className='fa fa-search' /> Search</div>
+        </div>
+        <div className='block-item' style={{ overflow: 'auto' }}>
+          {this.renderTab()}
+        </div>
       </div>
-      <div className={style.newBox}>
-        Start by creating a new workspace
-        <button
-          className='button confirmation'
-          onClick={() => Studio.playground.create()}
-          title='create template in new workspace'
-        >
-          <i className='fa fa-plus-square' />
-        </button>
-      </div>
-      <div className={style.tabs}>
-        <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>
-        <div className={this.state.tab === 'my' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'my' })}>My workspaces</div>
-        <div className={this.state.tab === 'popular' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'popular' })}>Popular workspaces</div>
-        <div className={this.state.tab === 'search' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'search' })}><i className='fa fa-search' /> Search</div>
-      </div>
-      <div className='block-item' style={{ overflow: 'auto' }}>
-        {this.renderTab()}
-      </div>
-    </div>
+    )
   }
 }
+
+export default Startup

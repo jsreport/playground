@@ -253,7 +253,7 @@ describe('playground', () => {
     ws.items[1].name.should.be.eql('b')
   })
 
-  it('listPopularWorkspaes should return popular workspaces ordered by number of views', async () => {
+  it('listPopularWorkspaces should return popular workspaces ordered by number of views', async () => {
     await reporter.documentStore.internalCollection('workspaces').insert({
       name: 'a',
       views: 5
@@ -281,7 +281,7 @@ describe('playground', () => {
     })
 
     reporter.playground.pageSize = 1
-    let ws = await reporter.playground.listPopularWorkspaces(0)
+    const ws = await reporter.playground.listPopularWorkspaces(0)
     ws.items.should.have.length(1)
   })
 
@@ -295,7 +295,7 @@ describe('playground', () => {
       _id: 'a'
     })
 
-    let ws = await reporter.playground.listPopularWorkspaces()
+    const ws = await reporter.playground.listPopularWorkspaces()
     ws.items.should.have.length(1)
     ws.items[0].user.name.should.be.eql('foo')
   })

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 import style from './style.scss'
 
-export default class WorkspacesList extends Component {
+class WorkspacesList extends Component {
   constructor () {
     super()
     this.state = this.initialState()
@@ -51,8 +51,6 @@ export default class WorkspacesList extends Component {
 
     try {
       response = await Studio.api.get(this.props.url)
-    } catch (e) {
-      throw e
     } finally {
       this.fetchRequested = false
     }
@@ -131,20 +129,26 @@ export default class WorkspacesList extends Component {
       </tr>
     )
   }
+
   render () {
     const { items } = this.state
-    return <table className={'table ' + style.workspacesTable}>
-      <thead>
-        <tr>
-          <th>name</th>
-          <th>user</th>
-          <th>modified</th>
-          <th />
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((i) => this.renderItem(i))}
-      </tbody>
-    </table>
+
+    return (
+      <table className={'table ' + style.workspacesTable}>
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>user</th>
+            <th>modified</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((i) => this.renderItem(i))}
+        </tbody>
+      </table>
+    )
   }
 }
+
+export default WorkspacesList

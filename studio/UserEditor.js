@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
 import WorskpacesList from './WorkspacesList'
 
-export default class UserEditor extends Component {
+class UserEditor extends Component {
+  constructor (props) {
+    super(props)
+
+    this.workspacesRef = React.createRef()
+  }
+
   reloadTab () {
-    if (this.refs.workspaces) {
-      this.refs.workspaces.onTabActive()
+    if (this.workspacesRef.current) {
+      this.workspacesRef.current.onTabActive()
     }
   }
 
@@ -21,9 +27,11 @@ export default class UserEditor extends Component {
           <h2>{user.fullName}</h2>
         </div>
         <div>
-          <WorskpacesList ref='workspaces' url={`/api/playground/workspaces/user/${user._id}`} />
+          <WorskpacesList ref={this.workspacesRef} url={`/api/playground/workspaces/user/${user._id}`} />
         </div>
       </div>
     )
   }
 }
+
+export default UserEditor

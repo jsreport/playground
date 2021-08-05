@@ -1,8 +1,8 @@
 module.exports = {
-  'name': 'playground',
-  'dependencies': ['templates', 'import-export', 'express'],
-  'main': 'lib/main.js',
-  'optionsSchema': {
+  name: 'playground',
+  dependencies: ['templates', 'import-export', 'express'],
+  main: 'lib/main.js',
+  optionsSchema: {
     extensions: {
       playground: {
         type: 'object',
