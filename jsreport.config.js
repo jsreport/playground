@@ -26,10 +26,6 @@ module.exports = {
           },
           adminUserId: {
             type: 'string'
-          },
-          workspaceOpenAllEntities: {
-            type: 'boolean',
-            default: true
           }
         }
       }

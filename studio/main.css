@@ -1,19 +1,19 @@
 
-.x-playground-style-workspacesTable > tbody > tr > td:nth-child(4),
-.x-playground-style-workspacesTable > tbody > tr > td:nth-child(5) {
+.x-playground-styles-workspacesTable > tbody > tr > td:nth-child(4),
+.x-playground-styles-workspacesTable > tbody > tr > td:nth-child(5) {
     text-align: right
 }
 
-.x-playground-style-workspacesTable > tbody > th:nth-child(2) {
+.x-playground-styles-workspacesTable > tbody > th:nth-child(2) {
     text-align: right
 }
 
-.x-playground-style-workspacesTable > tbody > tr > td > i {
+.x-playground-styles-workspacesTable > tbody > tr > td > i {
     color: #555555;
     margin-left: 0.3rem
 }
 
-.x-playground-style-tabs {
+.x-playground-styles-tabs {
     display: flex;
     width: 100%;
     background-color: $tab-titles-backgroundColor;
@@ -21,34 +21,34 @@
     margin-bottom: 2rem
 }
 
-.x-playground-style-tabs > div {
+.x-playground-styles-tabs > div {
     border-right: 1px $tab-title-borderColor solid;
     cursor: pointer
 }
 
-.x-playground-style-tabs > div:hover {
+.x-playground-styles-tabs > div:hover {
     background-color: $tab-title-hover-backgroundColor;
     color: $tab-title-hover-color;
 }
 
-.x-playground-style-tabs > .x-playground-style-selectedTab {
+.x-playground-styles-tabs > .x-playground-styles-selectedTab {
     background: $tab-title-active-backgroundColor;
     color: $tab-title-active-color;
 }
 
-.x-playground-style-tabs > div {
+.x-playground-styles-tabs > div {
     padding: 0.5rem
 }
 
-.x-playground-style-searchBox {
+.x-playground-styles-searchBox {
     margin-bottom: 2rem
 }
 
-.x-playground-style-newBox {
+.x-playground-styles-newBox {
     margin-bottom: 2rem
 }
 
-.x-playground-style-contextMenu {
+.x-playground-styles-contextMenu {
   background-color: $contextMenu-backgroundColor;
   position: absolute;
   padding: 0.5rem;
@@ -56,12 +56,12 @@
   z-index: 200;
 }
 
-.x-playground-style-contextMenuContainer {
+.x-playground-styles-contextMenuContainer {
   position: relative;
   z-index: 200;
 }
 
-.x-playground-style-contextButton {
+.x-playground-styles-contextButton {
   color: $contextMenu-button-color;
   padding: 0.5rem;
   font-size: 0.8rem;
@@ -69,12 +69,12 @@
   @include no-select();
 }
 
-.x-playground-style-contextButton:hover {
+.x-playground-styles-contextButton:hover {
   background-color: $contextMenu-button-hover-backgroundColor;
   color: $contextMenu-button-hover-color;
 }
 
-.x-playground-style-code {
+.x-playground-styles-code {
   background-color: $primary-selection-backgroundColor;
   color: $primary-selection-color;
 }

@@ -71,13 +71,8 @@ export default () => ({
 
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
 
-    const entities = Studio.getAllEntities().filter((e) => e.__entitySet !== 'folders')
-
-    if (Studio.extensions.playground.options.workspaceOpenAllEntities) {
-      await Promise.all(entities.map((v) => Studio.openTab({ _id: v._id })))
-    }
-
     if (Studio.playground.current.default) {
+      const entities = Studio.getAllEntities().filter((e) => e.__entitySet !== 'folders')
       const defaultEntity = entities.find((e) => e.shortid === Studio.playground.current.default)
 
       if (defaultEntity) {

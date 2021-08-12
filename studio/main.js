@@ -152,7 +152,7 @@ exports.default = function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
-module.exports = {"workspacesTable":"x-playground-style-workspacesTable","tabs":"x-playground-style-tabs","selectedTab":"x-playground-style-selectedTab","searchBox":"x-playground-style-searchBox","newBox":"x-playground-style-newBox","contextMenu":"x-playground-style-contextMenu","contextMenuContainer":"x-playground-style-contextMenuContainer","contextButton":"x-playground-style-contextButton","code":"x-playground-style-code"};
+module.exports = {"workspacesTable":"x-playground-styles-workspacesTable","tabs":"x-playground-styles-tabs","selectedTab":"x-playground-styles-selectedTab","searchBox":"x-playground-styles-searchBox","newBox":"x-playground-styles-newBox","contextMenu":"x-playground-styles-contextMenu","contextMenuContainer":"x-playground-styles-contextMenuContainer","contextButton":"x-playground-styles-contextButton","code":"x-playground-styles-code"};
 
 /***/ }),
 /* 4 */
@@ -175,9 +175,9 @@ var _jsreportStudio = __webpack_require__(1);
 
 var _jsreportStudio2 = _interopRequireDefault(_jsreportStudio);
 
-var _style = __webpack_require__(3);
+var _styles = __webpack_require__(3);
 
-var _style2 = _interopRequireDefault(_style);
+var _styles2 = _interopRequireDefault(_styles);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -266,21 +266,14 @@ var WorkspacesList = function (_Component) {
 
               case 7:
                 response = _context.sent;
-                _context.next = 13;
-                break;
 
-              case 10:
-                _context.prev = 10;
-                _context.t0 = _context['catch'](4);
-                throw _context.t0;
-
-              case 13:
-                _context.prev = 13;
+              case 8:
+                _context.prev = 8;
 
                 this.fetchRequested = false;
-                return _context.finish(13);
+                return _context.finish(8);
 
-              case 16:
+              case 11:
 
                 if (this.mounted) {
                   this.setState({
@@ -288,12 +281,12 @@ var WorkspacesList = function (_Component) {
                   });
                 }
 
-              case 17:
+              case 12:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[4, 10, 13, 16]]);
+        }, _callee, this, [[4,, 8, 11]]);
       }));
 
       function fetch() {
@@ -322,14 +315,14 @@ var WorkspacesList = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        { key: 'entity-contextmenu', className: _style2.default.contextMenuContainer },
+        { key: 'entity-contextmenu', className: _styles2.default.contextMenuContainer },
         _react2.default.createElement(
           'div',
-          { className: _style2.default.contextMenu },
+          { className: _styles2.default.contextMenu },
           _react2.default.createElement(
             'div',
             {
-              className: _style2.default.contextButton,
+              className: _styles2.default.contextButton,
               onClick: function onClick(e) {
                 e.stopPropagation();
                 onRemove && onRemove(w);
@@ -408,9 +401,10 @@ var WorkspacesList = function (_Component) {
 
       var items = this.state.items;
 
+
       return _react2.default.createElement(
         'table',
-        { className: 'table ' + _style2.default.workspacesTable },
+        { className: 'table ' + _styles2.default.workspacesTable },
         _react2.default.createElement(
           'thead',
           null,
@@ -482,31 +476,31 @@ var _AboutModal = __webpack_require__(12);
 
 var _AboutModal2 = _interopRequireDefault(_AboutModal);
 
-var _LoginModal = __webpack_require__(13);
+var _LoginModal = __webpack_require__(14);
 
 var _LoginModal2 = _interopRequireDefault(_LoginModal);
 
-var _SaveModal = __webpack_require__(14);
+var _SaveModal = __webpack_require__(15);
 
 var _SaveModal2 = _interopRequireDefault(_SaveModal);
 
-var _ShareModal = __webpack_require__(15);
+var _ShareModal = __webpack_require__(16);
 
 var _ShareModal2 = _interopRequireDefault(_ShareModal);
 
-var _RenameModal = __webpack_require__(16);
+var _RenameModal = __webpack_require__(17);
 
 var _RenameModal2 = _interopRequireDefault(_RenameModal);
 
-var _playground = __webpack_require__(17);
+var _playground = __webpack_require__(18);
 
 var _playground2 = _interopRequireDefault(_playground);
 
-var _UserEditor = __webpack_require__(18);
+var _UserEditor = __webpack_require__(19);
 
 var _UserEditor2 = _interopRequireDefault(_UserEditor);
 
-var _utils = __webpack_require__(19);
+var _utils = __webpack_require__(20);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -696,23 +690,8 @@ _jsreportStudio2.default.readyListeners.push(_asyncToGenerator( /*#__PURE__*/reg
             _jsreportStudio2.default.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' });
           }
 
-          entities = _jsreportStudio2.default.getAllEntities();
-
-          if (!_jsreportStudio2.default.extensions.playground.options.workspaceOpenAllEntities) {
-            _context2.next = 8;
-            break;
-          }
-
-          _context2.next = 8;
-          return Promise.all(entities.filter(function (e) {
-            return e.__entitySet !== 'folders';
-          }).map(function (v) {
-            return _jsreportStudio2.default.openTab({ _id: v._id });
-          }));
-
-        case 8:
-
           if (_jsreportStudio2.default.playground.current.default) {
+            entities = _jsreportStudio2.default.getAllEntities();
             defaultEntity = entities.find(function (e) {
               return e.shortid === _jsreportStudio2.default.playground.current.default;
             });
@@ -724,7 +703,7 @@ _jsreportStudio2.default.readyListeners.push(_asyncToGenerator( /*#__PURE__*/reg
             }
           }
 
-        case 9:
+        case 5:
         case 'end':
           return _context2.stop();
       }
@@ -757,9 +736,9 @@ var _login = __webpack_require__(2);
 
 var _login2 = _interopRequireDefault(_login);
 
-var _style = __webpack_require__(3);
+var _styles = __webpack_require__(3);
 
-var _style2 = _interopRequireDefault(_style);
+var _styles2 = _interopRequireDefault(_styles);
 
 var _lodash = __webpack_require__(7);
 
@@ -784,16 +763,22 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Startup = function (_Component) {
   _inherits(Startup, _Component);
 
-  function Startup() {
+  function Startup(props) {
     _classCallCheck(this, Startup);
 
-    var _this = _possibleConstructorReturn(this, (Startup.__proto__ || Object.getPrototypeOf(Startup)).call(this));
+    var _this = _possibleConstructorReturn(this, (Startup.__proto__ || Object.getPrototypeOf(Startup)).call(this, props));
 
     _this.state = {
       tab: _jsreportStudio2.default.playground.user ? 'my' : 'examples',
       searchTerm: ''
     };
+
     _this.handleSearchChange = (0, _lodash2.default)(_this.handleSearchChange.bind(_this), 500);
+
+    _this.examplesRef = _react2.default.createRef();
+    _this.popularRef = _react2.default.createRef();
+    _this.myRef = _react2.default.createRef();
+    _this.searchRef = _react2.default.createRef();
     return _this;
   }
 
@@ -840,8 +825,10 @@ var Startup = function (_Component) {
   }, {
     key: 'reloadTab',
     value: function reloadTab(tab) {
-      if (this.refs[tab]) {
-        this.refs[tab].onTabActive();
+      var ref = this[tab + 'Ref'];
+
+      if (ref && ref.current) {
+        ref.current.onTabActive();
       }
     }
   }, {
@@ -851,7 +838,7 @@ var Startup = function (_Component) {
         'div',
         null,
         _react2.default.createElement(_WorkspacesList2.default, {
-          ref: 'examples',
+          ref: this.examplesRef,
           key: 'examples',
           url: '/api/playground/workspaces/examples',
           onRemove: this.handleRemove
@@ -865,7 +852,7 @@ var Startup = function (_Component) {
         'div',
         null,
         _react2.default.createElement(_WorkspacesList2.default, {
-          ref: 'popular',
+          ref: this.popularRef,
           key: 'popular',
           url: '/api/playground/workspaces/popular',
           onRemove: this.handleRemove
@@ -884,7 +871,7 @@ var Startup = function (_Component) {
         'div',
         null,
         _react2.default.createElement(_WorkspacesList2.default, {
-          ref: 'my',
+          ref: this.myRef,
           key: 'my',
           url: '/api/playground/workspaces/user/' + _jsreportStudio2.default.playground.user._id,
           onRemove: this.handleRemove
@@ -942,7 +929,7 @@ var Startup = function (_Component) {
         null,
         _react2.default.createElement(
           'div',
-          { className: _style2.default.searchBox },
+          { className: _styles2.default.searchBox },
           _react2.default.createElement(
             'label',
             null,
@@ -961,7 +948,7 @@ var Startup = function (_Component) {
           'div',
           null,
           _react2.default.createElement(_WorkspacesList2.default, {
-            ref: 'search',
+            ref: this.searchRef,
             url: '/api/playground/search?q=' + encodeURIComponent(searchTerm != null ? searchTerm : ''),
             editable: false
           })
@@ -1022,7 +1009,7 @@ var Startup = function (_Component) {
         ),
         _react2.default.createElement(
           'div',
-          { className: _style2.default.newBox },
+          { className: _styles2.default.newBox },
           'Start by creating a new workspace',
           _react2.default.createElement(
             'button',
@@ -1038,31 +1025,31 @@ var Startup = function (_Component) {
         ),
         _react2.default.createElement(
           'div',
-          { className: _style2.default.tabs },
+          { className: _styles2.default.tabs },
           _react2.default.createElement(
             'div',
-            { className: this.state.tab === 'examples' ? _style2.default.selectedTab : '', onClick: function onClick() {
+            { className: this.state.tab === 'examples' ? _styles2.default.selectedTab : '', onClick: function onClick() {
                 return _this4.setState({ tab: 'examples' });
               } },
             'Examples'
           ),
           _react2.default.createElement(
             'div',
-            { className: this.state.tab === 'my' ? _style2.default.selectedTab : '', onClick: function onClick() {
+            { className: this.state.tab === 'my' ? _styles2.default.selectedTab : '', onClick: function onClick() {
                 return _this4.setState({ tab: 'my' });
               } },
             'My workspaces'
           ),
           _react2.default.createElement(
             'div',
-            { className: this.state.tab === 'popular' ? _style2.default.selectedTab : '', onClick: function onClick() {
+            { className: this.state.tab === 'popular' ? _styles2.default.selectedTab : '', onClick: function onClick() {
                 return _this4.setState({ tab: 'popular' });
               } },
             'Popular workspaces'
           ),
           _react2.default.createElement(
             'div',
-            { className: this.state.tab === 'search' ? _style2.default.selectedTab : '', onClick: function onClick() {
+            { className: this.state.tab === 'search' ? _styles2.default.selectedTab : '', onClick: function onClick() {
                 return _this4.setState({ tab: 'search' });
               } },
             _react2.default.createElement('i', { className: 'fa fa-search' }),
@@ -1525,10 +1512,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DeleteWorkspaceModal = function (_Component) {
   _inherits(DeleteWorkspaceModal, _Component);
 
-  function DeleteWorkspaceModal() {
+  function DeleteWorkspaceModal(props) {
     _classCallCheck(this, DeleteWorkspaceModal);
 
-    return _possibleConstructorReturn(this, (DeleteWorkspaceModal.__proto__ || Object.getPrototypeOf(DeleteWorkspaceModal)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (DeleteWorkspaceModal.__proto__ || Object.getPrototypeOf(DeleteWorkspaceModal)).call(this, props));
+
+    _this.cancelRef = _react2.default.createRef();
+    return _this;
   }
 
   _createClass(DeleteWorkspaceModal, [{
@@ -1537,7 +1527,7 @@ var DeleteWorkspaceModal = function (_Component) {
       var _this2 = this;
 
       setTimeout(function () {
-        return _this2.refs.cancel.focus();
+        return _this2.cancelRef.current && _this2.cancelRef.current.focus();
       }, 0);
     }
   }, {
@@ -1600,7 +1590,7 @@ var DeleteWorkspaceModal = function (_Component) {
           ),
           _react2.default.createElement(
             'button',
-            { className: 'button confirmation', ref: 'cancel', onClick: function onClick() {
+            { className: 'button confirmation', ref: this.cancelRef, onClick: function onClick() {
                 return _this3.cancel();
               } },
             'Cancel'
@@ -1689,7 +1679,8 @@ var ToolbarSaveForkButton = function (_Component) {
         {
           className: 'toolbar-button ' + (!enabled && canEdit ? 'disabled' : ''), onClick: function onClick() {
             return save();
-          } },
+          }
+        },
         canEdit ? _react2.default.createElement(
           'span',
           { title: 'Save workspace (CTRL+S)' },
@@ -1742,10 +1733,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var LogoutButton = function (_Component) {
   _inherits(LogoutButton, _Component);
 
-  function LogoutButton() {
+  function LogoutButton(props) {
     _classCallCheck(this, LogoutButton);
 
-    return _possibleConstructorReturn(this, (LogoutButton.__proto__ || Object.getPrototypeOf(LogoutButton)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (LogoutButton.__proto__ || Object.getPrototypeOf(LogoutButton)).call(this, props));
+
+    _this.logoutRef = _react2.default.createRef();
+    return _this;
   }
 
   _createClass(LogoutButton, [{
@@ -1756,7 +1750,7 @@ var LogoutButton = function (_Component) {
       return _react2.default.createElement(
         'div',
         { onClick: function onClick() {
-            return _this2.refs.logout.click();
+            return _this2.logoutRef.current.click();
           }, style: { cursor: 'pointer' } },
         _react2.default.createElement(
           'div',
@@ -1764,7 +1758,7 @@ var LogoutButton = function (_Component) {
           _react2.default.createElement(
             'form',
             { method: 'POST', action: _jsreportStudio2.default.resolveUrl('/logout') },
-            _react2.default.createElement('input', { ref: 'logout', type: 'submit', id: 'logoutBtn', style: { display: 'none' } })
+            _react2.default.createElement('input', { ref: this.logoutRef, type: 'submit', id: 'logoutBtn', style: { display: 'none' } })
           ),
           _react2.default.createElement('i', { className: 'fa fa-power-off' }),
           ' Logout'
@@ -1794,6 +1788,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(13);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1873,6 +1871,7 @@ var AboutModal = function (_Component) {
               className: 'button confirmation',
               href: 'https://github.com/jsreport/playground/releases/tag/' + playgroundVersion,
               target: '_blank',
+              rel: 'noreferrer',
               style: { marginLeft: 0 }
             },
             'Release notes'
@@ -1886,12 +1885,19 @@ var AboutModal = function (_Component) {
 }(_react.Component);
 
 AboutModal.propTypes = {
-  options: _react.PropTypes.object.isRequired
+  options: _propTypes2.default.object.isRequired
 };
+
 exports.default = AboutModal;
 
 /***/ }),
 /* 13 */
+/***/ (function(module, exports) {
+
+module.exports = Studio.libraries['prop-types'];
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1929,7 +1935,7 @@ var _login2 = _interopRequireDefault(_login);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2061,7 +2067,7 @@ var SaveModal = function (_Component) {
 exports.default = SaveModal;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2077,9 +2083,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _style = __webpack_require__(3);
+var _styles = __webpack_require__(3);
 
-var _style2 = _interopRequireDefault(_style);
+var _styles2 = _interopRequireDefault(_styles);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2128,11 +2134,11 @@ var ShareModal = function (_Component) {
         _react2.default.createElement(
           'p',
           null,
-          'If you want embed playgorund into another page, you can use this html code:',
+          'If you want embed playground into another page, you can use this html code:',
           _react2.default.createElement('br', null),
           _react2.default.createElement(
             'code',
-            { className: _style2.default.code },
+            { className: _styles2.default.code },
             '<iframe src="',
             window.location.href,
             '?embed=1" width="100%" height="400" frameborder="0"></iframe>'
@@ -2148,7 +2154,7 @@ var ShareModal = function (_Component) {
 exports.default = ShareModal;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2187,6 +2193,8 @@ var RenameModal = function (_Component) {
     var _this = _possibleConstructorReturn(this, (RenameModal.__proto__ || Object.getPrototypeOf(RenameModal)).call(this, props));
 
     _this.state = { default: _jsreportStudio2.default.playground.current.default };
+    _this.nameRef = _react2.default.createRef();
+    _this.descriptionRef = _react2.default.createRef();
     return _this;
   }
 
@@ -2211,7 +2219,7 @@ var RenameModal = function (_Component) {
             null,
             'workspace name'
           ),
-          _react2.default.createElement('input', { type: 'text', ref: 'name', defaultValue: _jsreportStudio2.default.playground.current.name || '' })
+          _react2.default.createElement('input', { type: 'text', ref: this.nameRef, defaultValue: _jsreportStudio2.default.playground.current.name || '' })
         ),
         _react2.default.createElement(
           'div',
@@ -2221,7 +2229,7 @@ var RenameModal = function (_Component) {
             null,
             'description'
           ),
-          _react2.default.createElement('textarea', { ref: 'description', rows: '4', defaultValue: _jsreportStudio2.default.playground.current.description || '' })
+          _react2.default.createElement('textarea', { ref: this.descriptionRef, rows: '4', defaultValue: _jsreportStudio2.default.playground.current.description || '' })
         ),
         _react2.default.createElement(
           'div',
@@ -2233,9 +2241,11 @@ var RenameModal = function (_Component) {
           ),
           _react2.default.createElement(
             'select',
-            { ref: 'defaultEntity', value: this.state.default != null ? this.state.default : '', onChange: function onChange(e) {
+            {
+              value: this.state.default != null ? this.state.default : '', onChange: function onChange(e) {
                 return _this2.change(e);
-              } },
+              }
+            },
             [_react2.default.createElement(
               'option',
               { key: '<default>', value: '' },
@@ -2263,8 +2273,8 @@ var RenameModal = function (_Component) {
                   while (1) {
                     switch (_context.prev = _context.next) {
                       case 0:
-                        _jsreportStudio2.default.playground.current.name = _this2.refs.name.value;
-                        _jsreportStudio2.default.playground.current.description = _this2.refs.description.value;
+                        _jsreportStudio2.default.playground.current.name = _this2.nameRef.current.value;
+                        _jsreportStudio2.default.playground.current.description = _this2.descriptionRef.current.value;
                         _jsreportStudio2.default.playground.current.default = _this2.state.default;
 
                         if (!_jsreportStudio2.default.playground.current._id) {
@@ -2285,7 +2295,8 @@ var RenameModal = function (_Component) {
                     }
                   }
                 }, _callee, _this2);
-              })) },
+              }))
+            },
             'save'
           )
         )
@@ -2299,7 +2310,7 @@ var RenameModal = function (_Component) {
 exports.default = RenameModal;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2482,23 +2493,10 @@ exports.default = function () {
 
                 _jsreportStudio2.default.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' });
 
-                entities = _jsreportStudio2.default.getAllEntities().filter(function (e) {
-                  return e.__entitySet !== 'folders';
-                });
-
-                if (!_jsreportStudio2.default.extensions.playground.options.workspaceOpenAllEntities) {
-                  _context3.next = 14;
-                  break;
-                }
-
-                _context3.next = 14;
-                return Promise.all(entities.map(function (v) {
-                  return _jsreportStudio2.default.openTab({ _id: v._id });
-                }));
-
-              case 14:
-
                 if (_jsreportStudio2.default.playground.current.default) {
+                  entities = _jsreportStudio2.default.getAllEntities().filter(function (e) {
+                    return e.__entitySet !== 'folders';
+                  });
                   defaultEntity = entities.find(function (e) {
                     return e.shortid === _jsreportStudio2.default.playground.current.default;
                   });
@@ -2510,7 +2508,7 @@ exports.default = function () {
                   }
                 }
 
-              case 15:
+              case 11:
               case 'end':
                 return _context3.stop();
             }
@@ -2594,7 +2592,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2625,17 +2623,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var UserEditor = function (_Component) {
   _inherits(UserEditor, _Component);
 
-  function UserEditor() {
+  function UserEditor(props) {
     _classCallCheck(this, UserEditor);
 
-    return _possibleConstructorReturn(this, (UserEditor.__proto__ || Object.getPrototypeOf(UserEditor)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (UserEditor.__proto__ || Object.getPrototypeOf(UserEditor)).call(this, props));
+
+    _this.workspacesRef = _react2.default.createRef();
+    return _this;
   }
 
   _createClass(UserEditor, [{
     key: 'reloadTab',
     value: function reloadTab() {
-      if (this.refs.workspaces) {
-        this.refs.workspaces.onTabActive();
+      if (this.workspacesRef.current) {
+        this.workspacesRef.current.onTabActive();
       }
     }
   }, {
@@ -2664,7 +2665,7 @@ var UserEditor = function (_Component) {
         _react2.default.createElement(
           'div',
           null,
-          _react2.default.createElement(_WorkspacesList2.default, { ref: 'workspaces', url: '/api/playground/workspaces/user/' + user._id })
+          _react2.default.createElement(_WorkspacesList2.default, { ref: this.workspacesRef, url: '/api/playground/workspaces/user/' + user._id })
         )
       );
     }
@@ -2676,7 +2677,7 @@ var UserEditor = function (_Component) {
 exports.default = UserEditor;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -140,13 +140,8 @@ Studio.readyListeners.push(async () => {
     Studio.openTab({ key: 'Help', editorComponentKey: 'Help', title: 'Home' })
   }
 
-  const entities = Studio.getAllEntities()
-
-  if (Studio.extensions.playground.options.workspaceOpenAllEntities) {
-    await Promise.all(entities.filter((e) => e.__entitySet !== 'folders').map((v) => Studio.openTab({ _id: v._id })))
-  }
-
   if (Studio.playground.current.default) {
+    const entities = Studio.getAllEntities()
     const defaultEntity = entities.find((e) => e.shortid === Studio.playground.current.default)
 
     if (defaultEntity) {
