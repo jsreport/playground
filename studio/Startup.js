@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
 import login from './login.js'
-import style from './style.scss'
+import styles from './styles.css'
 import debounce from 'lodash.debounce'
 import DeleteWorkspaceModal from './DeleteWorkspaceModal'
 import WorskpacesList from './WorkspacesList'
@@ -131,7 +131,7 @@ class Startup extends Component {
 
     return (
       <div>
-        <div className={style.searchBox}>
+        <div className={styles.searchBox}>
           <label>search for a workspace...</label>
           <input
             type='text'
@@ -166,7 +166,7 @@ class Startup extends Component {
         <div>
           {Studio.playground.user ? <h2>welcome <b>{Studio.playground.user.fullName}</b></h2> : ''}
         </div>
-        <div className={style.newBox}>
+        <div className={styles.newBox}>
           Start by creating a new workspace
           <button
             className='button confirmation'
@@ -176,11 +176,11 @@ class Startup extends Component {
             <i className='fa fa-plus-square' />
           </button>
         </div>
-        <div className={style.tabs}>
-          <div className={this.state.tab === 'examples' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>
-          <div className={this.state.tab === 'my' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'my' })}>My workspaces</div>
-          <div className={this.state.tab === 'popular' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'popular' })}>Popular workspaces</div>
-          <div className={this.state.tab === 'search' ? style.selectedTab : ''} onClick={() => this.setState({ tab: 'search' })}><i className='fa fa-search' /> Search</div>
+        <div className={styles.tabs}>
+          <div className={this.state.tab === 'examples' ? styles.selectedTab : ''} onClick={() => this.setState({ tab: 'examples' })}>Examples</div>
+          <div className={this.state.tab === 'my' ? styles.selectedTab : ''} onClick={() => this.setState({ tab: 'my' })}>My workspaces</div>
+          <div className={this.state.tab === 'popular' ? styles.selectedTab : ''} onClick={() => this.setState({ tab: 'popular' })}>Popular workspaces</div>
+          <div className={this.state.tab === 'search' ? styles.selectedTab : ''} onClick={() => this.setState({ tab: 'search' })}><i className='fa fa-search' /> Search</div>
         </div>
         <div className='block-item' style={{ overflow: 'auto' }}>
           {this.renderTab()}

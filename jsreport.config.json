@@ -12,8 +12,7 @@
   "encryption": {
     "enabled": false
   },
-  "templatingEngines": {
-    "strategy": "in-process",
+  "sandbox": {
     "allowedModules": "lodash,handlebars,moment"
   },
   "office": {
@@ -55,15 +54,9 @@
       "databaseName": "playground",
       "address": "host.docker.internal"
     },
-    "fs-store": {
-      "syncModifications": false
-    },
-    "templates": {
-      "studio-link-button-visibility": false
-    },
     "studio": {
-      "requestLogEnabled": false,
-      "startupPage": false
+      "startupPage": false,
+      "linkButtonVisibility": false
     },
     "assets": {
       "allowAssetsLinkedToFiles": false

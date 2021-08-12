@@ -134,10 +134,14 @@ html-templates.js
 request.json
 
 .vscode
-build
 build-runtime
 jsreport.exe
 jsreport.js
 license.json
 jsreport.license.json
 jsreport.config.json
+*.env
+
+# local mongodb files for docker
+mongodb-playground
+

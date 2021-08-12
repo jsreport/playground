@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Studio from 'jsreport-studio'
-import style from './style.scss'
+import styles from './styles.css'
 
 class WorkspacesList extends Component {
   constructor () {
@@ -75,10 +75,10 @@ class WorkspacesList extends Component {
     const { onRemove } = this.props
 
     return (
-      <div key='entity-contextmenu' className={style.contextMenuContainer}>
-        <div className={style.contextMenu}>
+      <div key='entity-contextmenu' className={styles.contextMenuContainer}>
+        <div className={styles.contextMenu}>
           <div
-            className={style.contextButton}
+            className={styles.contextButton}
             onClick={(e) => {
               e.stopPropagation()
               onRemove && onRemove(w)
@@ -134,7 +134,7 @@ class WorkspacesList extends Component {
     const { items } = this.state
 
     return (
-      <table className={'table ' + style.workspacesTable}>
+      <table className={'table ' + styles.workspacesTable}>
         <thead>
           <tr>
             <th>name</th>

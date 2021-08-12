@@ -14,6 +14,7 @@ RUN adduser --disabled-password --gecos "" jsreport && \
 
 RUN mkdir -p /app
 RUN rm -rf /tmp/*
+RUN mkdir -p /tmp/yarn-cache
 
 ENV NVM_DIR /root/.nvm
 ENV NODE_VERSION 14.16.1
@@ -27,12 +28,20 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 WORKDIR /app
 
+# we are copying from another image,
+# this needs that we build the jsreport/worker previously
+# with this tag from the jsreport workspace
+# docker build . -f packages/worker/Dockerfile.local -t jsreport/worker
+COPY --from=jsreport/worker /app/packages /app/packages
 COPY package.json /app/package.json
-
-RUN npm install --production && \
-    npm cache clean -f && \
-    rm -rf /tmp/*
-
 COPY . /app
+
+RUN npm i -g yarn json-merger
+
+RUN json-merger -p package.json ./build/workspaces-changes.json -o package.json
+
+RUN yarn install --cache-folder /tmp/yarn-cache
+RUN yarn build
+RUN yarn cache clean --all && rm -rf /tmp/*
 
 CMD ["node", "server.js"]

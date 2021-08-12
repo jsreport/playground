@@ -1,3 +1,4 @@
+.git
 # Logs
 logs
 *.log
@@ -27,3 +28,8 @@ node_modules
 .idea
 twitter.keys.json
 .vs
+package-lock.json
+playground.env
+
+# local mongodb files for docker
+mongodb-playground

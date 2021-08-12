@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import style from './style.scss'
+import styles from './styles.css'
 
 class ShareModal extends Component {
   render () {
@@ -15,7 +15,7 @@ class ShareModal extends Component {
         <p>
           If you want embed playground into another page, you can use this html code:
           <br />
-          <code className={style.code}>
+          <code className={styles.code}>
             &lt;iframe src=&quot;{window.location.href}?embed=1&quot; width=&quot;100%&quot; height=&quot;400&quot; frameborder=&quot;0&quot;&gt;&lt;/iframe&gt;
           </code>
         </p>

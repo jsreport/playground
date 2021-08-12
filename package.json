@@ -1,16 +1,51 @@
 {
   "name": "playground-server",
-  "main": "server.js",
+  "version": "2.11.1",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "jsreport-studio-build",
+    "lint": "standard",
+    "start": "jsreport-studio-start --entry-point ./server.js",
+    "test": "mocha test --timeout 8000"
+  },
+  "dependencies": {
+    "@jsreport/jsreport-docker-workers": "3.0.0-beta.1",
+    "@jsreport/jsreport-docxtemplater": "3.0.0-beta.1",
+    "@jsreport/jsreport-ejs": "3.0.0-beta.1",
+    "@jsreport/jsreport-electron-pdf": "4.0.0-beta.1",
+    "@jsreport/jsreport-html-embedded-in-docx": "3.0.0-beta.1",
+    "@jsreport/jsreport-html-to-text": "3.0.0-beta.1",
+    "@jsreport/jsreport-mongodb-store": "3.0.0-beta.1",
+    "@jsreport/jsreport-office-password": "3.0.0-beta.1",
+    "@jsreport/jsreport-pug": "4.0.0-beta.1",
+    "cheerio-page-eval": "1.0.0",
+    "client-sessions": "0.8.0",
+    "connect-ensure-login": "0.1.1",
+    "ip": "1.1.5",
+    "jsreport": "3.0.0-beta.1",
+    "lodash.debounce": "4.0.8",
+    "morgan": "1.9.1",
+    "nanoid": "1.2.2",
+    "passport": "0.4.0",
+    "passport-facebook": "2.1.1",
+    "passport-github": "1.1.0",
+    "passport-twitter": "1.0.4",
+    "phantomjs-exact-2-1-1": "0.1.0",
+    "slugify": "1.3.4",
+    "winston": "3.3.3",
+    "winston-loggly-bulk": "3.2.1"
+  },
+  "devDependencies": {
+    "@jsreport/studio-dev": "3.0.0-beta.1",
+    "js-cookie": "2.2.0",
+    "mocha": "5.2.0",
+    "should": "13.2.3",
+    "standard": "16.0.3"
+  },
   "jsreport": {
     "entryPoint": "server.js"
   },
-  "scripts": {
-    "start": "jsreport-studio-start --entry-point ./server.js",
-    "lint": "standard",
-    "test": "mocha test --timeout 8000",
-    "build": "jsreport-studio-build"
-  },
-  "version": "2.11.1",
   "standard": {
     "ignore": [
       "studio/main.js",
@@ -21,45 +56,5 @@
       "browser": true,
       "mocha": true
     }
-  },
-  "dependencies": {
-    "cheerio-page-eval": "1.0.0",
-    "client-sessions": "0.8.0",
-    "connect-ensure-login": "0.1.1",
-    "ip": "1.1.5",
-    "jsreport": "2.11.0",
-    "jsreport-docker-workers": "1.5.1",
-    "jsreport-docx": "2.9.1",
-    "jsreport-docxtemplater": "1.4.0",
-    "jsreport-ejs": "2.2.0",
-    "jsreport-electron-pdf": "3.2.0",
-    "jsreport-fop-pdf": "2.2.0",
-    "jsreport-html-embedded-in-docx": "2.2.0",
-    "jsreport-html-to-text": "2.1.0",
-    "jsreport-mongodb-store": "1.3.3",
-    "jsreport-office-password": "1.0.1",
-    "jsreport-phantom-image": "2.1.1",
-    "jsreport-phantom-pdf": "2.6.1",
-    "jsreport-pug": "3.1.0",
-    "jsreport-version-control": "1.6.2",
-    "jsreport-wkhtmltopdf": "2.3.0",
-    "lodash.debounce": "4.0.8",
-    "morgan": "1.9.1",
-    "nanoid": "1.2.2",
-    "passport": "0.4.0",
-    "passport-facebook": "2.1.1",
-    "passport-github": "1.1.0",
-    "passport-twitter": "1.0.4",
-    "phantomjs-exact-2-1-1": "0.1.0",
-    "slugify": "1.3.4",
-    "winston": "2.4.5",
-    "winston-loggly": "1.3.1"
-  },
-  "devDependencies": {
-    "js-cookie": "2.2.0",
-    "jsreport-studio-dev": "1.6.0",
-    "mocha": "5.2.0",
-    "should": "13.2.3",
-    "standard": "16.0.3"
   }
 }

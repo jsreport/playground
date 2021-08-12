@@ -1,0 +1,49 @@
+version: '2.2'
+
+services:
+  playground:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    # image: jsreport/playground:2.3.5
+    ports:
+      - "5488:5488"
+      - "9229:9229"
+    # command:
+    #   - npm
+    #   - start
+    expose:
+      - "9229"
+    env_file: playground.env
+    volumes:
+      - /tmp:/tmp
+      - /var/run/docker.sock:/var/run/docker.sock
+    container_name: playground
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
+        max-file: "5"
+    depends_on:
+      - mongodb_playground
+    networks:
+      - playground_app
+
+  mongodb_playground:
+    image: mongo:4.1.2
+    # image: mongo:4.0.0
+    # image: mongo:3.6.6
+    # image: mongo:3.4.18
+    # image: mongo:3.2.20
+    command:
+    - --storageEngine=wiredTiger
+    container_name: mongodb_playground
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb-playground:/data/db
+    networks:
+      - playground_app
+networks:
+  playground_app:
+    driver: bridge
