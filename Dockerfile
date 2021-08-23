@@ -28,11 +28,11 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 WORKDIR /app
 
 COPY package.json /app/package.json
+COPY . /app
 
 RUN npm install --production && \
     npm cache clean -f && \
     rm -rf /tmp/*
 
-COPY . /app
 
 CMD ["node", "server.js"]

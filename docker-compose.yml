@@ -4,7 +4,7 @@ services:
   playground:
     build:
       context: .
-      dockerfile: Dockerfile.local
+      dockerfile: Dockerfile
     # image: jsreport/playground:2.3.5
     ports:
       - "5488:5488"
