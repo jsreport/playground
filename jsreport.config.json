@@ -12,9 +12,6 @@
   "encryption": {
     "enabled": false
   },
-  "sandbox": {
-    "allowedModules": "lodash,handlebars,moment"
-  },
   "office": {
     "preview": {
       "showWarning": false
@@ -23,6 +20,12 @@
   "loggly": {
     "level": "info",
     "subdomain": "jsreport"
+  },
+  "sandbox": {
+    "allowedModules": "handlebars,http,https,lodash,bluebird,async,axios,request,moment"
+  },
+  "workers": {
+    "numberOfWorkers": 2
   },
   "appPath": "/",
   "extensions": {
@@ -52,7 +55,7 @@
     },
     "mongodb-store": {
       "databaseName": "playground",
-      "address": "host.docker.internal"
+      "address": "localhost"
     },
     "studio": {
       "startupPage": false,
@@ -82,9 +85,6 @@
     },
     "sample-template": {
       "enabled": false
-    },
-    "scripts": {
-      "allowedModules": "http,https,lodash,bluebird,async,axios,request,moment"
     },
     "scheduling": {
       "enabled": false
