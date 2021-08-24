@@ -30,7 +30,7 @@
       "network": "nw_playground_docker_workers",
       "subnet": "182.30.0.0/24",
       "container": {
-        "image": "jsreport/playground-worker:0.7.1",
+        "image": "jsreport/playground-worker:3.0.0-beta.2",
         "namePrefix": "playground_worker",
         "memory": "320m",
         "memorySwap": "320m"
