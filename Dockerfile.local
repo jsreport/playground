@@ -1,4 +1,4 @@
-FROM ubuntu:xenial-20200212
+FROM ubuntu:xenial
 # not using ubuntu:bionic because phantomjs 1.9.8 does not work there
 # (it contains a newer version of OpenSSL which can not be used with phantomjs)
 
@@ -32,7 +32,7 @@ WORKDIR /app
 # this needs that we build the jsreport/worker previously
 # with this tag from the jsreport workspace
 # docker build . -f packages/worker/Dockerfile.local -t jsreport/worker
-COPY --from=jsreport/worker /app/packages /app/packages
+COPY --from=jsreport/playground-worker:3.0.0-beta.2.1 /app/packages /app/packages
 COPY package.json /app/package.json
 COPY . /app
 
@@ -41,7 +41,7 @@ RUN npm i -g yarn json-merger
 RUN json-merger -p package.json ./build/workspaces-changes.json -o package.json
 
 RUN yarn install --cache-folder /tmp/yarn-cache
-RUN yarn build
+# RUN yarn build
 RUN yarn cache clean --all && rm -rf /tmp/*
 
 CMD ["node", "server.js"]
