@@ -17,7 +17,7 @@ RUN rm -rf /tmp/*
 RUN mkdir -p /tmp/yarn-cache
 
 ENV NVM_DIR /root/.nvm
-ENV NODE_VERSION 14.17.4
+ENV NODE_VERSION 16.11.1
 
 # node
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash && \
@@ -32,7 +32,7 @@ WORKDIR /app
 # this needs that we build the jsreport/worker previously
 # with this tag from the jsreport workspace
 # docker build . -f packages/worker/Dockerfile.local -t jsreport/worker
-COPY --from=jsreport/playground-worker:3.0.0-beta.2.1 /app/packages /app/packages
+COPY --from=playground-worker /app/packages /app/packages
 COPY package.json /app/package.json
 COPY . /app
 

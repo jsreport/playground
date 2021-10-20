@@ -1,7 +1,6 @@
 {
   "httpPort": 5488,
   "allowLocalFilesAccess": false,
-  "migrateEntitySetsToFolders": false,
   "store": {
     "provider": "mongodb"
   },
@@ -22,7 +21,7 @@
     "subdomain": "jsreport"
   },
   "sandbox": {
-    "allowedModules": "handlebars,http,https,lodash,bluebird,async,axios,request,moment"
+    "allowedModules": "*"
   },
   "workers": {
     "numberOfWorkers": 2
@@ -34,10 +33,11 @@
       "subnet": "182.30.0.0/24",
       "numberOfWorkers": 2,
       "container": {
-        "image": "jsreport/playground-worker:3.0.0-beta.2.1",
+        "image": "jsreport/playground-worker:3.0.0-beta.2.4 ",
         "namePrefix": "playground_worker",
         "memory": "320m",
-        "memorySwap": "320m"
+        "memorySwap": "320m",
+        "cpus": "0.9"
       }
     },
     "playground": {
@@ -92,6 +92,9 @@
     },
     "licensing": {
       "enabled": false
+    },
+    "npm": {
+      "allowedModules": "*"
     }
   }
 }
