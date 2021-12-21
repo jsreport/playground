@@ -29,19 +29,27 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 WORKDIR /app
 
 # we are copying from another image,
-# this needs that we build the jsreport/worker previously
-# with this tag from the jsreport workspace
+# this needs that we build the jsreport/worker, playground_worker previously
+# with this tag from the jsreport and playground-worker workspaces
 # docker build . -f packages/worker/Dockerfile.local -t jsreport/worker
-COPY --from=playground-worker /app/packages /app/packages
+# docker build . -f Dockerfile.local -t playground_worker
+COPY --from=playground_worker /app/packages /app/packages
 COPY package.json /app/package.json
 COPY . /app
 
-RUN npm i -g yarn json-merger
+RUN npm i -g rimraf yarn json-merger
+
+# ensure clean state, don't copy packages node_modules, so yarn can install from clean state
+RUN rimraf packages/**/node_modules
+
+# this fix the infamous yarn error "expected workspace package to exist for ..."
+# https://github.com/yarnpkg/yarn/issues/7807#issuecomment-588632848
+RUN yarn policies set-version 1.18.0
 
 RUN json-merger -p package.json ./build/workspaces-changes.json -o package.json
 
 RUN yarn install --cache-folder /tmp/yarn-cache
-# RUN yarn build
+RUN yarn build
 RUN yarn cache clean --all && rm -rf /tmp/*
 
 CMD ["node", "server.js"]

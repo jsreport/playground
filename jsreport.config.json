@@ -1,6 +1,9 @@
 {
   "httpPort": 5488,
   "allowLocalFilesAccess": false,
+  "migrateXlsxTemplatesToAssets": false,
+  "migrateResourcesToAssets": false,
+  "migrateVersionControlProps": false,
   "store": {
     "provider": "mongodb"
   },
