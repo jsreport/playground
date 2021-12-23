@@ -519,7 +519,7 @@ _jsreportStudio2.default.locationResolver = function () {
 };
 
 _jsreportStudio2.default.toolbarVisibilityResolver = function (text) {
-  return text === 'Run' || text === 'Run without profiling' || text === 'settings';
+  return text === 'Run' || text === 'Run (full profile)' || text === 'Download' || text === 'settings';
 };
 
 (0, _utils.removeFacebookQuery)();

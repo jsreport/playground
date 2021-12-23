@@ -27,7 +27,7 @@ Studio.locationResolver = () => {
 }
 
 Studio.toolbarVisibilityResolver = (text) => {
-  return text === 'Run' || text === 'Run without profiling' || text === 'settings'
+  return text === 'Run' || text === 'Run (full profile)' || text === 'Download' || text === 'settings'
 }
 
 removeFacebookQuery()
