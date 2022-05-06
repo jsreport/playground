@@ -50,9 +50,7 @@ jobs:
           git config --global user.name "pofider"
           git config --global user.email "honza.pofider@seznam.cz"
 
-          sed -i 's/'"jsreport\/playground"'\:\(.*\)/'"jsreport\/playground"'\:'"${TAG}"'/' ./config/staging/playground.yaml
           sed -i 's/'"jsreport\/playground"'\:\(.*\)/'"jsreport\/playground"'\:'"${TAG}"'/' ./config/prod/playground.yaml
-          git add config/staging/playground.yaml
           git add config/prod/playground.yaml
           git commit -m "Update the playground application"
 
