@@ -35,4 +35,4 @@ RUN npm install --production && \
     rm -rf /tmp/*
 
 
-CMD ["node", "server.js"]
+CMD ["node", "--heapsnapshot-near-heap-limit=3", "server.js"]
