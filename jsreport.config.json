@@ -30,6 +30,12 @@
     "numberOfWorkers": 2
   },
   "appPath": "/",
+  "electron": {
+    "strategy": "electron-ipc"
+  },
+  "phantom": {
+    "strategy": "phantom-server"
+  },
   "extensions": {
     "docker-workers": {
       "network": "nw_playground_docker_workers",
