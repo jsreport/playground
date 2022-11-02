@@ -16,7 +16,7 @@ RUN mkdir -p /app
 RUN rm -rf /tmp/*
 
 ENV NVM_DIR /root/.nvm
-ENV NODE_VERSION 16.11.1
+ENV NODE_VERSION 16.15.0
 
 # node
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash && \
