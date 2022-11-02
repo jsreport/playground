@@ -35,4 +35,4 @@ RUN npm install --production && \
     rm -rf /tmp/*
 
 
-CMD ["node", "--max-old-space-size=400", "--heapsnapshot-near-heap-limit=3", "server.js"]
+CMD ["node", "--max-old-space-size=300", "--heapsnapshot-near-heap-limit=3", "server.js"]
