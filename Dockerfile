@@ -16,7 +16,7 @@ RUN mkdir -p /app
 RUN rm -rf /tmp/*
 
 ENV NVM_DIR /root/.nvm
-ENV NODE_VERSION 16.15.0
+ENV NODE_VERSION 16.18.1
 
 # node
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash && \
@@ -35,4 +35,4 @@ RUN npm install --production && \
     rm -rf /tmp/*
 
 
-CMD ["node", "--max-old-space-size=400", "--diagnostic-dir=/memory-dump", "--heapsnapshot-near-heap-limit=3", "server.js"]
+CMD ["node", "--max-old-space-size=400", "--diagnostic-dir=/memory-dump", "--heapsnapshot-near-heap-limit=2", "server.js"]
