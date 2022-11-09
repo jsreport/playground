@@ -1,6 +1,6 @@
 {
   "name": "playground-server",
-  "version": "3.5.1",
+  "version": "3.5.8",
   "private": true,
   "main": "index.js",
   "scripts": {
