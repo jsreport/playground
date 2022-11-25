@@ -31,7 +31,7 @@ WORKDIR /app
 # we are copying from another image,
 # this needs that we build the jsreport/worker, playground_worker previously
 # with this tag from the jsreport and playground-worker workspaces
-# docker build . -f packages/worker/Dockerfile.local -t jsreport/worker
+# docker build . -f packages/worker/Dockerfile.local -t jsreport/worker:local
 # docker build . -f Dockerfile.local -t playground_worker
 COPY --from=playground_worker /app/packages /app/packages
 COPY package.json /app/package.json

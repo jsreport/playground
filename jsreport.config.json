@@ -1,9 +1,11 @@
 {
   "httpPort": 5488,
-  "allowLocalFilesAccess": false,
+  "trustUserCode": true,
   "migrateXlsxTemplatesToAssets": false,
   "migrateResourcesToAssets": false,
   "migrateVersionControlProps": false,
+  "migrateChromeNetworkIdleProp": false,
+  "migrateAuthenticationUsernameProp": false,
   "store": {
     "provider": "mongodb"
   },
