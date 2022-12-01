@@ -17,7 +17,7 @@ RUN rm -rf /tmp/*
 RUN mkdir -p /tmp/yarn-cache
 
 ENV NVM_DIR /root/.nvm
-ENV NODE_VERSION 16.11.1
+ENV NODE_VERSION 16.18.1
 
 # node
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash && \
@@ -53,3 +53,4 @@ RUN yarn build
 RUN yarn cache clean --all && rm -rf /tmp/*
 
 CMD ["node", "server.js"]
+# CMD ["node", "--inspect-brk=0.0.0.0:9229", "server.js"]
