@@ -1630,6 +1630,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var isMac = function isMac() {
+  return window.navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+};
+
 var ToolbarSaveForkButton = function (_Component) {
   _inherits(ToolbarSaveForkButton, _Component);
 
@@ -1655,8 +1659,11 @@ var ToolbarSaveForkButton = function (_Component) {
   }, {
     key: 'handleShortcut',
     value: function handleShortcut(e) {
+      if (
       // ctrl + s
-      if (e.ctrlKey && e.which === 83) {
+      e.ctrlKey && e.which === 83 ||
+      // handles CMD + S on Mac
+      isMac() && e.metaKey && e.which === 83) {
         e.preventDefault();
 
         if (this.props.save) {

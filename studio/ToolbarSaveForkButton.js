@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+const isMac = () => window.navigator.platform.toUpperCase().indexOf('MAC') >= 0
+
 class ToolbarSaveForkButton extends Component {
   constructor (props) {
     super(props)
@@ -15,8 +17,12 @@ class ToolbarSaveForkButton extends Component {
   }
 
   handleShortcut (e) {
-    // ctrl + s
-    if (e.ctrlKey && e.which === 83) {
+    if (
+      // ctrl + s
+      (e.ctrlKey && e.which === 83) ||
+      // handles CMD + S on Mac
+      (isMac() && e.metaKey && e.which === 83)
+    ) {
       e.preventDefault()
 
       if (this.props.save) {
