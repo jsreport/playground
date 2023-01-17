@@ -502,6 +502,10 @@ var _UserEditor2 = _interopRequireDefault(_UserEditor);
 
 var _utils = __webpack_require__(20);
 
+var _DeleteAccountModal = __webpack_require__(21);
+
+var _DeleteAccountModal2 = _interopRequireDefault(_DeleteAccountModal);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -553,6 +557,22 @@ _jsreportStudio2.default.initializeListeners.push(_asyncToGenerator( /*#__PURE__
                 )
               );
             }, 'settingsBottom');
+
+            _jsreportStudio2.default.addToolbarComponent(function () {
+              return _react2.default.createElement(
+                'div',
+                { className: 'toolbar-button', onClick: function onClick() {
+                    return _jsreportStudio2.default.openModal(_DeleteAccountModal2.default, { user: _jsreportStudio2.default.playground.user });
+                  } },
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  _react2.default.createElement('i', { className: 'fa fa-trash' }),
+                  ' Delete account'
+                )
+              );
+            }, 'settingsBottom');
+
             _jsreportStudio2.default.addToolbarComponent(_LogoutButton2.default, 'settingsBottom');
           } else {
             _jsreportStudio2.default.addToolbarComponent(function () {
@@ -2684,6 +2704,133 @@ function trim(str) {
   }
   return str;
 }
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _jsreportStudio = __webpack_require__(1);
+
+var _jsreportStudio2 = _interopRequireDefault(_jsreportStudio);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DeleteAccountModal = function (_Component) {
+  _inherits(DeleteAccountModal, _Component);
+
+  function DeleteAccountModal(props) {
+    _classCallCheck(this, DeleteAccountModal);
+
+    var _this = _possibleConstructorReturn(this, (DeleteAccountModal.__proto__ || Object.getPrototypeOf(DeleteAccountModal)).call(this, props));
+
+    _this.submitRef = _react2.default.createRef();
+    _this.cancelRef = _react2.default.createRef();
+    return _this;
+  }
+
+  _createClass(DeleteAccountModal, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      setTimeout(function () {
+        return _this2.cancelRef.current && _this2.cancelRef.current.focus();
+      }, 0);
+    }
+  }, {
+    key: 'delete',
+    value: function _delete() {
+      this.submitRef.current.click();
+    }
+  }, {
+    key: 'cancel',
+    value: function cancel() {
+      this.props.close();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this3 = this;
+
+      var user = this.props.options.user;
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'div',
+          null,
+          'Are you sure you want to delete your account ',
+          _react2.default.createElement(
+            'b',
+            null,
+            user.username
+          ),
+          '?'
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement(
+            'small',
+            null,
+            _react2.default.createElement(
+              'i',
+              null,
+              '*This action is irreversible and all workspaces, examples and links to the workspaces will stop working'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'form',
+          { method: 'POST', action: _jsreportStudio2.default.resolveUrl('/account/delete') },
+          _react2.default.createElement('input', { ref: this.submitRef, type: 'submit', style: { display: 'none' } })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'button-bar' },
+          _react2.default.createElement(
+            'button',
+            { className: 'button danger', onClick: function onClick() {
+                return _this3.delete();
+              } },
+            'Delete account'
+          ),
+          _react2.default.createElement(
+            'button',
+            { className: 'button confirmation', ref: this.cancelRef, onClick: function onClick() {
+                return _this3.cancel();
+              } },
+            'Cancel'
+          )
+        )
+      );
+    }
+  }]);
+
+  return DeleteAccountModal;
+}(_react.Component);
+
+exports.default = DeleteAccountModal;
 
 /***/ })
 /******/ ]);

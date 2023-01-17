@@ -11,6 +11,7 @@ import RenameModal from './RenameModal.js'
 import Playground from './playground.js'
 import UserEditor from './UserEditor.js'
 import { getQueryParameter, removeFacebookQuery, trim } from './utils'
+import DeleteAccountModal from './DeleteAccountModal'
 
 Studio.setAboutModal(AboutModal)
 
@@ -46,6 +47,13 @@ Studio.initializeListeners.push(async () => {
         <span><i className='fa fa-user' /> {Studio.playground.user.fullName}</span>
       </div>
     ), 'settingsBottom')
+
+    Studio.addToolbarComponent(() => (
+      <div className='toolbar-button' onClick={() => Studio.openModal(DeleteAccountModal, { user: Studio.playground.user })}>
+        <span><i className='fa fa-trash' /> Delete account</span>
+      </div>
+    ), 'settingsBottom')
+
     Studio.addToolbarComponent(LogoutButton, 'settingsBottom')
   } else {
     Studio.addToolbarComponent(() => (
