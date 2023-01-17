@@ -114,18 +114,6 @@ class Startup extends Component {
     )
   }
 
-  renderActions () {
-    return (
-      <div>
-        <h3>actions</h3>
-        <div>
-          <button className='button confirmation' onClick={() => Studio.playground.create()}>new workspace</button>
-          <button className='button confirmation'>search</button>
-        </div>
-      </div>
-    )
-  }
-
   renderSearch () {
     const { searchTerm } = this.state
 

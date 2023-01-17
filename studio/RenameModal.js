@@ -42,7 +42,7 @@ class RenameModal extends Component {
               Studio.playground.current.description = this.descriptionRef.current.value
               Studio.playground.current.default = this.state.default
 
-              if (Studio.playground.current._id) {
+              if (Studio.playground.current._id || Studio.playground.current.__isInitial) {
                 await Studio.playground.save()
               }
 

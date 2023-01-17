@@ -888,35 +888,6 @@ var Startup = function (_Component) {
       );
     }
   }, {
-    key: 'renderActions',
-    value: function renderActions() {
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'h3',
-          null,
-          'actions'
-        ),
-        _react2.default.createElement(
-          'div',
-          null,
-          _react2.default.createElement(
-            'button',
-            { className: 'button confirmation', onClick: function onClick() {
-                return _jsreportStudio2.default.playground.create();
-              } },
-            'new workspace'
-          ),
-          _react2.default.createElement(
-            'button',
-            { className: 'button confirmation' },
-            'search'
-          )
-        )
-      );
-    }
-  }, {
     key: 'renderSearch',
     value: function renderSearch() {
       var _this3 = this;
@@ -2284,7 +2255,7 @@ var RenameModal = function (_Component) {
                         _jsreportStudio2.default.playground.current.description = _this2.descriptionRef.current.value;
                         _jsreportStudio2.default.playground.current.default = _this2.state.default;
 
-                        if (!_jsreportStudio2.default.playground.current._id) {
+                        if (!(_jsreportStudio2.default.playground.current._id || _jsreportStudio2.default.playground.current.__isInitial)) {
                           _context.next = 6;
                           break;
                         }
