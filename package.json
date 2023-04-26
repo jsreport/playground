@@ -1,22 +1,22 @@
 {
   "name": "playground-server",
-  "version": "3.10.1",
+  "version": "3.11.0",
   "private": true,
   "main": "index.js",
   "scripts": {
     "build": "jsreport-studio-build",
     "lint": "standard",
     "start": "jsreport-studio-start --entry-point ./server.js",
-    "test": "mocha test --timeout 8000"
+    "test": "mocha test --timeout 15000"
   },
   "dependencies": {
     "@jsreport/jsreport-docker-workers": "3.7.0",
-    "@jsreport/jsreport-docxtemplater": "3.1.0",
-    "@jsreport/jsreport-ejs": "3.0.0",
+    "@jsreport/jsreport-docxtemplater": "3.2.0",
+    "@jsreport/jsreport-ejs": "3.0.1",
     "@jsreport/jsreport-electron-pdf": "4.2.0",
-    "@jsreport/jsreport-html-embedded-in-docx": "3.0.0",
+    "@jsreport/jsreport-html-embedded-in-docx": "3.1.0",
     "@jsreport/jsreport-html-to-text": "3.0.0",
-    "@jsreport/jsreport-mongodb-store": "3.1.1",
+    "@jsreport/jsreport-mongodb-store": "3.2.0",
     "@jsreport/jsreport-office-password": "3.0.1",
     "@jsreport/jsreport-phantom-image": "3.1.0",
     "@jsreport/jsreport-phantom-pdf": "3.2.0",
@@ -29,7 +29,7 @@
     "ip": "1.1.5",
     "jsreport": "3.10.0",
     "lodash.debounce": "4.0.8",
-    "mongodb": "3.6.11",
+    "mongodb": "5.1.0",
     "morgan": "1.10.0",
     "nanoid": "1.2.2",
     "passport": "0.4.0",
@@ -42,7 +42,7 @@
     "winston-loggly-bulk": "3.2.1"
   },
   "devDependencies": {
-    "@jsreport/studio-dev": "3.2.0",
+    "@jsreport/studio-dev": "3.2.1",
     "js-cookie": "2.2.0",
     "mocha": "5.2.0",
     "should": "13.2.3",
