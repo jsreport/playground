@@ -1,6 +1,6 @@
 {
   "name": "playground-server",
-  "version": "3.11.0",
+  "version": "3.11.1",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "client-sessions": "0.8.0",
     "connect-ensure-login": "0.1.1",
     "ip": "1.1.5",
-    "jsreport": "3.10.0",
+    "jsreport": "3.11.3",
     "lodash.debounce": "4.0.8",
     "mongodb": "5.1.0",
     "morgan": "1.10.0",
