@@ -11,7 +11,7 @@
   },
   "blobStorage": {
     "provider": "fs"
-  },
+  },  
   "reportTimeout": 60000,
   "encryption": {
     "enabled": false
@@ -36,7 +36,8 @@
     "strategy": "electron-ipc"
   },
   "phantom": {
-    "strategy": "phantom-server"
+    "strategy": "phantom-server",
+    "proxyHttpsCallsToResources": true
   },
   "extensions": {
     "docker-workers": {
@@ -44,7 +45,7 @@
       "subnet": "182.30.0.0/24",
       "numberOfWorkers": 2,
       "container": {
-        "image": "jsreport/playground-worker:3.11.0",
+        "image": "jsreport/playground-worker:3.13.0",
         "namePrefix": "playground_worker",
         "memory": "320m",
         "memorySwap": "320m",

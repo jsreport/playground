@@ -1,7 +1,4 @@
-FROM ubuntu:xenial
-# not using ubuntu:bionic because phantomjs 1.9.8 does not work there
-# (it contains a newer version of OpenSSL which can not be used with phantomjs)
-
+FROM ubuntu:focal
 EXPOSE 5488
 
 RUN adduser --disabled-password --gecos "" jsreport && \
@@ -16,7 +13,7 @@ RUN mkdir -p /app
 RUN rm -rf /tmp/*
 
 ENV NVM_DIR /root/.nvm
-ENV NODE_VERSION 16.18.1
+ENV NODE_VERSION 18.16.1
 
 # node
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash && \
@@ -35,4 +32,4 @@ RUN npm install --production && \
     rm -rf /tmp/*
 
 
-CMD ["node", "--max-old-space-size=200", "--diagnostic-dir=/memory-dump", "--heapsnapshot-near-heap-limit=2", "server.js"]
+CMD ["node", "server.js"]

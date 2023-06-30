@@ -10,7 +10,7 @@
     "test": "mocha test --timeout 15000"
   },
   "dependencies": {
-    "@jsreport/jsreport-docker-workers": "3.7.0",
+    "@jsreport/jsreport-docker-workers": "3.8.0",
     "@jsreport/jsreport-docxtemplater": "3.2.0",
     "@jsreport/jsreport-ejs": "3.0.1",
     "@jsreport/jsreport-electron-pdf": "4.2.0",
@@ -18,8 +18,8 @@
     "@jsreport/jsreport-html-to-text": "3.0.0",
     "@jsreport/jsreport-mongodb-store": "3.2.0",
     "@jsreport/jsreport-office-password": "3.0.1",
-    "@jsreport/jsreport-phantom-image": "3.1.0",
-    "@jsreport/jsreport-phantom-pdf": "3.2.0",
+    "@jsreport/jsreport-phantom-image": "3.2.0",
+    "@jsreport/jsreport-phantom-pdf": "3.3.0",
     "@jsreport/jsreport-pug": "4.0.0",
     "@jsreport/jsreport-unoconv": "3.0.1",
     "@jsreport/jsreport-wkhtmltopdf": "3.2.0",
@@ -27,7 +27,7 @@
     "client-sessions": "0.8.0",
     "connect-ensure-login": "0.1.1",
     "ip": "1.1.5",
-    "jsreport": "3.11.3",
+    "jsreport": "3.13.0",
     "lodash.debounce": "4.0.8",
     "mongodb": "5.1.0",
     "morgan": "1.10.0",
