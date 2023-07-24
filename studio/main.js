@@ -132,13 +132,6 @@ exports.default = function () {
     ),
     _react2.default.createElement(
       'a',
-      { target: '_top', title: 'twitter', onClick: function onClick() {
-          return _onClick('/login/twitter');
-        }, style: { color: '#2fc2ef', marginRight: '0.5rem', cursor: 'pointer' } },
-      _react2.default.createElement('i', { className: 'fa fa-twitter-square fa-3x' })
-    ),
-    _react2.default.createElement(
-      'a',
       { target: '_top', title: 'github', onClick: function onClick() {
           return _onClick('/login/github');
         }, style: { color: '#337ab7', marginRight: '0.5rem', cursor: 'pointer' } },
