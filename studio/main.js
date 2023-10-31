@@ -582,6 +582,21 @@ _jsreportStudio2.default.initializeListeners.push(_asyncToGenerator( /*#__PURE__
                 )
               );
             }, 'settingsBottom');
+
+            _jsreportStudio2.default.addToolbarComponent(function () {
+              return _react2.default.createElement(
+                'div',
+                { className: 'toolbar-button', onClick: function onClick() {
+                    return window.open('https://jsreport.net/Privacy_Statement.html', '_blank');
+                  } },
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  _react2.default.createElement('i', { className: 'fa fa-shield' }),
+                  ' Privacy policy'
+                )
+              );
+            }, 'settingsBottom');
           }
 
         case 3:

@@ -61,6 +61,12 @@ Studio.initializeListeners.push(async () => {
         <span><i className='fa fa-sign-in' /> Login</span>
       </div>
     ), 'settingsBottom')
+
+    Studio.addToolbarComponent(() => (
+      <div className='toolbar-button' onClick={() => window.open('https://jsreport.net/Privacy_Statement.html', '_blank')}>
+        <span><i className='fa fa-shield' /> Privacy policy</span>
+      </div>
+    ), 'settingsBottom')
   }
 })
 
