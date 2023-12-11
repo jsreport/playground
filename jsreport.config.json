@@ -68,8 +68,7 @@
     },
     "mongodb-store": {
       "databaseName": "playground",
-      "address": "127.0.0.1",
-      "port": "27018"
+      "address": "127.0.0.1"
     },
     "studio": {
       "startupPage": false,
