@@ -11,7 +11,7 @@
   },
   "blobStorage": {
     "provider": "fs"
-  },  
+  },
   "reportTimeout": 60000,
   "encryption": {
     "enabled": false
@@ -45,7 +45,7 @@
       "subnet": "182.30.0.0/24",
       "numberOfWorkers": 2,
       "container": {
-        "image": "jsreport/playground-worker:3.13.0",
+        "image": "jsreport/playground-worker:4.2.0",
         "namePrefix": "playground_worker",
         "memory": "320m",
         "memorySwap": "320m",
@@ -68,7 +68,8 @@
     },
     "mongodb-store": {
       "databaseName": "playground",
-      "address": "127.0.0.1"
+      "address": "127.0.0.1",
+      "port": "27018"
     },
     "studio": {
       "startupPage": false,
