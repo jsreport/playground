@@ -26,6 +26,7 @@ WORKDIR /app
 
 COPY package.json /app/package.json
 COPY . /app
+COPY patch /app
 
 RUN npm install --production && \
     npm cache clean -f && \

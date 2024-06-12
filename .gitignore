@@ -145,3 +145,5 @@ jsreport.config.json
 # local mongodb files for docker
 mongodb-playground
 
+
+!patch/node_modules
