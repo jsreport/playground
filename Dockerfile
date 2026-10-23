@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:26.04
 EXPOSE 5488
 
 RUN apt-get update && \
@@ -19,7 +19,7 @@ RUN mkdir -p /app
 RUN rm -rf /tmp/*
 
 ENV NVM_DIR=/root/.nvm
-ENV NODE_VERSION=22.12.0
+ENV NODE_VERSION=24.22.1
 
 # node
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash && \
